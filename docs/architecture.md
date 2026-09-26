@@ -2,7 +2,7 @@
 
 ## System boundary
 
-Boarding House Finder is a single Next.js application backed by Supabase Auth, PostgreSQL, and Storage. It is not a microservice system. Server-side application code owns trusted mutations and moderation orchestration; PostgreSQL constraints and row-level security remain the final authorization boundary.
+RoomScouter is a single Next.js application backed by Supabase Auth, PostgreSQL, and Storage. It is not a microservice system. Server-side application code owns trusted mutations and moderation orchestration; PostgreSQL constraints and row-level security remain the final authorization boundary.
 
 ```text
 Mobile or desktop browser

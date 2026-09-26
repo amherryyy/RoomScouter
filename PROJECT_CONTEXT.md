@@ -2,7 +2,7 @@
 
 ## Product
 
-Boarding House Finder centralizes reliable information about boarding houses near a single university. It replaces scattered social-media posts, private messages, word of mouth, and physical advertisements with searchable, moderated listings.
+RoomScouter centralizes reliable information about boarding houses near a single university. It replaces scattered social-media posts, private messages, word of mouth, and physical advertisements with searchable, moderated listings.
 
 The initial deployment serves one university and its nearby area. The university's name, latitude, and longitude are deployment configuration and must be supplied before the map milestone is considered complete.
 

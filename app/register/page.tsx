@@ -13,7 +13,7 @@ export default async function RegisterPage({ searchParams }: RegisterPageProps) 
       <section className="auth-card" aria-labelledby="register-title">
         <p className="eyebrow">Join the pilot</p>
         <h1 id="register-title">Create an account</h1>
-        <p>Choose how you will use Boarding House Finder. Administrator access cannot be self-assigned.</p>
+        <p>Choose how you will use RoomScouter. Administrator access cannot be self-assigned.</p>
         {error ? <p className="notice error" role="alert">{error}</p> : null}
         <form action={register}>
           <label htmlFor="displayName">Display name</label>

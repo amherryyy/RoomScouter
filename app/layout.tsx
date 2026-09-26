@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import "./styles.css";
 
 export const metadata: Metadata = {
-  title: "Boarding House Finder",
+  title: "RoomScouter",
   description: "A project initialized by Flower"
 };
 

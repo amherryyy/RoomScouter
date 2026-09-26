@@ -5,7 +5,7 @@
 
 ## Context
 
-Flower's official `rbac` module depends on `organizations` and defines role and permission scope per organization. Boarding House Finder version 0.1 serves one university and uses three application-wide roles: student, owner, and admin. A dry-run confirmed that adding `rbac` would install `auth`, `organizations`, and `rbac` together.
+Flower's official `rbac` module depends on `organizations` and defines role and permission scope per organization. RoomScouter version 0.1 serves one university and uses three application-wide roles: student, owner, and admin. A dry-run confirmed that adding `rbac` would install `auth`, `organizations`, and `rbac` together.
 
 Introducing organizations solely to reuse that module would create a tenant model the product does not have. It would also make ownership, moderation, and row-level policies harder to explain and test.
 
