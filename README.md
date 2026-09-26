@@ -34,3 +34,13 @@ npm.cmd run build
 ```
 
 Never commit `.env.local` or Supabase service-role credentials.
+
+## Supabase identity setup
+
+The identity foundation requires a Supabase project before registration can run:
+
+1. Copy `.env.example` to `.env.local` and provide the project's URL and publishable key.
+2. Apply `supabase/migrations/20260926010000_identity_foundation.sql` through the reviewed database-migration workflow.
+3. Configure the local and deployed site URLs in Supabase Auth before testing email confirmation.
+
+Registration permits only student and owner accounts. The first administrator must be assigned through a privileged deployment operation; the public registration flow cannot create an admin.

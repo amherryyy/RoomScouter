@@ -4,7 +4,7 @@ This ledger records evidence from using Flower in a real application. A finding 
 
 ## FPF-001: Generated project fails its initial license gate
 
-- Status: Open
+- Status: Fixed upstream; pilot migration pending
 - Severity: Blocks the declared security check
 - Owner: Flower template/security policy
 - Observed: 2026-09-26
@@ -20,7 +20,9 @@ A fresh `next-supabase` initialization completes its tests, type-check, lint, bu
 
 ### Decision pending
 
-Do not weaken the application policy silently. Flower should decide whether the template intentionally permits these dependencies and whether the checker must parse SPDX expressions instead of comparing the complete expression as an opaque string. After that reviewed decision, the template and pilot baseline can be updated together.
+Do not weaken the application policy silently. Flower reviewed the exact dependency licenses in ADR 0039 and merged the corrected template in Flower PR #24. The checker intentionally continues comparing complete SPDX expressions as exact policy values.
+
+This pilot predates that corrected template. Its security baseline is protected with the `migration-engine-only` ownership policy, and Flower's user-facing update application is not implemented yet. The pilot therefore retains the original baseline and the security check remains blocked by these known diagnostics. Do not edit the protected file manually; migrate it through Flower's update application when available, or perform an explicitly reviewed pilot reinitialization while the project is still pre-release.
 
 ### Acceptance
 
