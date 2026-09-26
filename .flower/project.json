@@ -1,0 +1,37 @@
+{
+  "$schema": "https://flower.dev/schemas/project/v1.json",
+  "schemaVersion": 1,
+  "mode": "project",
+  "project": {
+    "id": "boarding-house-finder",
+    "name": "Boarding House Finder"
+  },
+  "flower": {
+    "version": "0.1.0",
+    "channel": "development"
+  },
+  "stack": {
+    "language": "typescript",
+    "runtime": "node",
+    "web": "nextjs",
+    "database": "supabase-postgres",
+    "packageManager": "npm"
+  },
+  "modules": {},
+  "capabilities": {
+    "multiTenant": false,
+    "versionedSecurityBaseline": true,
+    "offlineSecurityGate": true,
+    "secureApplicationHeaders": true,
+    "versionedUploadPolicy": true,
+    "serviceRoleClientAbsentByDefault": true,
+    "structuredLoggingPolicy": true,
+    "requestBodyLoggingPrevention": true
+  },
+  "quality": {
+    "minimumCoverage": 80,
+    "requireArchitectureCheck": true,
+    "requireSecurityCheck": true
+  },
+  "adapters": {}
+}

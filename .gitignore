@@ -1,0 +1,8 @@
+.next/
+node_modules/
+.env
+.env.local
+.flower/cache/
+.flower/journal/local/
+.flower/journal/workflows/
+*.tsbuildinfo

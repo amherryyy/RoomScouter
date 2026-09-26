@@ -1,0 +1,11 @@
+{
+  "lockVersion": 1,
+  "flowerVersion": "0.1.0",
+  "template": {
+    "id": "next-supabase",
+    "version": "0.1.0",
+    "digest": "sha256:de306baa2509eddf632240f92ee2f5c407ef8a59c361a561340dcb399d4d9425"
+  },
+  "modules": {},
+  "generatedFiles": {}
+}
