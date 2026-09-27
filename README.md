@@ -59,3 +59,5 @@ The operation is repeatable and returns the promoted user's ID. It fails when th
 ## Listing lifecycle
 
 Owners create draft boarding houses and submit them with `submit_boarding_house`. Administrators approve, reject, or archive them with `moderate_boarding_house`. Public queries expose only approved listings with at least one available room. Material owner edits return approved listings to pending review, while availability-only edits preserve approval. The database rules and rationale are documented in [ADR 0006](docs/decisions/0006-listing-lifecycle-enforcement.md).
+
+Facilities and utilities use seeded, read-only catalogs so search and comparison rely on stable values. Owners manage catalog associations and ordered house rules only for their own listings. These child records inherit parent visibility, and owner changes to approved attributes return the listing to review. See [ADR 0007](docs/decisions/0007-controlled-listing-attributes.md).

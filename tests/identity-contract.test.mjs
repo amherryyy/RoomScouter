@@ -81,6 +81,15 @@ test("types every Supabase client from the linked database schema", async () => 
 
   assert.match(databaseTypes, /profiles:/);
   assert.match(databaseTypes, /boarding_houses:/);
+  for (const table of [
+    "facilities",
+    "utilities",
+    "boarding_house_facilities",
+    "boarding_house_utilities",
+    "house_rules",
+  ]) {
+    assert.match(databaseTypes, new RegExp(`${table}:`));
+  }
   assert.match(databaseTypes, /app_role: "student" \| "owner" \| "admin"/);
   assert.match(
     databaseTypes,
