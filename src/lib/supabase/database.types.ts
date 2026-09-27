@@ -44,6 +44,7 @@ export type Database = {
     }
     Functions: {
       current_user_is_admin: { Args: never; Returns: boolean }
+      provision_admin: { Args: { target_email: string }; Returns: string }
     }
     Enums: {
       app_role: "student" | "owner" | "admin"

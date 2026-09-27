@@ -21,4 +21,4 @@ The browser uses Supabase's publishable client credentials. Session cookies are 
 - Flower still records and verifies the identity/session capability.
 - Project migrations and tests own application-role semantics.
 - An organization-scoped RBAC migration remains possible only if multi-university tenancy becomes a real requirement.
-- Initial administrator assignment is a privileged deployment operation until a separately reviewed admin-provisioning workflow exists.
+- Administrator assignment is a privileged deployment operation governed by ADR 0005.

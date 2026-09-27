@@ -71,7 +71,7 @@ Names may be refined before the first migration, but relationships and security 
 | Profile | — | Read/update safe own fields | Read/update safe own fields | Read and administer permitted fields |
 | Moderation event | — | — | Read events concerning own listings where safe | Create/read |
 
-Policies follow deny-by-default rules. The browser never receives a service-role credential. Role checks based only on client state are insufficient. Admin assignment is a privileged operation and cannot be self-selected during registration.
+Policies follow deny-by-default rules. The browser never receives a service-role credential. Role checks based only on client state are insufficient. Admin assignment cannot be self-selected during registration; a restricted, idempotent database function is executable only by a privileged PostgreSQL operator.
 
 ## Location and distance
 
