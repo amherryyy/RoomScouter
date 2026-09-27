@@ -1,16 +1,20 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
+  deleteListingPhoto,
   saveFacilities,
   saveHouseRules,
+  savePhotoDetails,
   saveUtilities,
   submitListing,
   updateListing,
+  uploadListingPhoto,
 } from "../../../../../src/features/listings/actions";
 import { requireOwner } from "../../../../../src/features/listings/access";
 import { AttributeForms } from "../../../../../src/features/listings/attribute-forms";
 import { ListingForm } from "../../../../../src/features/listings/listing-form";
 import { isUuid } from "../../../../../src/features/listings/model";
+import { PhotoEditor } from "../../../../../src/features/listings/photo-editor";
 
 type EditListingPageProps = {
   params: Promise<{ id: string }>;
@@ -36,6 +40,7 @@ export default async function EditListingPage({ params, searchParams }: EditList
     { data: selectedFacilities },
     { data: selectedUtilities },
     { data: rules },
+    { data: photos },
   ] = await Promise.all([
     supabase.from("facilities").select("id, name").order("name"),
     supabase.from("utilities").select("id, name").order("name"),
@@ -45,7 +50,17 @@ export default async function EditListingPage({ params, searchParams }: EditList
       .select("utility_id, is_included, details")
       .eq("boarding_house_id", id),
     supabase.from("house_rules").select("id, rule_text, position").eq("boarding_house_id", id).order("position"),
+    supabase
+      .from("listing_photos")
+      .select("id, object_path, media_type, byte_size, alt_text, position")
+      .eq("boarding_house_id", id)
+      .order("position"),
   ]);
+
+  const photosWithUrls = await Promise.all((photos ?? []).map(async (photo) => {
+    const { data } = await supabase.storage.from("listing-photos").createSignedUrl(photo.object_path, 60 * 60);
+    return { ...photo, signedUrl: data?.signedUrl ?? null };
+  }));
 
   const { error, message } = await searchParams;
   const updateAction = updateListing.bind(null, listing.id);
@@ -53,6 +68,9 @@ export default async function EditListingPage({ params, searchParams }: EditList
   const facilityAction = saveFacilities.bind(null, listing.id);
   const utilityAction = saveUtilities.bind(null, listing.id);
   const ruleAction = saveHouseRules.bind(null, listing.id);
+  const uploadPhotoAction = uploadListingPhoto.bind(null, listing.id);
+  const savePhotoAction = savePhotoDetails.bind(null, listing.id);
+  const deletePhotoAction = deleteListingPhoto.bind(null, listing.id);
   const canSubmit = listing.status === "draft" || listing.status === "rejected";
 
   return (
@@ -88,6 +106,13 @@ export default async function EditListingPage({ params, searchParams }: EditList
         facilityAction={facilityAction}
         utilityAction={utilityAction}
         ruleAction={ruleAction}
+      />
+
+      <PhotoEditor
+        photos={photosWithUrls}
+        uploadAction={uploadPhotoAction}
+        saveAction={savePhotoAction}
+        deleteAction={deletePhotoAction}
       />
 
       {canSubmit ? (

@@ -408,6 +408,14 @@ export type Database = {
         Args: { target_id: string; target_rules: string[] }
         Returns: number
       }
+      replace_listing_photo_details: {
+        Args: {
+          target_alt_texts: string[]
+          target_id: string
+          target_photo_ids: string[]
+        }
+        Returns: number
+      }
       submit_boarding_house: {
         Args: { target_id: string }
         Returns: {

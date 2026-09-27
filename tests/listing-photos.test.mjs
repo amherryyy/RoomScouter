@@ -174,13 +174,84 @@ test("listing photos enforce private storage ownership and publication", async (
     assert.deepEqual(listing.rows, [{ status: "pending" }]);
   });
 
+  await t.test("owners replace photo order and alternative text atomically", async () => {
+    const secondPath = photoPath(listingId, 1);
+    await uploadObject(database, userIds.owner, secondPath);
+    const secondPhoto = await addPhoto(database, userIds.owner, listingId, secondPath, 2);
+    const firstPhoto = await actAs(database, "authenticated", userIds.owner, () =>
+      database.query("select id from public.listing_photos where object_path = $1", [firstPath]),
+    );
+    const orderedIds = [secondPhoto.rows[0].id, firstPhoto.rows[0].id];
+    const orderedAltText = ["Shared study area", "Main entrance from the street"];
+
+    await assert.rejects(
+      actAs(database, "authenticated", userIds.secondOwner, () =>
+        database.query("select public.replace_listing_photo_details($1, $2, $3)", [
+          listingId,
+          orderedIds,
+          orderedAltText,
+        ]),
+      ),
+      /not found/i,
+    );
+    await assert.rejects(
+      actAs(database, "authenticated", userIds.owner, () =>
+        database.query("select public.replace_listing_photo_details($1, $2, $3)", [
+          listingId,
+          [orderedIds[0]],
+          [orderedAltText[0]],
+        ]),
+      ),
+      /every photo/i,
+    );
+
+    await actAs(database, "authenticated", userIds.admin, () =>
+      database.query("select public.moderate_boarding_house($1, 'approved')", [listingId]),
+    );
+    const unchangedIds = [...orderedIds].reverse();
+    const unchangedAltText = ["Updated front entrance", "Front view 2"];
+    await actAs(database, "authenticated", userIds.owner, () =>
+      database.query("select public.replace_listing_photo_details($1, $2, $3)", [
+        listingId,
+        unchangedIds,
+        unchangedAltText,
+      ]),
+    );
+    const unchangedListing = await actAs(database, "authenticated", userIds.owner, () =>
+      database.query("select status from public.boarding_houses where id = $1", [listingId]),
+    );
+    assert.deepEqual(unchangedListing.rows, [{ status: "approved" }]);
+
+    await actAs(database, "authenticated", userIds.owner, () =>
+      database.query("select public.replace_listing_photo_details($1, $2, $3)", [
+        listingId,
+        orderedIds,
+        orderedAltText,
+      ]),
+    );
+    const photos = await actAs(database, "authenticated", userIds.owner, () =>
+      database.query(
+        "select id, alt_text, position from public.listing_photos where boarding_house_id = $1 order by position",
+        [listingId],
+      ),
+    );
+    assert.deepEqual(photos.rows, [
+      { id: orderedIds[0], alt_text: orderedAltText[0], position: 1 },
+      { id: orderedIds[1], alt_text: orderedAltText[1], position: 2 },
+    ]);
+    const changedListing = await actAs(database, "authenticated", userIds.owner, () =>
+      database.query("select status from public.boarding_houses where id = $1", [listingId]),
+    );
+    assert.deepEqual(changedListing.rows, [{ status: "pending" }]);
+  });
+
   await t.test("cross-owner deletion is denied and photo count is capped at ten", async () => {
     const crossOwnerDelete = await actAs(database, "authenticated", userIds.secondOwner, () =>
       database.query("delete from storage.objects where name = $1 returning id", [firstPath]),
     );
     assert.deepEqual(crossOwnerDelete.rows, []);
 
-    for (let index = 1; index < 10; index += 1) {
+    for (let index = 2; index < 10; index += 1) {
       const path = photoPath(listingId, index);
       await uploadObject(database, userIds.owner, path);
       await addPhoto(database, userIds.owner, listingId, path, index + 1);
