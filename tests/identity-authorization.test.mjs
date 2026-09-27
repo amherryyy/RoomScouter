@@ -1,13 +1,10 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import test from "node:test";
 
 import { PGlite } from "@electric-sql/pglite";
 
-const migrationUrl = new URL(
-  "../supabase/migrations/20260926010000_identity_foundation.sql",
-  import.meta.url,
-);
+const migrationsUrl = new URL("../supabase/migrations/", import.meta.url);
 
 const userIds = {
   student: "00000000-0000-4000-8000-000000000001",
@@ -26,6 +23,7 @@ async function createDatabase() {
     create schema auth;
     create table auth.users (
       id uuid primary key,
+      email text unique,
       raw_user_meta_data jsonb not null default '{}'::jsonb
     );
 
@@ -41,27 +39,32 @@ async function createDatabase() {
     grant execute on function auth.uid() to anon, authenticated;
   `);
 
-  await database.exec(await readFile(migrationUrl, "utf8"));
+  const migrations = (await readdir(migrationsUrl))
+    .filter((name) => name.endsWith(".sql"))
+    .sort();
+  for (const migration of migrations) {
+    await database.exec(await readFile(new URL(migration, migrationsUrl), "utf8"));
+  }
   return database;
 }
 
-async function registerUser(database, { id, displayName, requestedRole }) {
+async function registerUser(database, { id, displayName, requestedRole, email = `${id}@example.test` }) {
   await database.query(
-    `insert into auth.users (id, raw_user_meta_data)
-     values ($1, jsonb_build_object(
-       'display_name', $2::text,
-       'requested_role', $3::text
+    `insert into auth.users (id, email, raw_user_meta_data)
+     values ($1, $2, jsonb_build_object(
+       'display_name', $3::text,
+       'requested_role', $4::text
      ))`,
-    [id, displayName, requestedRole],
+    [id, email, displayName, requestedRole],
   );
 }
 
 async function provisionAdmin(database, { id, displayName }) {
   await database.query(
-    `insert into auth.users (id, raw_user_meta_data)
-     values ($1, jsonb_build_object('display_name', $2::text))
+    `insert into auth.users (id, email, raw_user_meta_data)
+     values ($1, $2, jsonb_build_object('display_name', $3::text))
      on conflict (id) do nothing`,
-    [id, displayName],
+    [id, `${id}@example.test`, displayName],
   );
   await database.query(`update public.profiles set role = 'admin' where id = $1`, [id]);
 }
@@ -177,6 +180,35 @@ test("the identity migration enforces executable PostgreSQL authorization", asyn
       userIds.admin,
     ]);
     assert.deepEqual(profile.rows, [{ display_name: "Admin account", role: "admin" }]);
+  });
+
+  await t.test("only a privileged database session can provision an administrator", async () => {
+    const targetEmail = `${userIds.owner}@example.test`;
+
+    for (const role of ["anon", "authenticated"]) {
+      await assert.rejects(
+        actAs(database, role, userIds.student, () =>
+          database.query("select public.provision_admin($1)", [targetEmail]),
+        ),
+        /permission denied/i,
+      );
+    }
+
+    const first = await database.query("select public.provision_admin($1) as id", [
+      `  ${targetEmail.toUpperCase()}  `,
+    ]);
+    const repeated = await database.query("select public.provision_admin($1) as id", [targetEmail]);
+    const profile = await database.query("select role from public.profiles where id = $1", [
+      userIds.owner,
+    ]);
+
+    assert.deepEqual(first.rows, [{ id: userIds.owner }]);
+    assert.deepEqual(repeated.rows, [{ id: userIds.owner }]);
+    assert.deepEqual(profile.rows, [{ role: "admin" }]);
+    await assert.rejects(
+      database.query("select public.provision_admin('missing@example.test')"),
+      /No authentication user exists/i,
+    );
   });
 
   await t.test("admins can read all profiles but cannot rename another user", async () => {

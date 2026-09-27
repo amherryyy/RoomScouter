@@ -34,6 +34,23 @@ test("enforces profile ownership and immutable self-service roles in PostgreSQL"
   assert.match(migration, /security definer[\s\S]*set search_path = ''/i);
 });
 
+test("restricts repeatable administrator provisioning to privileged database operators", async () => {
+  const migration = await readProjectFile(
+    "supabase/migrations/20260927010000_admin_provisioning.sql",
+  );
+  const decision = await readProjectFile(
+    "docs/decisions/0005-privileged-admin-provisioning.md",
+  );
+
+  assert.match(migration, /security definer/i);
+  assert.match(migration, /set search_path = ''/i);
+  assert.match(migration, /lower\(trim\(target_email\)\)/i);
+  assert.match(migration, /revoke all[^;]+public, anon, authenticated/i);
+  assert.match(migration, /grant execute[^;]+to postgres/i);
+  assert.doesNotMatch(migration, /service_role/i);
+  assert.match(decision, /browser and Next\.js application receive neither access/i);
+});
+
 test("completes email confirmation through a guarded PKCE callback", async () => {
   const actions = await readProjectFile("src/features/auth/actions.ts");
   const callback = await readProjectFile("app/auth/callback/route.ts");
@@ -64,6 +81,7 @@ test("types every Supabase client from the linked database schema", async () => 
 
   assert.match(databaseTypes, /profiles:/);
   assert.match(databaseTypes, /app_role: "student" \| "owner" \| "admin"/);
+  assert.match(databaseTypes, /provision_admin: \{ Args: \{ target_email: string \}; Returns: string \}/);
   assert.match(packageJson, /"types:database": "node scripts\/generate-database-types\.mjs"/);
   assert.match(generator, /encoding: "utf8"/);
   assert.match(browserClient, /createBrowserClient<Database>/);

@@ -46,4 +46,12 @@ The identity foundation requires a Supabase project before registration can run:
 3. Configure the local and deployed site URLs and redirect allow-list in Supabase Auth before testing email confirmation. The registration flow uses the default confirmation template and exchanges its PKCE code at `/auth/callback`; custom SMTP is not required for development.
 4. Regenerate `src/lib/supabase/database.types.ts` from the linked project after every migration with `npm run types:database`. The project command writes UTF-8 consistently, including from Windows PowerShell.
 
-Registration permits only student and owner accounts. The first administrator must be assigned through a privileged deployment operation; the public registration flow cannot create an admin.
+Registration permits only student and owner accounts. Public registration cannot create an administrator.
+
+To provision an administrator, first let that person register and confirm their account. Apply all pending migrations, then run the following from a privileged database session such as the Supabase SQL Editor:
+
+```sql
+select public.provision_admin('administrator@example.com');
+```
+
+The operation is repeatable and returns the promoted user's ID. It fails when the email has no authentication account or profile. Application roles (`anon` and `authenticated`) cannot execute it, and no service-role credential is required by the application. See [ADR 0005](docs/decisions/0005-privileged-admin-provisioning.md).
