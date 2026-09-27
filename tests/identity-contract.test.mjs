@@ -80,7 +80,15 @@ test("types every Supabase client from the linked database schema", async () => 
   const proxy = await readProjectFile("proxy.ts");
 
   assert.match(databaseTypes, /profiles:/);
+  assert.match(databaseTypes, /boarding_houses:/);
   assert.match(databaseTypes, /app_role: "student" \| "owner" \| "admin"/);
+  assert.match(
+    databaseTypes,
+    /listing_status: "draft" \| "pending" \| "approved" \| "rejected" \| "archived"/,
+  );
+  assert.match(databaseTypes, /room_type: "bedspace" \| "shared_room" \| "private_room" \| "studio"/);
+  assert.match(databaseTypes, /moderate_boarding_house:/);
+  assert.match(databaseTypes, /submit_boarding_house:/);
   assert.match(databaseTypes, /provision_admin: \{ Args: \{ target_email: string \}; Returns: string \}/);
   assert.match(packageJson, /"types:database": "node scripts\/generate-database-types\.mjs"/);
   assert.match(generator, /encoding: "utf8"/);
