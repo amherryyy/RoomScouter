@@ -66,4 +66,8 @@ Listing photos use the private `listing-photos` bucket. JPEG and PNG objects are
 
 Owners use `/owner` to create and maintain core listing drafts, review moderation feedback, track lifecycle status, and submit drafts for review. Server actions validate all fields and scope writes to the verified owner; PostgreSQL RLS and lifecycle functions remain the final authorization boundary. The editor includes transactional facility, utility, house-rule, and photo controls. Private photo previews use short-lived signed URLs; upload validation, ordering, alternative text, deletion, and the ten-photo limit are enforced across the application and database boundaries.
 
+Public discovery uses a bounded PostgreSQL query for text, price, availability, room type, facility, utility, and approximate distance filters. It returns only approved listings with available rooms and remains subject to row-level security. See [ADR 0009](docs/decisions/0009-database-backed-public-discovery.md).
+
+The public home page renders paginated result cards and `/listings/[id]` presents approved listing facts, short-lived private photo previews, an OpenStreetMap pin, and direct owner contact channels. Distance filtering and university-relative labels activate when `ROOMSCOUTER_UNIVERSITY_NAME`, `ROOMSCOUTER_UNIVERSITY_LATITUDE`, and `ROOMSCOUTER_UNIVERSITY_LONGITUDE` are configured.
+
 The listing editor also saves facilities, utilities, and ordered house rules as complete transactional collections. Invalid or cross-owner requests fail without partial changes, and saving an unchanged section does not disturb an approved listing's status.

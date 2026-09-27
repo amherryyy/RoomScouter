@@ -416,6 +416,34 @@ export type Database = {
         }
         Returns: number
       }
+      search_public_boarding_houses: {
+        Args: {
+          maximum_distance_km?: number
+          maximum_monthly_rent?: number
+          minimum_available_rooms?: number
+          page_offset?: number
+          page_size?: number
+          search_text?: string
+          selected_facility_id?: number
+          selected_room_type?: Database["public"]["Enums"]["room_type"]
+          selected_utility_id?: number
+          university_latitude?: number
+          university_longitude?: number
+        }
+        Returns: {
+          address_line: string
+          approximate_distance_km: number
+          available_rooms: number
+          description: string
+          id: string
+          latitude: number
+          longitude: number
+          monthly_rent: number
+          room_type: Database["public"]["Enums"]["room_type"]
+          title: string
+          total_count: number
+        }[]
+      }
       submit_boarding_house: {
         Args: { target_id: string }
         Returns: {
