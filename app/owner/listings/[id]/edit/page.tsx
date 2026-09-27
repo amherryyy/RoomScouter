@@ -1,7 +1,14 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { submitListing, updateListing } from "../../../../../src/features/listings/actions";
+import {
+  saveFacilities,
+  saveHouseRules,
+  saveUtilities,
+  submitListing,
+  updateListing,
+} from "../../../../../src/features/listings/actions";
 import { requireOwner } from "../../../../../src/features/listings/access";
+import { AttributeForms } from "../../../../../src/features/listings/attribute-forms";
 import { ListingForm } from "../../../../../src/features/listings/listing-form";
 import { isUuid } from "../../../../../src/features/listings/model";
 
@@ -23,9 +30,29 @@ export default async function EditListingPage({ params, searchParams }: EditList
     .maybeSingle();
   if (!listing) notFound();
 
+  const [
+    { data: facilities },
+    { data: utilities },
+    { data: selectedFacilities },
+    { data: selectedUtilities },
+    { data: rules },
+  ] = await Promise.all([
+    supabase.from("facilities").select("id, name").order("name"),
+    supabase.from("utilities").select("id, name").order("name"),
+    supabase.from("boarding_house_facilities").select("facility_id").eq("boarding_house_id", id),
+    supabase
+      .from("boarding_house_utilities")
+      .select("utility_id, is_included, details")
+      .eq("boarding_house_id", id),
+    supabase.from("house_rules").select("id, rule_text, position").eq("boarding_house_id", id).order("position"),
+  ]);
+
   const { error, message } = await searchParams;
   const updateAction = updateListing.bind(null, listing.id);
   const submitAction = submitListing.bind(null, listing.id);
+  const facilityAction = saveFacilities.bind(null, listing.id);
+  const utilityAction = saveUtilities.bind(null, listing.id);
+  const ruleAction = saveHouseRules.bind(null, listing.id);
   const canSubmit = listing.status === "draft" || listing.status === "rejected";
 
   return (
@@ -51,6 +78,17 @@ export default async function EditListingPage({ params, searchParams }: EditList
       ) : null}
 
       <ListingForm action={updateAction} listing={listing} submitLabel="Save listing" />
+
+      <AttributeForms
+        facilities={facilities ?? []}
+        selectedFacilityIds={(selectedFacilities ?? []).map((item) => item.facility_id)}
+        utilities={utilities ?? []}
+        selectedUtilities={selectedUtilities ?? []}
+        rules={rules ?? []}
+        facilityAction={facilityAction}
+        utilityAction={utilityAction}
+        ruleAction={ruleAction}
+      />
 
       {canSubmit ? (
         <section className="submission-panel">

@@ -174,4 +174,79 @@ test("listing attributes inherit ownership and publication boundaries", async (t
       /unique|duplicate/i,
     );
   });
+
+  await t.test("owner replacement commands are atomic, validated, and no-op aware", async () => {
+    await actAs(database, "authenticated", userIds.owner, () =>
+      database.query("select public.replace_boarding_house_facilities($1, $2)", [listingId, [1, 2]]),
+    );
+    await actAs(database, "authenticated", userIds.owner, () =>
+      database.query(
+        "select public.replace_boarding_house_utilities($1, $2, $3, $4)",
+        [listingId, [1, 2], [true, false], ["Included", "Metered"]],
+      ),
+    );
+    await actAs(database, "authenticated", userIds.owner, () =>
+      database.query("select public.replace_house_rules($1, $2)", [
+        listingId,
+        ["No smoking indoors.", "Quiet hours begin at 10 PM."],
+      ]),
+    );
+
+    await actAs(database, "authenticated", userIds.admin, () =>
+      database.query("select public.moderate_boarding_house($1, 'approved')", [listingId]),
+    );
+
+    await actAs(database, "authenticated", userIds.owner, async () => {
+      await database.query("select public.replace_boarding_house_facilities($1, $2)", [
+        listingId,
+        [2, 1],
+      ]);
+      await database.query(
+        "select public.replace_boarding_house_utilities($1, $2, $3, $4)",
+        [listingId, [2, 1], [false, true], ["Metered", "Included"]],
+      );
+      await database.query("select public.replace_house_rules($1, $2)", [
+        listingId,
+        ["No smoking indoors.", "Quiet hours begin at 10 PM."],
+      ]);
+    });
+
+    const unchanged = await actAs(database, "authenticated", userIds.owner, () =>
+      database.query("select status from public.boarding_houses where id = $1", [listingId]),
+    );
+    assert.deepEqual(unchanged.rows, [{ status: "approved" }]);
+
+    await actAs(database, "authenticated", userIds.owner, () =>
+      database.query("select public.replace_house_rules($1, $2)", [
+        listingId,
+        ["No smoking anywhere on the property."],
+      ]),
+    );
+    const changed = await actAs(database, "authenticated", userIds.owner, () =>
+      database.query("select status from public.boarding_houses where id = $1", [listingId]),
+    );
+    assert.deepEqual(changed.rows, [{ status: "pending" }]);
+
+    await assert.rejects(
+      actAs(database, "authenticated", userIds.student, () =>
+        database.query("select public.replace_boarding_house_facilities($1, $2)", [listingId, [1]]),
+      ),
+      /not found/i,
+    );
+    await assert.rejects(
+      actAs(database, "authenticated", userIds.owner, () =>
+        database.query("select public.replace_boarding_house_facilities($1, $2)", [listingId, [1, 1]]),
+      ),
+      /duplicates/i,
+    );
+    await assert.rejects(
+      actAs(database, "authenticated", userIds.owner, () =>
+        database.query(
+          "select public.replace_boarding_house_utilities($1, $2, $3, $4)",
+          [listingId, [1], [true, false], ["Included"]],
+        ),
+      ),
+      /matching values/i,
+    );
+  });
 });

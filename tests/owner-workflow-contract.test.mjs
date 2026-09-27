@@ -50,3 +50,25 @@ test("shows lifecycle state, moderation feedback, and explicit submission", asyn
   assert.match(editPage, /Submit for review/);
   assert.match(editPage, /listing\.status === "draft" \|\| listing\.status === "rejected"/);
 });
+
+test("saves complete attribute collections through typed transactional commands", async () => {
+  const actions = await readProjectFile("src/features/listings/actions.ts");
+  const forms = await readProjectFile("src/features/listings/attribute-forms.tsx");
+  const editPage = await readProjectFile("app/owner/listings/[id]/edit/page.tsx");
+  const databaseTypes = await readProjectFile("src/lib/supabase/database.types.ts");
+
+  for (const command of [
+    "replace_boarding_house_facilities",
+    "replace_boarding_house_utilities",
+    "replace_house_rules",
+  ]) {
+    assert.match(actions, new RegExp(`rpc\\("${command}"`));
+    assert.match(databaseTypes, new RegExp(`${command}:`));
+  }
+  assert.match(actions, /\.getAll\("facilityIds"\)/);
+  assert.match(actions, /\.getAll\("utilityIds"\)/);
+  assert.match(actions, /\.getAll\("rules"\)/);
+  assert.match(forms, /Included in rent/);
+  assert.match(forms, /Clear a field to remove that rule/);
+  assert.match(editPage, /<AttributeForms/);
+});

@@ -345,6 +345,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      assert_current_owner_listing: {
+        Args: { target_id: string }
+        Returns: undefined
+      }
       current_user_can_manage_listing_photo: {
         Args: { object_name: string }
         Returns: boolean
@@ -387,6 +391,23 @@ export type Database = {
         }
       }
       provision_admin: { Args: { target_email: string }; Returns: string }
+      replace_boarding_house_facilities: {
+        Args: { target_facility_ids: number[]; target_id: string }
+        Returns: number
+      }
+      replace_boarding_house_utilities: {
+        Args: {
+          target_detail_values: string[]
+          target_id: string
+          target_included_values: boolean[]
+          target_utility_ids: number[]
+        }
+        Returns: number
+      }
+      replace_house_rules: {
+        Args: { target_id: string; target_rules: string[] }
+        Returns: number
+      }
       submit_boarding_house: {
         Args: { target_id: string }
         Returns: {

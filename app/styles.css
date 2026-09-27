@@ -258,6 +258,94 @@ a:focus-visible {
   margin: 1.5rem 0;
 }
 
+.attribute-editor {
+  display: grid;
+  gap: 1.25rem;
+  margin: 3rem 0;
+}
+
+.attribute-editor h2 {
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+}
+
+.attribute-card {
+  display: grid;
+  justify-items: start;
+  gap: 1rem;
+  border: 1px solid #d8e0da;
+  border-radius: 0.85rem;
+  padding: 1.25rem;
+  background: white;
+}
+
+.attribute-card fieldset {
+  width: 100%;
+  box-sizing: border-box;
+  border: 0;
+  padding: 0;
+}
+
+.attribute-card legend {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.choice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  gap: 0.75rem;
+}
+
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+.check-row input {
+  min-height: auto;
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.utility-list {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.utility-row {
+  display: grid;
+  grid-template-columns: minmax(9rem, 1fr) minmax(9rem, 1fr) minmax(12rem, 2fr);
+  align-items: center;
+  gap: 1rem;
+  border-top: 1px solid #e5eae6;
+  padding-top: 0.75rem;
+}
+
+.rule-list {
+  display: grid;
+  gap: 0.65rem;
+  padding-left: 2rem;
+}
+
+.rule-list input {
+  width: 100%;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
 @media (max-width: 40rem) {
   main { padding: 3rem 1rem; }
   .workspace-heading,
@@ -265,4 +353,5 @@ a:focus-visible {
   .submission-panel { align-items: flex-start; flex-direction: column; }
   .workspace-heading .button,
   .submission-panel button { width: 100%; }
+  .utility-row { grid-template-columns: 1fr; }
 }
