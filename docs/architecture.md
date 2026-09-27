@@ -56,7 +56,7 @@ Feature folders may contain their queries, commands, schemas, and components. Sh
 | `reports` | Student-submitted moderation case | Target type and target ID must agree; explicit lifecycle status. |
 | `moderation_events` | Append-only record of admin outcomes | Actor, target, action, timestamp, and non-sensitive reason. |
 
-Names may be refined before the first migration, but relationships and security boundaries require an architecture decision to change after that point.
+The core listing lifecycle is now established by the listing-foundation migration. Changes to its relationships or security boundaries require an architecture decision.
 
 ## Authorization and RLS contract
 
@@ -97,6 +97,6 @@ Public Supabase URL and anonymous key may be exposed through approved public env
 - End-to-end tests cover the owner-submit, admin-approve, and student-discover flows.
 - Flower validation and security checks guard framework contracts and repository policy.
 
-## First implementation decision
+## Implementation sequence
 
-The next technical slice installs Flower's identity and authorization foundations, then defines the first project-owned database migration. UI implementation begins only after role assignment and RLS behavior have executable tests.
+Identity and administrator provisioning are complete. The listing foundation establishes the owner, publication, moderation, and audit boundaries before listing forms or discovery UI are introduced. Attribute, photo, owner-workflow, and discovery slices build on these tested database contracts.

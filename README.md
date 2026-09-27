@@ -55,3 +55,7 @@ select public.provision_admin('administrator@example.com');
 ```
 
 The operation is repeatable and returns the promoted user's ID. It fails when the email has no authentication account or profile. Application roles (`anon` and `authenticated`) cannot execute it, and no service-role credential is required by the application. See [ADR 0005](docs/decisions/0005-privileged-admin-provisioning.md).
+
+## Listing lifecycle
+
+Owners create draft boarding houses and submit them with `submit_boarding_house`. Administrators approve, reject, or archive them with `moderate_boarding_house`. Public queries expose only approved listings with at least one available room. Material owner edits return approved listings to pending review, while availability-only edits preserve approval. The database rules and rationale are documented in [ADR 0006](docs/decisions/0006-listing-lifecycle-enforcement.md).

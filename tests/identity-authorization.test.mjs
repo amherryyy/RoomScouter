@@ -1,85 +1,13 @@
 import assert from "node:assert/strict";
-import { readdir, readFile } from "node:fs/promises";
 import test from "node:test";
 
-import { PGlite } from "@electric-sql/pglite";
-
-const migrationsUrl = new URL("../supabase/migrations/", import.meta.url);
-
-const userIds = {
-  student: "00000000-0000-4000-8000-000000000001",
-  owner: "00000000-0000-4000-8000-000000000002",
-  forgedAdmin: "00000000-0000-4000-8000-000000000003",
-  admin: "00000000-0000-4000-8000-000000000004",
-};
-
-async function createDatabase() {
-  const database = new PGlite();
-
-  await database.exec(`
-    create role anon nologin;
-    create role authenticated nologin;
-
-    create schema auth;
-    create table auth.users (
-      id uuid primary key,
-      email text unique,
-      raw_user_meta_data jsonb not null default '{}'::jsonb
-    );
-
-    create function auth.uid()
-    returns uuid
-    language sql
-    stable
-    as $$
-      select nullif(current_setting('request.jwt.claim.sub', true), '')::uuid
-    $$;
-
-    grant usage on schema auth to anon, authenticated;
-    grant execute on function auth.uid() to anon, authenticated;
-  `);
-
-  const migrations = (await readdir(migrationsUrl))
-    .filter((name) => name.endsWith(".sql"))
-    .sort();
-  for (const migration of migrations) {
-    await database.exec(await readFile(new URL(migration, migrationsUrl), "utf8"));
-  }
-  return database;
-}
-
-async function registerUser(database, { id, displayName, requestedRole, email = `${id}@example.test` }) {
-  await database.query(
-    `insert into auth.users (id, email, raw_user_meta_data)
-     values ($1, $2, jsonb_build_object(
-       'display_name', $3::text,
-       'requested_role', $4::text
-     ))`,
-    [id, email, displayName, requestedRole],
-  );
-}
-
-async function provisionAdmin(database, { id, displayName }) {
-  await database.query(
-    `insert into auth.users (id, email, raw_user_meta_data)
-     values ($1, $2, jsonb_build_object('display_name', $3::text))
-     on conflict (id) do nothing`,
-    [id, `${id}@example.test`, displayName],
-  );
-  await database.query(`update public.profiles set role = 'admin' where id = $1`, [id]);
-}
-
-async function actAs(database, role, userId, operation) {
-  await database.exec(`set role ${role}`);
-  await database.query(`select set_config('request.jwt.claim.sub', $1, false)`, [userId ?? ""]);
-
-  try {
-    return await operation();
-  } finally {
-    await database.exec("reset role");
-    await database.exec(`select set_config('request.jwt.claim.sub', '', false)`);
-  }
-}
+import {
+  actAs,
+  createDatabase,
+  provisionAdmin,
+  registerUser,
+  userIds,
+} from "./support/database.mjs";
 
 test("the identity migration enforces executable PostgreSQL authorization", async (t) => {
   const database = await createDatabase();

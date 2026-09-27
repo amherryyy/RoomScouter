@@ -14,6 +14,132 @@ export type Database = {
   }
   public: {
     Tables: {
+      boarding_houses: {
+        Row: {
+          address_line: string
+          available_rooms: number
+          contact_email: string | null
+          contact_name: string
+          contact_phone: string | null
+          created_at: string
+          description: string
+          id: string
+          latitude: number
+          longitude: number
+          moderated_at: string | null
+          moderated_by: string | null
+          moderation_note: string | null
+          monthly_rent: number
+          owner_id: string
+          room_type: Database["public"]["Enums"]["room_type"]
+          status: Database["public"]["Enums"]["listing_status"]
+          submitted_at: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          address_line: string
+          available_rooms: number
+          contact_email?: string | null
+          contact_name: string
+          contact_phone?: string | null
+          created_at?: string
+          description: string
+          id?: string
+          latitude: number
+          longitude: number
+          moderated_at?: string | null
+          moderated_by?: string | null
+          moderation_note?: string | null
+          monthly_rent: number
+          owner_id: string
+          room_type: Database["public"]["Enums"]["room_type"]
+          status?: Database["public"]["Enums"]["listing_status"]
+          submitted_at?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          address_line?: string
+          available_rooms?: number
+          contact_email?: string | null
+          contact_name?: string
+          contact_phone?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          latitude?: number
+          longitude?: number
+          moderated_at?: string | null
+          moderated_by?: string | null
+          moderation_note?: string | null
+          monthly_rent?: number
+          owner_id?: string
+          room_type?: Database["public"]["Enums"]["room_type"]
+          status?: Database["public"]["Enums"]["listing_status"]
+          submitted_at?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "boarding_houses_moderated_by_fkey"
+            columns: ["moderated_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "boarding_houses_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      moderation_events: {
+        Row: {
+          action: Database["public"]["Enums"]["listing_status"]
+          actor_id: string
+          boarding_house_id: string
+          created_at: string
+          id: number
+          reason: string | null
+        }
+        Insert: {
+          action: Database["public"]["Enums"]["listing_status"]
+          actor_id: string
+          boarding_house_id: string
+          created_at?: string
+          id?: never
+          reason?: string | null
+        }
+        Update: {
+          action?: Database["public"]["Enums"]["listing_status"]
+          actor_id?: string
+          boarding_house_id?: string
+          created_at?: string
+          id?: never
+          reason?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "moderation_events_actor_id_fkey"
+            columns: ["actor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "moderation_events_boarding_house_id_fkey"
+            columns: ["boarding_house_id"]
+            isOneToOne: false
+            referencedRelation: "boarding_houses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -44,10 +170,79 @@ export type Database = {
     }
     Functions: {
       current_user_is_admin: { Args: never; Returns: boolean }
+      current_user_is_owner: { Args: never; Returns: boolean }
+      moderate_boarding_house: {
+        Args: {
+          decision: Database["public"]["Enums"]["listing_status"]
+          reason?: string
+          target_id: string
+        }
+        Returns: {
+          address_line: string
+          available_rooms: number
+          contact_email: string | null
+          contact_name: string
+          contact_phone: string | null
+          created_at: string
+          description: string
+          id: string
+          latitude: number
+          longitude: number
+          moderated_at: string | null
+          moderated_by: string | null
+          moderation_note: string | null
+          monthly_rent: number
+          owner_id: string
+          room_type: Database["public"]["Enums"]["room_type"]
+          status: Database["public"]["Enums"]["listing_status"]
+          submitted_at: string | null
+          title: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "boarding_houses"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       provision_admin: { Args: { target_email: string }; Returns: string }
+      submit_boarding_house: {
+        Args: { target_id: string }
+        Returns: {
+          address_line: string
+          available_rooms: number
+          contact_email: string | null
+          contact_name: string
+          contact_phone: string | null
+          created_at: string
+          description: string
+          id: string
+          latitude: number
+          longitude: number
+          moderated_at: string | null
+          moderated_by: string | null
+          moderation_note: string | null
+          monthly_rent: number
+          owner_id: string
+          room_type: Database["public"]["Enums"]["room_type"]
+          status: Database["public"]["Enums"]["listing_status"]
+          submitted_at: string | null
+          title: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "boarding_houses"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
     }
     Enums: {
       app_role: "student" | "owner" | "admin"
+      listing_status: "draft" | "pending" | "approved" | "rejected" | "archived"
+      room_type: "bedspace" | "shared_room" | "private_room" | "studio"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -176,6 +371,8 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["student", "owner", "admin"],
+      listing_status: ["draft", "pending", "approved", "rejected", "archived"],
+      room_type: ["bedspace", "shared_room", "private_room", "studio"],
     },
   },
 } as const
