@@ -208,6 +208,57 @@ export type Database = {
           },
         ]
       }
+      listing_photos: {
+        Row: {
+          alt_text: string
+          boarding_house_id: string
+          byte_size: number
+          created_at: string
+          created_by: string
+          id: string
+          media_type: string
+          object_path: string
+          position: number
+        }
+        Insert: {
+          alt_text: string
+          boarding_house_id: string
+          byte_size: number
+          created_at?: string
+          created_by: string
+          id?: string
+          media_type: string
+          object_path: string
+          position: number
+        }
+        Update: {
+          alt_text?: string
+          boarding_house_id?: string
+          byte_size?: number
+          created_at?: string
+          created_by?: string
+          id?: string
+          media_type?: string
+          object_path?: string
+          position?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listing_photos_boarding_house_id_fkey"
+            columns: ["boarding_house_id"]
+            isOneToOne: false
+            referencedRelation: "boarding_houses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "listing_photos_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       moderation_events: {
         Row: {
           action: Database["public"]["Enums"]["listing_status"]
@@ -294,6 +345,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      current_user_can_manage_listing_photo: {
+        Args: { object_name: string }
+        Returns: boolean
+      }
       current_user_is_admin: { Args: never; Returns: boolean }
       current_user_is_owner: { Args: never; Returns: boolean }
       moderate_boarding_house: {
