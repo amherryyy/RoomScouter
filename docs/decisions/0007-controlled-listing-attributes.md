@@ -13,6 +13,8 @@ Store facilities and utilities in read-only, seeded catalogs with case-insensiti
 
 Child-table row-level policies inherit visibility from the parent boarding house. Only the listing owner or an administrator can mutate its attributes. Owner mutations to an approved listing atomically return the parent to `pending`; administrator corrections do not change its lifecycle.
 
+Owner forms replace each complete attribute collection through guarded database functions. Each function validates the full selection and applies it in one transaction. Equivalent selections are detected as no-ops so merely saving an unchanged approved listing does not trigger another review.
+
 ## Consequences
 
 - Search filters operate on stable identifiers rather than free-form labels.
