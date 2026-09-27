@@ -87,6 +87,7 @@ test("types every Supabase client from the linked database schema", async () => 
     "boarding_house_facilities",
     "boarding_house_utilities",
     "house_rules",
+    "listing_photos",
   ]) {
     assert.match(databaseTypes, new RegExp(`${table}:`));
   }
@@ -98,6 +99,7 @@ test("types every Supabase client from the linked database schema", async () => 
   assert.match(databaseTypes, /room_type: "bedspace" \| "shared_room" \| "private_room" \| "studio"/);
   assert.match(databaseTypes, /moderate_boarding_house:/);
   assert.match(databaseTypes, /submit_boarding_house:/);
+  assert.match(databaseTypes, /current_user_can_manage_listing_photo:/);
   assert.match(databaseTypes, /provision_admin: \{ Args: \{ target_email: string \}; Returns: string \}/);
   assert.match(packageJson, /"types:database": "node scripts\/generate-database-types\.mjs"/);
   assert.match(generator, /encoding: "utf8"/);
