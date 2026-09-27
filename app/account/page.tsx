@@ -1,8 +1,14 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { logout } from "../../src/features/auth/actions";
 import { createServerSupabaseClient } from "../../src/lib/supabase/server";
 
-export default async function AccountPage() {
+type AccountPageProps = {
+  searchParams: Promise<{ error?: string }>;
+};
+
+export default async function AccountPage({ searchParams }: AccountPageProps) {
+  const { error } = await searchParams;
   const supabase = await createServerSupabaseClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
@@ -17,10 +23,12 @@ export default async function AccountPage() {
     <main>
       <p className="eyebrow">Your account</p>
       <h1>{profile?.display_name ?? "Account"}</h1>
+      {error ? <p className="notice error" role="alert">{error}</p> : null}
       <dl className="account-details">
         <div><dt>Email</dt><dd>{user.email}</dd></div>
         <div><dt>Role</dt><dd>{profile?.role ?? "Profile setup pending"}</dd></div>
       </dl>
+      {profile?.role === "owner" ? <p><Link className="button" href="/owner">Open owner dashboard</Link></p> : null}
       <form action={logout}><button type="submit" className="secondary">Log out</button></form>
     </main>
   );

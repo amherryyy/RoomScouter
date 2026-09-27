@@ -93,7 +93,8 @@ label {
 }
 
 input,
-select {
+select,
+textarea {
   min-height: 2.75rem;
   box-sizing: border-box;
   border: 1px solid #aebbb2;
@@ -106,6 +107,7 @@ select {
 
 input:focus-visible,
 select:focus-visible,
+textarea:focus-visible,
 button:focus-visible,
 a:focus-visible {
   outline: 3px solid #e0a526;
@@ -151,4 +153,116 @@ a:focus-visible {
 
 .account-details dd {
   margin: 0;
+}
+
+.workspace-shell {
+  max-width: 68rem;
+  padding-top: 4rem;
+}
+
+.narrow-workspace {
+  max-width: 52rem;
+}
+
+.workspace-heading,
+.listing-card-heading,
+.submission-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.workspace-heading h1,
+.narrow-workspace h1 {
+  margin: 0.5rem 0;
+  font-size: clamp(2.25rem, 6vw, 4rem);
+}
+
+.listing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.listing-card,
+.empty-state,
+.moderation-note,
+.submission-panel {
+  border: 1px solid #d8e0da;
+  border-radius: 0.85rem;
+  padding: 1.25rem;
+  background: white;
+}
+
+.listing-card h2,
+.submission-panel h2,
+.moderation-note h2 {
+  margin: 0;
+}
+
+.status {
+  border-radius: 999px;
+  padding: 0.35rem 0.6rem;
+  background: #e7ece8;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.status-approved { color: #165d3a; background: #eaf7ef; }
+.status-rejected,
+.status-archived { color: #7d251e; background: #fff0ee; }
+.status-pending { color: #72520c; background: #fff6d9; }
+
+.listing-form {
+  display: grid;
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+
+.listing-form fieldset {
+  display: grid;
+  gap: 0.65rem;
+  border: 1px solid #d8e0da;
+  border-radius: 0.85rem;
+  padding: 1.25rem;
+  background: white;
+}
+
+.listing-form legend {
+  padding: 0 0.4rem;
+  font-weight: 800;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  gap: 1rem;
+}
+
+.form-grid > div {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.field-help {
+  margin: 0.25rem 0 0;
+  color: #526158;
+  font-size: 0.9rem;
+}
+
+.moderation-note,
+.submission-panel {
+  margin: 1.5rem 0;
+}
+
+@media (max-width: 40rem) {
+  main { padding: 3rem 1rem; }
+  .workspace-heading,
+  .listing-card-heading,
+  .submission-panel { align-items: flex-start; flex-direction: column; }
+  .workspace-heading .button,
+  .submission-panel button { width: 100%; }
 }
