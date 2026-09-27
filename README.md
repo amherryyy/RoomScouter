@@ -43,6 +43,7 @@ The identity foundation requires a Supabase project before registration can run:
 
 1. Copy `.env.example` to `.env.local` and provide the project's URL and publishable key.
 2. Apply `supabase/migrations/20260926010000_identity_foundation.sql` through the reviewed database-migration workflow.
-3. Configure the local and deployed site URLs in Supabase Auth before testing email confirmation.
+3. Configure the local and deployed site URLs and redirect allow-list in Supabase Auth before testing email confirmation. The registration flow uses the default confirmation template and exchanges its PKCE code at `/auth/callback`; custom SMTP is not required for development.
+4. Regenerate `src/lib/supabase/database.types.ts` from the linked project after every migration with `npm run types:database`. The project command writes UTF-8 consistently, including from Windows PowerShell.
 
 Registration permits only student and owner accounts. The first administrator must be assigned through a privileged deployment operation; the public registration flow cannot create an admin.
