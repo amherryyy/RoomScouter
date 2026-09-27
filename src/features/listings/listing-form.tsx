@@ -1,0 +1,86 @@
+import type { Database } from "../../lib/supabase/database.types";
+import { roomTypes } from "./model";
+
+type Listing = Database["public"]["Tables"]["boarding_houses"]["Row"];
+
+type ListingFormProps = {
+  action: (formData: FormData) => void | Promise<void>;
+  listing?: Listing;
+  submitLabel: string;
+};
+
+const roomTypeLabels = {
+  bedspace: "Bedspace",
+  shared_room: "Shared room",
+  private_room: "Private room",
+  studio: "Studio",
+} as const;
+
+export function ListingForm({ action, listing, submitLabel }: ListingFormProps) {
+  return (
+    <form action={action} className="listing-form">
+      <fieldset>
+        <legend>Listing details</legend>
+        <label htmlFor="title">Listing title</label>
+        <input id="title" name="title" defaultValue={listing?.title} minLength={3} maxLength={120} required />
+
+        <label htmlFor="description">Description</label>
+        <textarea id="description" name="description" defaultValue={listing?.description} minLength={20} maxLength={5000} rows={6} required />
+
+        <label htmlFor="addressLine">Address</label>
+        <input id="addressLine" name="addressLine" defaultValue={listing?.address_line} minLength={5} maxLength={240} required />
+
+        <div className="form-grid">
+          <div>
+            <label htmlFor="monthlyRent">Monthly rent (PHP)</label>
+            <input id="monthlyRent" name="monthlyRent" type="number" defaultValue={listing?.monthly_rent} min="0" max="99999999.99" step="0.01" required />
+          </div>
+          <div>
+            <label htmlFor="roomType">Room type</label>
+            <select id="roomType" name="roomType" defaultValue={listing?.room_type ?? "private_room"} required>
+              {roomTypes.map((roomType) => <option key={roomType} value={roomType}>{roomTypeLabels[roomType]}</option>)}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="availableRooms">Available rooms</label>
+            <input id="availableRooms" name="availableRooms" type="number" defaultValue={listing?.available_rooms ?? 1} min="0" max="1000" step="1" required />
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Contact details</legend>
+        <label htmlFor="contactName">Contact name</label>
+        <input id="contactName" name="contactName" defaultValue={listing?.contact_name} maxLength={80} required />
+        <div className="form-grid">
+          <div>
+            <label htmlFor="contactPhone">Phone</label>
+            <input id="contactPhone" name="contactPhone" type="tel" defaultValue={listing?.contact_phone ?? ""} maxLength={30} />
+          </div>
+          <div>
+            <label htmlFor="contactEmail">Email</label>
+            <input id="contactEmail" name="contactEmail" type="email" defaultValue={listing?.contact_email ?? ""} maxLength={254} />
+          </div>
+        </div>
+        <p className="field-help">Provide at least one contact method. It becomes public only with an approved listing.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Map position</legend>
+        <div className="form-grid">
+          <div>
+            <label htmlFor="latitude">Latitude</label>
+            <input id="latitude" name="latitude" type="number" defaultValue={listing?.latitude} min="-90" max="90" step="0.000001" required />
+          </div>
+          <div>
+            <label htmlFor="longitude">Longitude</label>
+            <input id="longitude" name="longitude" type="number" defaultValue={listing?.longitude} min="-180" max="180" step="0.000001" required />
+          </div>
+        </div>
+        <p className="field-help">Use the boarding house location, not your personal home address.</p>
+      </fieldset>
+
+      <button type="submit">{submitLabel}</button>
+    </form>
+  );
+}
