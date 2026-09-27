@@ -14,6 +14,72 @@ export type Database = {
   }
   public: {
     Tables: {
+      boarding_house_facilities: {
+        Row: {
+          boarding_house_id: string
+          facility_id: number
+        }
+        Insert: {
+          boarding_house_id: string
+          facility_id: number
+        }
+        Update: {
+          boarding_house_id?: string
+          facility_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "boarding_house_facilities_boarding_house_id_fkey"
+            columns: ["boarding_house_id"]
+            isOneToOne: false
+            referencedRelation: "boarding_houses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "boarding_house_facilities_facility_id_fkey"
+            columns: ["facility_id"]
+            isOneToOne: false
+            referencedRelation: "facilities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      boarding_house_utilities: {
+        Row: {
+          boarding_house_id: string
+          details: string | null
+          is_included: boolean
+          utility_id: number
+        }
+        Insert: {
+          boarding_house_id: string
+          details?: string | null
+          is_included: boolean
+          utility_id: number
+        }
+        Update: {
+          boarding_house_id?: string
+          details?: string | null
+          is_included?: boolean
+          utility_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "boarding_house_utilities_boarding_house_id_fkey"
+            columns: ["boarding_house_id"]
+            isOneToOne: false
+            referencedRelation: "boarding_houses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "boarding_house_utilities_utility_id_fkey"
+            columns: ["utility_id"]
+            isOneToOne: false
+            referencedRelation: "utilities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       boarding_houses: {
         Row: {
           address_line: string
@@ -98,6 +164,50 @@ export type Database = {
           },
         ]
       }
+      facilities: {
+        Row: {
+          id: number
+          name: string
+        }
+        Insert: {
+          id?: number
+          name: string
+        }
+        Update: {
+          id?: number
+          name?: string
+        }
+        Relationships: []
+      }
+      house_rules: {
+        Row: {
+          boarding_house_id: string
+          id: string
+          position: number
+          rule_text: string
+        }
+        Insert: {
+          boarding_house_id: string
+          id?: string
+          position: number
+          rule_text: string
+        }
+        Update: {
+          boarding_house_id?: string
+          id?: string
+          position?: number
+          rule_text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "house_rules_boarding_house_id_fkey"
+            columns: ["boarding_house_id"]
+            isOneToOne: false
+            referencedRelation: "boarding_houses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       moderation_events: {
         Row: {
           action: Database["public"]["Enums"]["listing_status"]
@@ -161,6 +271,21 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           updated_at?: string
+        }
+        Relationships: []
+      }
+      utilities: {
+        Row: {
+          id: number
+          name: string
+        }
+        Insert: {
+          id?: number
+          name: string
+        }
+        Update: {
+          id?: number
+          name?: string
         }
         Relationships: []
       }

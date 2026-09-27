@@ -54,7 +54,7 @@ Feature folders may contain their queries, commands, schemas, and components. Sh
 | `favorites` | Student's saved listings | Unique student/listing pair. |
 | `reviews` | One rating and comment from a student | Unique student/listing pair; rating from one through five. |
 | `reports` | Student-submitted moderation case | Target type and target ID must agree; explicit lifecycle status. |
-| `moderation_events` | Append-only record of admin outcomes | Actor, target, action, timestamp, and non-sensitive reason. |
+| `moderation_events` | Append-only record of listing moderation outcomes | Actor, listing, action, timestamp, and non-sensitive reason. |
 
 The core listing lifecycle is now established by the listing-foundation migration. Changes to its relationships or security boundaries require an architecture decision.
 

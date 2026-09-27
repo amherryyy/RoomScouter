@@ -4,48 +4,12 @@ import test from "node:test";
 import {
   actAs,
   createDatabase,
+  createListing,
+  listingInput,
   provisionAdmin,
   registerUser,
   userIds,
 } from "./support/database.mjs";
-
-const listingInput = {
-  title: "Maple Student Residence",
-  description: "A quiet boarding house within walking distance of the university.",
-  address: "12 University Avenue",
-  monthlyRent: 4500,
-  roomType: "private_room",
-  availableRooms: 2,
-  contactName: "Owner account",
-  contactPhone: "+63 900 000 0000",
-  latitude: 14.599512,
-  longitude: 120.984222,
-};
-
-async function createListing(database, ownerId = userIds.owner) {
-  return actAs(database, "authenticated", ownerId, () =>
-    database.query(
-      `insert into public.boarding_houses (
-        owner_id, title, description, address_line, monthly_rent, room_type,
-        available_rooms, contact_name, contact_phone, latitude, longitude
-      ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
-      returning id, owner_id, status`,
-      [
-        ownerId,
-        listingInput.title,
-        listingInput.description,
-        listingInput.address,
-        listingInput.monthlyRent,
-        listingInput.roomType,
-        listingInput.availableRooms,
-        listingInput.contactName,
-        listingInput.contactPhone,
-        listingInput.latitude,
-        listingInput.longitude,
-      ],
-    ),
-  );
-}
 
 test("the listing foundation enforces ownership, publication, and moderation", async (t) => {
   const database = await createDatabase();
