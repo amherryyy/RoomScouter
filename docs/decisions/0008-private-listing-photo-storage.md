@@ -13,6 +13,8 @@ Create a private `listing-photos` bucket limited to JPEG and PNG objects up to 1
 
 Store ordered photo metadata in `public.listing_photos`. A database trigger verifies the corresponding Storage object, MIME type, byte size, owner/listing path, creator, maximum count of ten, unique position, and required alternative text. Public metadata and object reads require a publicly visible parent listing. Owner metadata changes return approved listings to pending review.
 
+Owners replace the complete ordered photo-detail collection through a typed database command. The command validates ownership, membership, cardinality, uniqueness, and alternative text before applying position swaps under a deferred uniqueness constraint. Unchanged saves are no-ops and preserve approval.
+
 ## Consequences
 
 - Storage objects cannot bypass listing publication rules.
@@ -21,3 +23,5 @@ Store ordered photo metadata in `public.listing_photos`. A database trigger veri
 - Deletion removes metadata first to hide the object, then deletes the private object.
 - Orphan cleanup is an operational follow-up and must never make objects public.
 - PDF remains allowed by Flower's general upload policy but is rejected by this product-specific bucket.
+- Owner previews use one-hour signed URLs. The private bucket remains the authorization boundary.
+- Failed metadata creation removes the newly uploaded object. Deletion hides metadata before object cleanup, so a cleanup failure can leave only a private orphan rather than a publicly reachable photo.

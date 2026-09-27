@@ -142,3 +142,140 @@ export async function saveHouseRules(listingId: string, formData: FormData): Pro
   revalidatePath(path);
   redirect(`${path}?message=${encodeURIComponent("House rules saved.")}`);
 }
+
+const PHOTO_BUCKET = "listing-photos";
+const MAX_PHOTO_BYTES = 10 * 1024 * 1024;
+const PHOTO_EXTENSIONS: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+};
+
+function parsePhotoAltText(value: FormDataEntryValue | null): string | null {
+  if (typeof value !== "string") return null;
+  const altText = value.trim();
+  return altText.length >= 3 && altText.length <= 200 ? altText : null;
+}
+
+export async function uploadListingPhoto(listingId: string, formData: FormData): Promise<never> {
+  const path = attributePath(listingId);
+  const file = formData.get("photo");
+  const altText = parsePhotoAltText(formData.get("altText"));
+  if (!(file instanceof File) || file.size === 0) actionError(path, "Choose a photo to upload.");
+  const extension = PHOTO_EXTENSIONS[file.type];
+  if (!extension || file.size > MAX_PHOTO_BYTES) {
+    actionError(path, "Photos must be JPEG or PNG files no larger than 10 MiB.");
+  }
+  if (!altText) actionError(path, "Describe the photo using 3 to 200 characters.");
+
+  const { supabase, user } = await requireOwner();
+  const { data: listing } = await supabase
+    .from("boarding_houses")
+    .select("id")
+    .eq("id", listingId)
+    .eq("owner_id", user.id)
+    .maybeSingle();
+  if (!listing) actionError("/owner", "The listing could not be found.");
+
+  const { data: photos, error: photoReadError } = await supabase
+    .from("listing_photos")
+    .select("position")
+    .eq("boarding_house_id", listingId);
+  if (photoReadError) actionError(path, "Photos could not be loaded.");
+  if (photos.length >= 10) actionError(path, "A listing can contain at most 10 photos.");
+  const occupiedPositions = new Set(photos.map((photo) => photo.position));
+  const nextPosition = Array.from({ length: 10 }, (_, index) => index + 1)
+    .find((position) => !occupiedPositions.has(position));
+  if (!nextPosition) actionError(path, "A listing can contain at most 10 photos.");
+
+  const objectPath = `${user.id}/${listingId}/${crypto.randomUUID()}.${extension}`;
+  const { error: uploadError } = await supabase.storage
+    .from(PHOTO_BUCKET)
+    .upload(objectPath, file, { contentType: file.type, upsert: false });
+  if (uploadError) actionError(path, "The photo could not be uploaded.");
+
+  const { error: metadataError } = await supabase.from("listing_photos").insert({
+    boarding_house_id: listingId,
+    object_path: objectPath,
+    media_type: file.type,
+    byte_size: file.size,
+    alt_text: altText,
+    position: nextPosition,
+    created_by: user.id,
+  });
+  if (metadataError) {
+    await supabase.storage.from(PHOTO_BUCKET).remove([objectPath]);
+    actionError(path, "The photo could not be added to the listing.");
+  }
+
+  revalidatePath("/owner");
+  revalidatePath(path);
+  redirect(`${path}?message=${encodeURIComponent("Photo uploaded.")}`);
+}
+
+export async function savePhotoDetails(listingId: string, formData: FormData): Promise<never> {
+  const path = attributePath(listingId);
+  const photoIds = formData.getAll("photoIds");
+  if (photoIds.length > 10 || photoIds.some((id) => typeof id !== "string" || !isUuid(id))) {
+    actionError(path, "The photo selection is invalid.");
+  }
+
+  const details = (photoIds as string[]).map((id) => ({
+    id,
+    altText: parsePhotoAltText(formData.get(`photoAltText:${id}`)),
+    position: Number(formData.get(`photoPosition:${id}`)),
+  }));
+  const positions = details.map((photo) => photo.position);
+  if (
+    details.some((photo) => !photo.altText || !Number.isInteger(photo.position))
+    || new Set(positions).size !== details.length
+    || positions.some((position) => position < 1 || position > details.length)
+  ) {
+    actionError(path, "Each photo needs unique ordering and alternative text.");
+  }
+  details.sort((left, right) => left.position - right.position);
+
+  const { supabase } = await requireOwner();
+  const { error } = await supabase.rpc("replace_listing_photo_details", {
+    target_id: listingId,
+    target_photo_ids: details.map((photo) => photo.id),
+    target_alt_texts: details.map((photo) => photo.altText as string),
+  });
+  if (error) actionError(path, "Photo details could not be saved.");
+
+  revalidatePath("/owner");
+  revalidatePath(path);
+  redirect(`${path}?message=${encodeURIComponent("Photo details saved.")}`);
+}
+
+export async function deleteListingPhoto(
+  listingId: string,
+  photoId: string,
+  _formData: FormData,
+): Promise<never> {
+  const path = attributePath(listingId);
+  if (!isUuid(photoId)) actionError(path, "The photo could not be found.");
+
+  const { supabase } = await requireOwner();
+  const { data: photo, error: readError } = await supabase
+    .from("listing_photos")
+    .select("id, object_path")
+    .eq("id", photoId)
+    .eq("boarding_house_id", listingId)
+    .maybeSingle();
+  if (readError || !photo) actionError(path, "The photo could not be found.");
+
+  const { error: deleteError } = await supabase
+    .from("listing_photos")
+    .delete()
+    .eq("id", photo.id)
+    .eq("boarding_house_id", listingId);
+  if (deleteError) actionError(path, "The photo could not be removed.");
+
+  const { error: storageError } = await supabase.storage.from(PHOTO_BUCKET).remove([photo.object_path]);
+  revalidatePath("/owner");
+  revalidatePath(path);
+  if (storageError) {
+    actionError(path, "The photo was hidden, but private file cleanup is pending.");
+  }
+  redirect(`${path}?message=${encodeURIComponent("Photo removed.")}`);
+}

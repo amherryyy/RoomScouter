@@ -72,3 +72,27 @@ test("saves complete attribute collections through typed transactional commands"
   assert.match(forms, /Clear a field to remove that rule/);
   assert.match(editPage, /<AttributeForms/);
 });
+
+test("manages private listing photos through guarded server actions", async () => {
+  const actions = await readProjectFile("src/features/listings/actions.ts");
+  const editor = await readProjectFile("src/features/listings/photo-editor.tsx");
+  const editPage = await readProjectFile("app/owner/listings/[id]/edit/page.tsx");
+  const config = await readProjectFile("next.config.ts");
+  const databaseTypes = await readProjectFile("src/lib/supabase/database.types.ts");
+
+  assert.match(actions, /MAX_PHOTO_BYTES = 10 \* 1024 \* 1024/);
+  assert.match(actions, /PHOTO_EXTENSIONS/);
+  assert.match(actions, /\.upload\(objectPath, file/);
+  assert.match(actions, /\.remove\(\[objectPath\]\)/);
+  assert.match(actions, /occupiedPositions/);
+  assert.match(actions, /rpc\("replace_listing_photo_details"/);
+  assert.match(databaseTypes, /replace_listing_photo_details:/);
+  assert.match(editor, /URL\.createObjectURL/);
+  assert.match(editor, /Alternative text/);
+  assert.match(editor, /Save photo order and descriptions/);
+  assert.match(editor, /Remove photo/);
+  assert.match(editPage, /createSignedUrl/);
+  assert.match(editPage, /<PhotoEditor/);
+  assert.match(config, /bodySizeLimit: "12mb"/);
+  assert.match(config, /img-src 'self' data: blob: https:\/\/\*\.supabase\.co/);
+});

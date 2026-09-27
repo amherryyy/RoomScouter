@@ -346,6 +346,85 @@ a:focus-visible {
   white-space: nowrap;
 }
 
+.photo-editor {
+  display: grid;
+  gap: 1.25rem;
+  margin: 3rem 0;
+}
+
+.photo-editor h2 {
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+}
+
+.photo-upload-form {
+  grid-template-columns: 1fr;
+}
+
+.photo-upload-form input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.photo-grid-form {
+  display: grid;
+  justify-items: start;
+  gap: 1rem;
+}
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: 1rem;
+  width: 100%;
+}
+
+.photo-card {
+  display: grid;
+  align-content: start;
+  gap: 0.65rem;
+  border: 1px solid #d8e0da;
+  border-radius: 0.85rem;
+  padding: 1rem;
+  background: white;
+}
+
+.photo-preview {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 0.6rem;
+  background: #eef2ef;
+  object-fit: cover;
+}
+
+.selected-photo-preview {
+  max-width: 28rem;
+}
+
+.preview-unavailable {
+  display: grid;
+  place-items: center;
+  color: #526158;
+}
+
+.photo-card textarea {
+  min-height: 5rem;
+  resize: vertical;
+}
+
+.photo-metadata {
+  margin: 0;
+  color: #526158;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.danger-button {
+  border-color: #9b3a31;
+  background: white;
+  color: #7d251e;
+}
+
 @media (max-width: 40rem) {
   main { padding: 3rem 1rem; }
   .workspace-heading,
