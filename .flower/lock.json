@@ -6,6 +6,14 @@
     "version": "0.1.0",
     "digest": "sha256:de306baa2509eddf632240f92ee2f5c407ef8a59c361a561340dcb399d4d9425"
   },
-  "modules": {},
-  "generatedFiles": {}
+  "modules": {
+    "auth": {
+      "version": "1.0.0",
+      "digest": "sha256:e37f110a3a09c4e4f912acab9a33dceff79ed697abe3e89fc8b72b33dff29a9d",
+      "migrations": []
+    }
+  },
+  "generatedFiles": {
+    "src/flower/auth.ts": "sha256:240d6f327b67b7d6aa75d77b1679562943fa0dcdd3048ed377e0ff3bba2128e2"
+  }
 }

@@ -17,7 +17,9 @@
     "database": "supabase-postgres",
     "packageManager": "npm"
   },
-  "modules": {},
+  "modules": {
+    "auth": "1.0.0"
+  },
   "capabilities": {
     "multiTenant": false,
     "versionedSecurityBaseline": true,

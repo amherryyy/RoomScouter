@@ -1,6 +1,6 @@
-# Boarding House Finder
+# RoomScouter
 
-Boarding House Finder is a mobile-first web application that helps students discover and compare boarding houses near one university. Owners maintain listings, while administrators approve listings and moderate community content.
+RoomScouter is a mobile-first web application that helps students discover and compare boarding houses near one university. Owners maintain listings, while administrators approve listings and moderate community content.
 
 This repository is the first external pilot application for the independent Flower framework. Flower supplies the project contract, security baseline, transactional module operations, validation, and agent workflows; the product code and domain decisions remain owned by this repository.
 
@@ -33,4 +33,16 @@ npm.cmd run lint
 npm.cmd run build
 ```
 
+`npm.cmd test` creates an ephemeral in-process PostgreSQL database, applies the real identity migration, and exercises its grants, triggers, roles, and row-level security. It does not require Docker, a local Supabase service, network access, or database credentials.
+
 Never commit `.env.local` or Supabase service-role credentials.
+
+## Supabase identity setup
+
+The identity foundation requires a Supabase project before registration can run:
+
+1. Copy `.env.example` to `.env.local` and provide the project's URL and publishable key.
+2. Apply `supabase/migrations/20260926010000_identity_foundation.sql` through the reviewed database-migration workflow.
+3. Configure the local and deployed site URLs in Supabase Auth before testing email confirmation.
+
+Registration permits only student and owner accounts. The first administrator must be assigned through a privileged deployment operation; the public registration flow cannot create an admin.

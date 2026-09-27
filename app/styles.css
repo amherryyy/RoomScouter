@@ -1,6 +1,8 @@
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
   font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  color: #18221d;
+  background: #f4f7f3;
 }
 
 body {
@@ -13,9 +15,140 @@ main {
   padding: 8rem 2rem;
 }
 
+h1 {
+  max-width: 14ch;
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.lede {
+  max-width: 38rem;
+  color: #526158;
+  font-size: 1.15rem;
+  line-height: 1.7;
+}
+
 .eyebrow {
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.button,
+button {
+  display: inline-flex;
+  justify-content: center;
+  border: 1px solid #246b48;
+  border-radius: 0.7rem;
+  padding: 0.8rem 1.1rem;
+  color: white;
+  background: #246b48;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.secondary {
+  color: #246b48;
+  background: transparent;
+}
+
+.auth-shell {
+  padding-top: 4rem;
+}
+
+.auth-card {
+  max-width: 30rem;
+  border: 1px solid #d8e0da;
+  border-radius: 1rem;
+  padding: clamp(1.25rem, 5vw, 2.5rem);
+  background: white;
+  box-shadow: 0 1rem 3rem rgb(32 65 46 / 8%);
+}
+
+.auth-card h1 {
+  margin-bottom: 0.75rem;
+  font-size: 2.5rem;
+}
+
+.auth-card form {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 1.5rem;
+}
+
+label {
+  margin-top: 0.4rem;
+  font-weight: 700;
+}
+
+input,
+select {
+  min-height: 2.75rem;
+  box-sizing: border-box;
+  border: 1px solid #aebbb2;
+  border-radius: 0.55rem;
+  padding: 0.65rem 0.75rem;
+  color: inherit;
+  background: white;
+  font: inherit;
+}
+
+input:focus-visible,
+select:focus-visible,
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid #e0a526;
+  outline-offset: 3px;
+}
+
+.notice {
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+}
+
+.notice.error {
+  color: #7d251e;
+  background: #fff0ee;
+}
+
+.notice.success {
+  color: #165d3a;
+  background: #eaf7ef;
+}
+
+.auth-switch {
+  margin-top: 1.5rem;
+}
+
+.account-details {
+  display: grid;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.account-details div {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.account-details dt {
+  color: #526158;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.account-details dd {
+  margin: 0;
 }
