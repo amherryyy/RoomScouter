@@ -33,6 +33,8 @@ npm.cmd run lint
 npm.cmd run build
 ```
 
+`npm.cmd test` creates an ephemeral in-process PostgreSQL database, applies the real identity migration, and exercises its grants, triggers, roles, and row-level security. It does not require Docker, a local Supabase service, network access, or database credentials.
+
 Never commit `.env.local` or Supabase service-role credentials.
 
 ## Supabase identity setup

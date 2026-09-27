@@ -92,7 +92,7 @@ Public Supabase URL and anonymous key may be exposed through approved public env
 ## Testing strategy
 
 - Unit tests cover validation, distance calculations, and domain transitions.
-- Database tests prove constraints and RLS behavior for visitor, student, owner, and admin actors.
+- Ephemeral PostgreSQL tests apply the real migrations and prove grants, triggers, constraints, and RLS behavior for visitor, student, owner, and admin actors.
 - Integration tests cover server-side commands and query composition.
 - End-to-end tests cover the owner-submit, admin-approve, and student-discover flows.
 - Flower validation and security checks guard framework contracts and repository policy.
