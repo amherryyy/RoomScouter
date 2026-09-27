@@ -33,3 +33,40 @@ test("enforces profile ownership and immutable self-service roles in PostgreSQL"
   assert.match(migration, /id = \(select auth\.uid\(\)\)/i);
   assert.match(migration, /security definer[\s\S]*set search_path = ''/i);
 });
+
+test("completes email confirmation through a guarded PKCE callback", async () => {
+  const actions = await readProjectFile("src/features/auth/actions.ts");
+  const callback = await readProjectFile("app/auth/callback/route.ts");
+
+  assert.match(actions, /emailRedirectTo/);
+  assert.match(actions, /\/auth\/callback\?next=\/account/);
+  assert.match(callback, /exchangeCodeForSession/);
+  assert.match(callback, /value\.startsWith\("\/\/"\)/);
+  assert.match(callback, /The confirmation link is invalid or has expired\./);
+});
+
+test("turns actionable Supabase Auth failures into safe user guidance", async () => {
+  const actions = await readProjectFile("src/features/auth/actions.ts");
+
+  assert.match(actions, /over_email_send_rate_limit/);
+  assert.match(actions, /email_address_not_authorized/);
+  assert.match(actions, /email_not_confirmed/);
+  assert.match(actions, /The email or password is incorrect\./);
+});
+
+test("types every Supabase client from the linked database schema", async () => {
+  const databaseTypes = await readProjectFile("src/lib/supabase/database.types.ts");
+  const packageJson = await readProjectFile("package.json");
+  const generator = await readProjectFile("scripts/generate-database-types.mjs");
+  const browserClient = await readProjectFile("src/lib/supabase/browser.ts");
+  const serverClient = await readProjectFile("src/lib/supabase/server.ts");
+  const proxy = await readProjectFile("proxy.ts");
+
+  assert.match(databaseTypes, /profiles:/);
+  assert.match(databaseTypes, /app_role: "student" \| "owner" \| "admin"/);
+  assert.match(packageJson, /"types:database": "node scripts\/generate-database-types\.mjs"/);
+  assert.match(generator, /encoding: "utf8"/);
+  assert.match(browserClient, /createBrowserClient<Database>/);
+  assert.match(serverClient, /createServerClient<Database>/);
+  assert.match(proxy, /createServerClient<Database>/);
+});
