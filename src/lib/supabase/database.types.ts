@@ -179,6 +179,39 @@ export type Database = {
         }
         Relationships: []
       }
+      favorites: {
+        Row: {
+          boarding_house_id: string
+          created_at: string
+          student_id: string
+        }
+        Insert: {
+          boarding_house_id: string
+          created_at?: string
+          student_id: string
+        }
+        Update: {
+          boarding_house_id?: string
+          created_at?: string
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "favorites_boarding_house_id_fkey"
+            columns: ["boarding_house_id"]
+            isOneToOne: false
+            referencedRelation: "boarding_houses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "favorites_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       house_rules: {
         Row: {
           boarding_house_id: string
@@ -355,6 +388,7 @@ export type Database = {
       }
       current_user_is_admin: { Args: never; Returns: boolean }
       current_user_is_owner: { Args: never; Returns: boolean }
+      current_user_is_student: { Args: never; Returns: boolean }
       moderate_boarding_house: {
         Args: {
           decision: Database["public"]["Enums"]["listing_status"]
