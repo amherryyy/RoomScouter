@@ -2,19 +2,36 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ROOM_TYPE_LABELS } from "../../../src/features/discovery/model";
 import { approximateDistanceKm, getUniversityConfig } from "../../../src/features/discovery/university";
+import { addFavorite, removeFavorite } from "../../../src/features/favorites/actions";
 import { isUuid } from "../../../src/features/listings/model";
 import { createServerSupabaseClient } from "../../../src/lib/supabase/server";
 
 const currency = new Intl.NumberFormat("en-PH", { style: "currency", currency: "PHP", maximumFractionDigits: 0 });
 
-type PublicListingPageProps = { params: Promise<{ id: string }> };
+type PublicListingPageProps = {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ error?: string; message?: string }>;
+};
 
-export default async function PublicListingPage({ params }: PublicListingPageProps) {
+export default async function PublicListingPage({ params, searchParams }: PublicListingPageProps) {
   const { id } = await params;
   if (!isUuid(id)) notFound();
   const supabase = await createServerSupabaseClient();
   const { data: listing } = await supabase.from("boarding_houses").select("*").eq("id", id).maybeSingle();
   if (!listing || listing.status !== "approved" || listing.available_rooms < 1) notFound();
+  const { error, message } = await searchParams;
+  const { data: { user } } = await supabase.auth.getUser();
+  const { data: profile } = user
+    ? await supabase.from("profiles").select("role").eq("id", user.id).maybeSingle()
+    : { data: null };
+  const { data: favorite } = user && profile?.role === "student"
+    ? await supabase
+      .from("favorites")
+      .select("boarding_house_id")
+      .eq("student_id", user.id)
+      .eq("boarding_house_id", id)
+      .maybeSingle()
+    : { data: null };
 
   const [
     { data: photos },
@@ -63,6 +80,9 @@ export default async function PublicListingPage({ params }: PublicListingPagePro
         </div>
       </section>
 
+      {error ? <p className="notice error" role="alert">{error}</p> : null}
+      {message ? <p className="notice success" role="status">{message}</p> : null}
+
       {photoGallery.length ? (
         <section className="public-photo-grid" aria-label="Listing photos">
           {photoGallery.map((photo) => photo.signedUrl
@@ -98,6 +118,13 @@ export default async function PublicListingPage({ params }: PublicListingPagePro
         </article>
 
         <aside className="contact-card">
+          {profile?.role === "student" ? (
+            <form action={favorite ? removeFavorite.bind(null, id) : addFavorite.bind(null, id)}>
+              <button className={favorite ? "secondary favorite-button" : "favorite-button"} type="submit">
+                {favorite ? "Remove from saved listings" : "Save listing"}
+              </button>
+            </form>
+          ) : !user ? <p><Link href="/login">Log in as a student to save this listing</Link></p> : null}
           <h2>Location and contact</h2>
           <p>{listing.address_line}</p>
           <p><a href={mapUrl} target="_blank" rel="noreferrer">View exact pin on OpenStreetMap</a></p>

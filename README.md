@@ -70,4 +70,8 @@ Public discovery uses a bounded PostgreSQL query for text, price, availability, 
 
 The public home page renders paginated result cards and `/listings/[id]` presents approved listing facts, short-lived private photo previews, an OpenStreetMap pin, and direct owner contact channels. Distance filtering and university-relative labels activate when `ROOMSCOUTER_UNIVERSITY_NAME`, `ROOMSCOUTER_UNIVERSITY_LATITUDE`, and `ROOMSCOUTER_UNIVERSITY_LONGITUDE` are configured.
 
+Student favorites are private, student-owned relations. Students may save each approved, available listing once; owners, visitors, other students, and normal administrator sessions cannot inspect another student's shortlist. See [ADR 0010](docs/decisions/0010-student-owned-favorites.md).
+
+Student accounts can save or remove a listing from its public detail page and manage an active, paginated shortlist at `/favorites`. Unpublished and unavailable listings do not appear in that shortlist.
+
 The listing editor also saves facilities, utilities, and ordered house rules as complete transactional collections. Invalid or cross-owner requests fail without partial changes, and saving an unchanged section does not disturb an approved listing's status.

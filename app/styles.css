@@ -636,6 +636,23 @@ a:focus-visible {
   background: white;
 }
 
+.favorite-button {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.saved-listing-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.saved-listing-actions button {
+  padding: 0.5rem 0.75rem;
+}
+
 .detail-content h2,
 .contact-card h2 {
   margin-top: 0;
