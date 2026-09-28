@@ -653,6 +653,79 @@ a:focus-visible {
   padding: 0.5rem 0.75rem;
 }
 
+.reviews-section {
+  display: grid;
+  gap: 1.25rem;
+  margin: 3rem 0;
+}
+
+.reviews-heading,
+.review-card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.reviews-heading h2 {
+  margin: 0.35rem 0 0;
+  font-size: 2rem;
+}
+
+.review-summary {
+  display: grid;
+  margin: 0;
+  text-align: right;
+}
+
+.review-summary strong {
+  font-size: 2rem;
+}
+
+.review-editor,
+.review-card {
+  border: 1px solid #d8e0da;
+  border-radius: 0.85rem;
+  padding: 1.25rem;
+  background: white;
+}
+
+.review-editor h3 {
+  margin-top: 0;
+}
+
+.review-editor form,
+.review-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.review-editor textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.review-editor .danger-button {
+  margin-top: 0.75rem;
+}
+
+.review-card p {
+  margin-bottom: 0.5rem;
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+.review-card time {
+  color: #526158;
+  font-size: 0.85rem;
+}
+
+.rating {
+  color: #b77905;
+  font-size: 1.15rem;
+  letter-spacing: 0.08em;
+}
+
 .detail-content h2,
 .contact-card h2 {
   margin-top: 0;
@@ -739,4 +812,5 @@ a:focus-visible {
   .price-panel { text-align: left; }
   .public-photo-grid img:first-child { grid-row: auto; min-height: 0; aspect-ratio: 4 / 3; }
   .contact-card { position: static; }
+  .reviews-heading { align-items: flex-start; }
 }

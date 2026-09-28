@@ -4,13 +4,16 @@ import { ROOM_TYPE_LABELS } from "../../../src/features/discovery/model";
 import { approximateDistanceKm, getUniversityConfig } from "../../../src/features/discovery/university";
 import { addFavorite, removeFavorite } from "../../../src/features/favorites/actions";
 import { isUuid } from "../../../src/features/listings/model";
+import { deleteReview, saveReview } from "../../../src/features/reviews/actions";
+import { ReviewSection } from "../../../src/features/reviews/review-section";
 import { createServerSupabaseClient } from "../../../src/lib/supabase/server";
 
 const currency = new Intl.NumberFormat("en-PH", { style: "currency", currency: "PHP", maximumFractionDigits: 0 });
+const REVIEW_PAGE_SIZE = 10;
 
 type PublicListingPageProps = {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ error?: string; message?: string }>;
+  searchParams: Promise<{ error?: string; message?: string; reviewPage?: string }>;
 };
 
 export default async function PublicListingPage({ params, searchParams }: PublicListingPageProps) {
@@ -19,7 +22,11 @@ export default async function PublicListingPage({ params, searchParams }: Public
   const supabase = await createServerSupabaseClient();
   const { data: listing } = await supabase.from("boarding_houses").select("*").eq("id", id).maybeSingle();
   if (!listing || listing.status !== "approved" || listing.available_rooms < 1) notFound();
-  const { error, message } = await searchParams;
+  const { error, message, reviewPage: rawReviewPage } = await searchParams;
+  const parsedReviewPage = Number(rawReviewPage ?? "1");
+  const reviewPage = Number.isInteger(parsedReviewPage) && parsedReviewPage > 0 && parsedReviewPage <= 10_000
+    ? parsedReviewPage
+    : 1;
   const { data: { user } } = await supabase.auth.getUser();
   const { data: profile } = user
     ? await supabase.from("profiles").select("role").eq("id", user.id).maybeSingle()
@@ -40,6 +47,9 @@ export default async function PublicListingPage({ params, searchParams }: Public
     { data: rules },
     { data: facilities },
     { data: utilities },
+    { data: publicReviewRows, count: publicReviewCount },
+    { data: reviewSummaryRows },
+    { data: ownReviewRows },
   ] = await Promise.all([
     supabase.from("listing_photos").select("id, object_path, alt_text, position").eq("boarding_house_id", id).order("position"),
     supabase.from("boarding_house_facilities").select("facility_id").eq("boarding_house_id", id),
@@ -47,6 +57,16 @@ export default async function PublicListingPage({ params, searchParams }: Public
     supabase.from("house_rules").select("id, rule_text, position").eq("boarding_house_id", id).order("position"),
     supabase.from("facilities").select("id, name").order("name"),
     supabase.from("utilities").select("id, name").order("name"),
+    supabase
+      .from("public_reviews")
+      .select("id, rating, comment, created_at", { count: "exact" })
+      .eq("boarding_house_id", id)
+      .order("created_at", { ascending: false })
+      .range((reviewPage - 1) * REVIEW_PAGE_SIZE, reviewPage * REVIEW_PAGE_SIZE - 1),
+    supabase.rpc("get_public_review_summary", { target_id: id }),
+    profile?.role === "student"
+      ? supabase.rpc("get_current_student_review", { target_id: id })
+      : Promise.resolve({ data: [] }),
   ]);
   const photoGallery = await Promise.all((photos ?? []).map(async (photo) => {
     const { data } = await supabase.storage.from("listing-photos").createSignedUrl(photo.object_path, 60 * 60);
@@ -60,6 +80,26 @@ export default async function PublicListingPage({ params, searchParams }: Public
     ? approximateDistanceKm(university.latitude, university.longitude, listing.latitude, listing.longitude)
     : null;
   const mapUrl = `https://www.openstreetmap.org/?mlat=${listing.latitude}&mlon=${listing.longitude}#map=17/${listing.latitude}/${listing.longitude}`;
+  const publicReviews = (publicReviewRows ?? []).flatMap((review) => (
+    review.id && review.rating !== null && review.comment && review.created_at
+      ? [{ id: review.id, rating: review.rating, comment: review.comment, createdAt: review.created_at }]
+      : []
+  ));
+  const ownReviewRow = ownReviewRows?.[0];
+  const ownReview = ownReviewRow ? {
+    id: ownReviewRow.id,
+    rating: ownReviewRow.rating,
+    comment: ownReviewRow.comment,
+    status: ownReviewRow.status,
+    moderationNote: ownReviewRow.moderation_note,
+  } : null;
+  const reviewSummary = reviewSummaryRows?.[0];
+  const reviewCount = Number(reviewSummary?.review_count ?? publicReviewCount ?? 0);
+  const averageRating = reviewSummary?.average_rating === null || reviewSummary?.average_rating === undefined
+    ? null
+    : Number(reviewSummary.average_rating);
+  const saveReviewAction = saveReview.bind(null, id);
+  const deleteReviewAction = deleteReview.bind(null, id);
 
   return (
     <main className="public-detail-shell">
@@ -135,6 +175,20 @@ export default async function PublicListingPage({ params, searchParams }: Public
           <p className="field-help">Contact the owner directly. RoomScouter does not process reservations or payments.</p>
         </aside>
       </div>
+
+      <ReviewSection
+        reviews={publicReviews}
+        ownReview={ownReview}
+        isStudent={profile?.role === "student"}
+        reviewCount={reviewCount}
+        averageRating={averageRating}
+        page={reviewPage}
+        hasPrevious={reviewPage > 1}
+        hasNext={reviewPage * REVIEW_PAGE_SIZE < reviewCount}
+        listingId={id}
+        saveAction={saveReviewAction}
+        deleteAction={deleteReviewAction}
+      />
     </main>
   );
 }

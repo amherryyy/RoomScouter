@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { isUuid } from "../listings/model";
-import { requireStudent } from "./access";
+import { requireStudent } from "../students/access";
 
 function listingPath(listingId: string): string {
   return isUuid(listingId) ? `/listings/${listingId}` : "/";

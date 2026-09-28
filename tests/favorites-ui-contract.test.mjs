@@ -5,7 +5,7 @@ import test from "node:test";
 const readProjectFile = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
 test("student favorite actions are authenticated, scoped, and idempotent", async () => {
-  const access = await readProjectFile("src/features/favorites/access.ts");
+  const access = await readProjectFile("src/features/students/access.ts");
   const actions = await readProjectFile("src/features/favorites/actions.ts");
 
   assert.match(access, /auth\.getUser\(\)/);
