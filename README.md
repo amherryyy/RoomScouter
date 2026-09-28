@@ -74,4 +74,8 @@ Student favorites are private, student-owned relations. Students may save each a
 
 Student accounts can save or remove a listing from its public detail page and manage an active, paginated shortlist at `/favorites`. Unpublished and unavailable listings do not appear in that shortlist.
 
+Each student may publish one one-to-five-star review per approved, available listing. Students control only their own rating and comment; public readers see published review content without access to the reviewer's profile. Hidden reviews remain available to their author and administrators for later moderation workflows. See [ADR 0011](docs/decisions/0011-student-reviews-and-publication.md).
+
+Listing pages display the published review count, average rating, and a paginated anonymous review list. Signed-in students can create, update, or delete their own review and see moderation feedback when it is hidden.
+
 The listing editor also saves facilities, utilities, and ordered house rules as complete transactional collections. Invalid or cross-owner requests fail without partial changes, and saving an unchanged section does not disturb an approved listing's status.

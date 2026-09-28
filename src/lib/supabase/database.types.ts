@@ -358,6 +358,70 @@ export type Database = {
         }
         Relationships: []
       }
+      reviews: {
+        Row: {
+          boarding_house_id: string
+          comment: string
+          created_at: string
+          id: string
+          moderated_at: string | null
+          moderated_by: string | null
+          moderation_note: string | null
+          rating: number
+          status: Database["public"]["Enums"]["review_status"]
+          student_id: string
+          updated_at: string
+        }
+        Insert: {
+          boarding_house_id: string
+          comment: string
+          created_at?: string
+          id?: string
+          moderated_at?: string | null
+          moderated_by?: string | null
+          moderation_note?: string | null
+          rating: number
+          status?: Database["public"]["Enums"]["review_status"]
+          student_id: string
+          updated_at?: string
+        }
+        Update: {
+          boarding_house_id?: string
+          comment?: string
+          created_at?: string
+          id?: string
+          moderated_at?: string | null
+          moderated_by?: string | null
+          moderation_note?: string | null
+          rating?: number
+          status?: Database["public"]["Enums"]["review_status"]
+          student_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_boarding_house_id_fkey"
+            columns: ["boarding_house_id"]
+            isOneToOne: false
+            referencedRelation: "boarding_houses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_moderated_by_fkey"
+            columns: ["moderated_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       utilities: {
         Row: {
           id: number
@@ -375,7 +439,41 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_reviews: {
+        Row: {
+          boarding_house_id: string | null
+          comment: string | null
+          created_at: string | null
+          id: string | null
+          rating: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          boarding_house_id?: string | null
+          comment?: string | null
+          created_at?: string | null
+          id?: string | null
+          rating?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          boarding_house_id?: string | null
+          comment?: string | null
+          created_at?: string | null
+          id?: string | null
+          rating?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_boarding_house_id_fkey"
+            columns: ["boarding_house_id"]
+            isOneToOne: false
+            referencedRelation: "boarding_houses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       assert_current_owner_listing: {
@@ -389,6 +487,25 @@ export type Database = {
       current_user_is_admin: { Args: never; Returns: boolean }
       current_user_is_owner: { Args: never; Returns: boolean }
       current_user_is_student: { Args: never; Returns: boolean }
+      get_current_student_review: {
+        Args: { target_id: string }
+        Returns: {
+          comment: string
+          created_at: string
+          id: string
+          moderation_note: string
+          rating: number
+          status: Database["public"]["Enums"]["review_status"]
+          updated_at: string
+        }[]
+      }
+      get_public_review_summary: {
+        Args: { target_id: string }
+        Returns: {
+          average_rating: number
+          review_count: number
+        }[]
+      }
       moderate_boarding_house: {
         Args: {
           decision: Database["public"]["Enums"]["listing_status"]
@@ -513,6 +630,7 @@ export type Database = {
     Enums: {
       app_role: "student" | "owner" | "admin"
       listing_status: "draft" | "pending" | "approved" | "rejected" | "archived"
+      review_status: "published" | "hidden"
       room_type: "bedspace" | "shared_room" | "private_room" | "studio"
     }
     CompositeTypes: {
@@ -643,6 +761,7 @@ export const Constants = {
     Enums: {
       app_role: ["student", "owner", "admin"],
       listing_status: ["draft", "pending", "approved", "rejected", "archived"],
+      review_status: ["published", "hidden"],
       room_type: ["bedspace", "shared_room", "private_room", "studio"],
     },
   },

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ROOM_TYPE_LABELS } from "../../src/features/discovery/model";
 import { removeFavorite } from "../../src/features/favorites/actions";
-import { requireStudent } from "../../src/features/favorites/access";
+import { requireStudent } from "../../src/features/students/access";
 
 const PAGE_SIZE = 12;
 const currency = new Intl.NumberFormat("en-PH", { style: "currency", currency: "PHP", maximumFractionDigits: 0 });
