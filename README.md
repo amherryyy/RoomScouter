@@ -78,4 +78,8 @@ Each student may publish one one-to-five-star review per approved, available lis
 
 Listing pages display the published review count, average rating, and a paginated anonymous review list. Signed-in students can create, update, or delete their own review and see moderation feedback when it is hidden.
 
+Students may privately report an approved listing or published review with a bounded reason. Reports are append-only for students, prevent duplicate open cases per target, and are visible only to the reporter and administrators. Resolution fields are reserved for the administration milestone. See [ADR 0012](docs/decisions/0012-private-student-reports.md).
+
+Student-only report forms appear on public listings and on other students' published reviews. `/reports` provides the reporter with a private, paginated history and later displays administrator resolution notes without exposing other users' cases.
+
 The listing editor also saves facilities, utilities, and ordered house rules as complete transactional collections. Invalid or cross-owner requests fail without partial changes, and saving an unchanged section does not disturb an approved listing's status.

@@ -30,6 +30,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
       </dl>
       {profile?.role === "owner" ? <p><Link className="button" href="/owner">Open owner dashboard</Link></p> : null}
       {profile?.role === "student" ? <p><Link className="button" href="/favorites">View saved listings</Link></p> : null}
+      {profile?.role === "student" ? <p><Link href="/reports">View your reports</Link></p> : null}
       <form action={logout}><button type="submit" className="secondary">Log out</button></form>
     </main>
   );

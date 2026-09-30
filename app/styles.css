@@ -726,6 +726,49 @@ a:focus-visible {
   letter-spacing: 0.08em;
 }
 
+.report-form {
+  border-top: 1px solid #e5eae6;
+  padding-top: 0.75rem;
+}
+
+.report-form summary {
+  color: #7d251e;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.report-form form {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 0.75rem;
+}
+
+.report-form textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+
+.report-history {
+  display: grid;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.report-card {
+  border: 1px solid #d8e0da;
+  border-radius: 0.85rem;
+  padding: 1.25rem;
+  background: white;
+}
+
+.report-card h2 {
+  margin: 0;
+}
+
+.status-open { color: #72520c; background: #fff6d9; }
+.status-resolved { color: #165d3a; background: #eaf7ef; }
+.status-dismissed { color: #526158; background: #e7ece8; }
+
 .detail-content h2,
 .contact-card h2 {
   margin-top: 0;

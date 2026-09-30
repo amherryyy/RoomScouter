@@ -1,3 +1,5 @@
+import { ReportForm } from "../reports/report-form";
+
 type PublicReview = {
   id: string;
   rating: number;
@@ -25,6 +27,7 @@ type ReviewSectionProps = {
   listingId: string;
   saveAction: (formData: FormData) => void | Promise<void>;
   deleteAction: () => void | Promise<void>;
+  reportAction: (reviewId: string, formData: FormData) => void | Promise<void>;
 };
 
 const dateFormatter = new Intl.DateTimeFormat("en-PH", { dateStyle: "medium" });
@@ -49,6 +52,7 @@ export function ReviewSection({
   listingId,
   saveAction,
   deleteAction,
+  reportAction,
 }: ReviewSectionProps) {
   return (
     <section className="reviews-section" id="reviews" aria-labelledby="reviews-title">
@@ -94,6 +98,9 @@ export function ReviewSection({
               </div>
               <p>{review.comment}</p>
               <span className="field-help">Verified RoomScouter student account</span>
+              {isStudent && review.id !== ownReview?.id ? (
+                <ReportForm label="Report this review" action={reportAction.bind(null, review.id)} />
+              ) : null}
             </article>
           ))}
         </div>

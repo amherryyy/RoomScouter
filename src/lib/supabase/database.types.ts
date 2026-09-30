@@ -358,6 +358,84 @@ export type Database = {
         }
         Relationships: []
       }
+      reports: {
+        Row: {
+          boarding_house_id: string | null
+          created_at: string
+          id: string
+          reason: string
+          reporter_id: string
+          resolution_note: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          review_id: string | null
+          status: Database["public"]["Enums"]["report_status"]
+          target_type: Database["public"]["Enums"]["report_target_type"]
+        }
+        Insert: {
+          boarding_house_id?: string | null
+          created_at?: string
+          id?: string
+          reason: string
+          reporter_id: string
+          resolution_note?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          review_id?: string | null
+          status?: Database["public"]["Enums"]["report_status"]
+          target_type: Database["public"]["Enums"]["report_target_type"]
+        }
+        Update: {
+          boarding_house_id?: string | null
+          created_at?: string
+          id?: string
+          reason?: string
+          reporter_id?: string
+          resolution_note?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          review_id?: string | null
+          status?: Database["public"]["Enums"]["report_status"]
+          target_type?: Database["public"]["Enums"]["report_target_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reports_boarding_house_id_fkey"
+            columns: ["boarding_house_id"]
+            isOneToOne: false
+            referencedRelation: "boarding_houses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reports_reporter_id_fkey"
+            columns: ["reporter_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reports_resolved_by_fkey"
+            columns: ["resolved_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reports_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "public_reviews"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reports_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "reviews"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reviews: {
         Row: {
           boarding_house_id: string
@@ -630,6 +708,8 @@ export type Database = {
     Enums: {
       app_role: "student" | "owner" | "admin"
       listing_status: "draft" | "pending" | "approved" | "rejected" | "archived"
+      report_status: "open" | "resolved" | "dismissed"
+      report_target_type: "listing" | "review"
       review_status: "published" | "hidden"
       room_type: "bedspace" | "shared_room" | "private_room" | "studio"
     }
@@ -761,6 +841,8 @@ export const Constants = {
     Enums: {
       app_role: ["student", "owner", "admin"],
       listing_status: ["draft", "pending", "approved", "rejected", "archived"],
+      report_status: ["open", "resolved", "dismissed"],
+      report_target_type: ["listing", "review"],
       review_status: ["published", "hidden"],
       room_type: ["bedspace", "shared_room", "private_room", "studio"],
     },
