@@ -1,4 +1,5 @@
 import { moderateListing } from "./actions";
+import { SubmitButton } from "../../components/submit-button";
 
 type ListingControlsProps = {
   listingId: string;
@@ -14,13 +15,13 @@ export function ListingControls({ listingId, status }: ListingControlsProps) {
         <h2 id="moderation-actions-title">Moderation decision</h2>
         <p>Approval publishes the listing immediately. Review every detail before continuing.</p>
         <form action={approveAction}>
-          <button type="submit">Approve and publish</button>
+          <SubmitButton pendingLabel="Approving listing…">Approve and publish</SubmitButton>
         </form>
         <form action={rejectAction} className="moderation-reason-form">
           <label htmlFor="rejection-reason">Reason for rejection</label>
           <textarea id="rejection-reason" name="reason" minLength={5} maxLength={1000} required />
           <p className="field-help">The owner will see this guidance before correcting the listing.</p>
-          <button className="danger-button" type="submit">Reject listing</button>
+          <SubmitButton pendingLabel="Rejecting listing…" className="danger-button">Reject listing</SubmitButton>
         </form>
       </section>
     );
@@ -35,7 +36,7 @@ export function ListingControls({ listingId, status }: ListingControlsProps) {
         <form action={archiveAction} className="moderation-reason-form">
           <label htmlFor="archive-reason">Reason for archival</label>
           <textarea id="archive-reason" name="reason" minLength={5} maxLength={1000} required />
-          <button className="danger-button" type="submit">Archive listing</button>
+          <SubmitButton pendingLabel="Archiving listing…" className="danger-button">Archive listing</SubmitButton>
         </form>
       </section>
     );

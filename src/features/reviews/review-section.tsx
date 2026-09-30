@@ -1,4 +1,5 @@
 import { ReportForm } from "../reports/report-form";
+import { SubmitButton } from "../../components/submit-button";
 
 type PublicReview = {
   id: string;
@@ -82,9 +83,9 @@ export function ReviewSection({
             </select>
             <label htmlFor="review-comment">Review</label>
             <textarea id="review-comment" name="comment" defaultValue={ownReview?.comment ?? ""} minLength={3} maxLength={2000} required />
-            <button type="submit">{ownReview ? "Update review" : "Publish review"}</button>
+            <SubmitButton pendingLabel="Saving review…">{ownReview ? "Update review" : "Publish review"}</SubmitButton>
           </form>
-          {ownReview ? <form action={deleteAction}><button className="danger-button" type="submit">Delete review</button></form> : null}
+          {ownReview ? <form action={deleteAction}><SubmitButton pendingLabel="Deleting review…" className="danger-button">Delete review</SubmitButton></form> : null}
         </div>
       ) : null}
 

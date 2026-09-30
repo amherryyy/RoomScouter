@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { SubmitButton } from "../../../../../src/components/submit-button";
 import {
   deleteListingPhoto,
   saveFacilities,
@@ -121,7 +122,7 @@ export default async function EditListingPage({ params, searchParams }: EditList
             <h2>Ready for review?</h2>
             <p>Check every fact before sending this listing to an administrator.</p>
           </div>
-          <form action={submitAction}><button type="submit">Submit for review</button></form>
+          <form action={submitAction}><SubmitButton pendingLabel="Submitting for review…">Submit for review</SubmitButton></form>
         </section>
       ) : null}
 

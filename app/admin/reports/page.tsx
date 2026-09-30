@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SubmitButton } from "../../../src/components/submit-button";
 import { requireAdmin } from "../../../src/features/moderation/access";
 import { resolveReport } from "../../../src/features/moderation/report-actions";
 
@@ -89,12 +90,12 @@ export default async function AdminReportsPage({ searchParams }: AdminReportsPag
                     <form action={resolveAction} className="moderation-reason-form">
                       <label htmlFor={`resolve-${report.id}`}>Resolution note</label>
                       <textarea id={`resolve-${report.id}`} name="note" minLength={3} maxLength={1000} required />
-                      <button type="submit">Mark resolved</button>
+                      <SubmitButton pendingLabel="Resolving report…">Mark resolved</SubmitButton>
                     </form>
                     <form action={dismissAction} className="moderation-reason-form">
                       <label htmlFor={`dismiss-${report.id}`}>Dismissal explanation</label>
                       <textarea id={`dismiss-${report.id}`} name="note" minLength={3} maxLength={1000} required />
-                      <button className="secondary" type="submit">Dismiss report</button>
+                      <SubmitButton pendingLabel="Dismissing report…" className="secondary">Dismiss report</SubmitButton>
                     </form>
                   </div>
                 ) : (

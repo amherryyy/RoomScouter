@@ -1,6 +1,7 @@
 "use client";
 
 import { type ChangeEvent, useEffect, useState } from "react";
+import { SubmitButton } from "../../components/submit-button";
 
 type ListingPhoto = {
   id: string;
@@ -68,7 +69,7 @@ export function PhotoEditor({ photos, uploadAction, saveAction, deleteAction }: 
           placeholder="Example: Bright furnished room with study desk"
         />
         <p className="field-help">JPEG or PNG, maximum 10 MiB. {10 - photos.length} slots remaining.</p>
-        <button type="submit" disabled={photos.length >= 10}>Upload photo</button>
+        <SubmitButton pendingLabel="Uploading photo…" disabled={photos.length >= 10}>Upload photo</SubmitButton>
       </form>
 
       {photos.length ? (
@@ -100,13 +101,13 @@ export function PhotoEditor({ photos, uploadAction, saveAction, deleteAction }: 
                 >
                   {photos.map((_, index) => <option value={index + 1} key={index + 1}>{index + 1}</option>)}
                 </select>
-                <button className="danger-button" type="submit" formAction={deleteAction.bind(null, photo.id)}>
+                <SubmitButton className="danger-button" pendingLabel="Removing photo…" formAction={deleteAction.bind(null, photo.id)}>
                   Remove photo
-                </button>
+                </SubmitButton>
               </article>
             ))}
           </div>
-          <button type="submit" className="secondary">Save photo order and descriptions</button>
+          <SubmitButton pendingLabel="Saving photo details…" className="secondary">Save photo order and descriptions</SubmitButton>
         </form>
       ) : (
         <p className="empty-state">No photos yet. Add the clearest view first.</p>

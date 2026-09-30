@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SubmitButton } from "../../../src/components/submit-button";
 import { requireAdmin } from "../../../src/features/moderation/access";
 import { moderateReview } from "../../../src/features/moderation/review-actions";
 
@@ -68,9 +69,12 @@ export default async function AdminReviewsPage({ searchParams }: AdminReviewsPag
                   <textarea id={`reason-${review.id}`} name="reason" minLength={3} maxLength={1000} required />
                   <div className="review-moderation-actions">
                     <Link href={`/listings/${review.boarding_house_id}`}>View listing</Link>
-                    <button className={state === "published" ? "danger-button" : ""} type="submit">
+                    <SubmitButton
+                      className={state === "published" ? "danger-button" : ""}
+                      pendingLabel={state === "published" ? "Hiding review…" : "Restoring review…"}
+                    >
                       {state === "published" ? "Hide review" : "Restore review"}
-                    </button>
+                    </SubmitButton>
                   </div>
                 </form>
               </article>

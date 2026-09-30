@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { SubmitButton } from "../../src/components/submit-button";
 import { logout } from "../../src/features/auth/actions";
 import { createServerSupabaseClient } from "../../src/lib/supabase/server";
 
@@ -32,7 +33,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
       {profile?.role === "admin" ? <p><Link className="button" href="/admin">Open moderation dashboard</Link></p> : null}
       {profile?.role === "student" ? <p><Link className="button" href="/favorites">View saved listings</Link></p> : null}
       {profile?.role === "student" ? <p><Link href="/reports">View your reports</Link></p> : null}
-      <form action={logout}><button type="submit" className="secondary">Log out</button></form>
+      <form action={logout}><SubmitButton pendingLabel="Logging out…" className="secondary">Log out</SubmitButton></form>
     </main>
   );
 }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SubmitButton } from "../../src/components/submit-button";
 import { register } from "../../src/features/auth/actions";
 
 type RegisterPageProps = {
@@ -28,7 +29,7 @@ export default async function RegisterPage({ searchParams }: RegisterPageProps) 
             <option value="student">Student looking for a place</option>
             <option value="owner">Boarding-house owner</option>
           </select>
-          <button type="submit">Create account</button>
+          <SubmitButton pendingLabel="Creating account…">Create account</SubmitButton>
         </form>
         <p className="auth-switch">Already registered? <Link href="/login">Log in</Link>.</p>
       </section>

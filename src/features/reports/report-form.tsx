@@ -1,3 +1,5 @@
+import { SubmitButton } from "../../components/submit-button";
+
 type ReportFormProps = {
   id: string;
   label: string;
@@ -22,7 +24,7 @@ export function ReportForm({ id, label, action }: ReportFormProps) {
           placeholder="Explain what is inaccurate, unsafe, or inappropriate."
         />
         <p className="field-help" id={helpId}>Your report is private and cannot be changed after submission.</p>
-        <button type="submit" className="danger-button">Submit report</button>
+        <SubmitButton pendingLabel="Submitting report…" className="danger-button">Submit report</SubmitButton>
       </form>
     </details>
   );
