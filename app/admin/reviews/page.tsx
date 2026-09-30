@@ -34,7 +34,10 @@ export default async function AdminReviewsPage({ searchParams }: AdminReviewsPag
           <h1>Review moderation</h1>
           <p className="lede">Remove unsafe reviews from public view and restore content after reconsideration.</p>
         </div>
-        <Link className="button secondary" href="/admin">Listing moderation</Link>
+        <div className="actions">
+          <Link className="button secondary" href="/admin/reports">Handle reports</Link>
+          <Link className="button secondary" href="/admin">Listing moderation</Link>
+        </div>
       </header>
       {params.error ? <p className="notice error" role="alert">{params.error}</p> : null}
       {params.message ? <p className="notice success" role="status">{params.message}</p> : null}

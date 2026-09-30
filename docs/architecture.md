@@ -99,4 +99,4 @@ Public Supabase URL and anonymous key may be exposed through approved public env
 
 ## Implementation sequence
 
-Identity, administrator provisioning, listing data, owner workflows, public discovery, and community actions are complete. Administration exposes listing and review moderation through admin-only workspaces backed by audited database commands. Report resolution and pilot hardening remain follow-up slices.
+Identity, administrator provisioning, listing data, owner workflows, public discovery, community actions, and the core administration workflows are complete. Listing moderation, review moderation, and report resolution use admin-only workspaces backed by transactional database commands. Pilot hardening is the next delivery milestone.

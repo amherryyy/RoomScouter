@@ -37,6 +37,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           <p className="lede">Review submissions before publication and retire listings that should no longer be public.</p>
         </div>
         <div className="actions">
+          <Link className="button secondary" href="/admin/reports">Handle reports</Link>
           <Link className="button secondary" href="/admin/reviews">Moderate reviews</Link>
           <Link className="button secondary" href="/account">Account</Link>
         </div>

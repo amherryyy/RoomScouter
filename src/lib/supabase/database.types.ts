@@ -730,6 +730,32 @@ export type Database = {
         }
         Returns: number
       }
+      resolve_report: {
+        Args: {
+          decision: Database["public"]["Enums"]["report_status"]
+          note: string
+          target_id: string
+        }
+        Returns: {
+          boarding_house_id: string | null
+          created_at: string
+          id: string
+          reason: string
+          reporter_id: string
+          resolution_note: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          review_id: string | null
+          status: Database["public"]["Enums"]["report_status"]
+          target_type: Database["public"]["Enums"]["report_target_type"]
+        }
+        SetofOptions: {
+          from: "*"
+          to: "reports"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       search_public_boarding_houses: {
         Args: {
           maximum_distance_km?: number
