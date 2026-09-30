@@ -41,6 +41,8 @@ For a repeatable local demonstration with fictional student, owner, administrato
 
 The browser-level pilot suite proves the connected student, owner, and administrator journeys against that same local stack. Follow [the end-to-end testing guide](docs/end-to-end-testing.md). Its runner refreshes the demo data and supplies only credentials reported by the loopback Supabase service; it does not use the linked hosted project or `.env.local` Supabase values.
 
+Before a hosted rehearsal, follow [the deployment guide](docs/deployment-rehearsal.md) and run `npm.cmd run release:check` with the intended production values. The readiness guard rejects missing or non-HTTPS origins, local Supabase endpoints, secret/service-role browser keys, and invalid university coordinates. The team presentation is organized in the [pilot demonstration script](docs/pilot-demonstration.md).
+
 ## Supabase identity setup
 
 The identity foundation requires a Supabase project before registration can run:
