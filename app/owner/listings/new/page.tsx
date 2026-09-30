@@ -12,7 +12,7 @@ export default async function NewListingPage({ searchParams }: NewListingPagePro
   const { error } = await searchParams;
 
   return (
-    <main className="workspace-shell narrow-workspace">
+    <main className="workspace-shell narrow-workspace" id="main-content" tabIndex={-1}>
       <p className="eyebrow">Owner workspace</p>
       <h1>Create a listing</h1>
       <p className="lede">Start with the facts students need to compare options. You can add facilities, utilities, rules, and photos next.</p>

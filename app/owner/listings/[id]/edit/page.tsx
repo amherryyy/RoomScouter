@@ -74,7 +74,7 @@ export default async function EditListingPage({ params, searchParams }: EditList
   const canSubmit = listing.status === "draft" || listing.status === "rejected";
 
   return (
-    <main className="workspace-shell narrow-workspace">
+    <main className="workspace-shell narrow-workspace" id="main-content" tabIndex={-1}>
       <div className="listing-card-heading">
         <div>
           <p className="eyebrow">Owner workspace</p>

@@ -20,7 +20,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
     .maybeSingle();
 
   return (
-    <main>
+    <main id="main-content" tabIndex={-1}>
       <p className="eyebrow">Your account</p>
       <h1>{profile?.display_name ?? "Account"}</h1>
       {error ? <p className="notice error" role="alert">{error}</p> : null}

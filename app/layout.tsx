@@ -4,13 +4,16 @@ import "./styles.css";
 
 export const metadata: Metadata = {
   title: "RoomScouter",
-  description: "A project initialized by Flower"
+  description: "Find and compare approved boarding houses near Nueva Vizcaya State University."
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <a className="skip-link" href="#main-content">Skip to main content</a>
+        {children}
+      </body>
     </html>
   );
 }

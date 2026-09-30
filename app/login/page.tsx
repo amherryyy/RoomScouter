@@ -9,7 +9,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const { error, message } = await searchParams;
 
   return (
-    <main className="auth-shell">
+    <main className="auth-shell" id="main-content" tabIndex={-1}>
       <section className="auth-card" aria-labelledby="login-title">
         <p className="eyebrow">Welcome back</p>
         <h1 id="login-title">Log in</h1>

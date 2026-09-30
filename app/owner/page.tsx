@@ -11,7 +11,7 @@ export default async function OwnerDashboardPage() {
     .order("updated_at", { ascending: false });
 
   return (
-    <main className="workspace-shell">
+    <main className="workspace-shell" id="main-content" tabIndex={-1}>
       <div className="workspace-heading">
         <div>
           <p className="eyebrow">Owner workspace</p>

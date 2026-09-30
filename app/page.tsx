@@ -25,7 +25,7 @@ export default async function Home({ searchParams }: HomePageProps) {
   const hasNext = lastResult < total;
 
   return (
-    <main className="discovery-shell">
+    <main className="discovery-shell" id="main-content" tabIndex={-1}>
       <header className="public-header">
         <Link className="wordmark" href="/">RoomScouter</Link>
         <nav aria-label="Account navigation">
@@ -40,7 +40,7 @@ export default async function Home({ searchParams }: HomePageProps) {
         <p className="lede">Search approved listings and compare rent, availability, facilities, utilities, and location.</p>
       </section>
 
-      <form className="discovery-filters" method="get">
+      <form className="discovery-filters" method="get" aria-label="Filter boarding houses">
         <div className="search-field">
           <label htmlFor="q">Search by name, address, or description</label>
           <input id="q" name="q" defaultValue={filters.query} maxLength={120} placeholder="Try a street or neighborhood" />
@@ -89,7 +89,7 @@ export default async function Home({ searchParams }: HomePageProps) {
         </div>
       </form>
 
-      <div className="results-heading">
+      <div className="results-heading" aria-live="polite">
         <div>
           <p className="eyebrow">Public listings</p>
           <h2>{total ? `${firstResult}–${lastResult} of ${total}` : "No matches yet"}</h2>

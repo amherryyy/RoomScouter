@@ -27,7 +27,7 @@ export default async function AdminReviewsPage({ searchParams }: AdminReviewsPag
   const total = count ?? 0;
 
   return (
-    <main className="workspace-shell">
+    <main className="workspace-shell" id="main-content" tabIndex={-1}>
       <header className="workspace-heading">
         <div>
           <p className="eyebrow">Administrator workspace</p>
@@ -43,8 +43,8 @@ export default async function AdminReviewsPage({ searchParams }: AdminReviewsPag
       {params.message ? <p className="notice success" role="status">{params.message}</p> : null}
 
       <nav className="moderation-tabs" aria-label="Review moderation queues">
-        <Link className={state === "published" ? "active" : ""} href="/admin/reviews?state=published">Published reviews</Link>
-        <Link className={state === "hidden" ? "active" : ""} href="/admin/reviews?state=hidden">Hidden reviews</Link>
+        <Link aria-current={state === "published" ? "page" : undefined} className={state === "published" ? "active" : ""} href="/admin/reviews?state=published">Published reviews</Link>
+        <Link aria-current={state === "hidden" ? "page" : undefined} className={state === "hidden" ? "active" : ""} href="/admin/reviews?state=hidden">Hidden reviews</Link>
       </nav>
 
       {reviews?.length ? (
