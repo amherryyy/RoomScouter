@@ -99,4 +99,4 @@ Public Supabase URL and anonymous key may be exposed through approved public env
 
 ## Implementation sequence
 
-Identity and administrator provisioning are complete. The listing foundation establishes the owner, publication, moderation, and audit boundaries before listing forms or discovery UI are introduced. Attribute, photo, owner-workflow, and discovery slices build on these tested database contracts.
+Identity, administrator provisioning, listing data, owner workflows, public discovery, and community actions are complete. Administration now exposes the established listing lifecycle through an admin-only review workspace. Review moderation, report resolution, and pilot hardening remain follow-up slices.
