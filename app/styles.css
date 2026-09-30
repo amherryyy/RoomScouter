@@ -215,6 +215,7 @@ textarea:disabled {
   .skeleton-line,
   .skeleton-input,
   .skeleton-panel { animation: none; }
+  .account-action-card { transition: none; }
 }
 
 fieldset {
@@ -260,6 +261,140 @@ fieldset {
 
 .account-details dd {
   margin: 0;
+}
+
+.account-hub {
+  max-width: 68rem;
+  padding-top: 1.5rem;
+}
+
+.account-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.account-header > a:last-child {
+  font-weight: 700;
+}
+
+.account-summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) minmax(18rem, 0.75fr);
+  align-items: center;
+  gap: 1.5rem;
+  border: 1px solid #d8e0da;
+  border-radius: 1rem;
+  padding: clamp(1.25rem, 4vw, 2rem);
+  background: white;
+  box-shadow: 0 1rem 3rem rgb(32 65 46 / 6%);
+}
+
+.account-avatar {
+  display: grid;
+  width: 5rem;
+  height: 5rem;
+  place-items: center;
+  border-radius: 999px;
+  color: white;
+  background: #246b48;
+  font-size: 2rem;
+  font-weight: 900;
+}
+
+.account-identity h1 {
+  margin: 0.35rem 0;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+}
+
+.role-label {
+  margin: 0;
+  color: #526158;
+  font-weight: 700;
+}
+
+.account-summary .account-details {
+  margin: 0;
+  border-left: 1px solid #d8e0da;
+  padding-left: 1.5rem;
+}
+
+.account-section {
+  margin-top: 3rem;
+}
+
+.section-heading h2 {
+  margin: 0.35rem 0 0;
+}
+
+.account-action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.account-action-card {
+  display: grid;
+  gap: 0.45rem;
+  min-height: 10rem;
+  align-content: start;
+  border: 1px solid #d8e0da;
+  border-radius: 1rem;
+  padding: 1.35rem;
+  color: #18221d;
+  background: white;
+  text-decoration: none;
+  transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+.account-action-card:hover {
+  transform: translateY(-2px);
+  border-color: #78a48b;
+  box-shadow: 0 0.75rem 2rem rgb(32 65 46 / 8%);
+}
+
+.account-action-card strong {
+  font-size: 1.1rem;
+}
+
+.account-action-card > span:last-child {
+  color: #526158;
+}
+
+.action-kicker {
+  color: #1f6645;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.account-future {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  border: 1px dashed #aebbb2;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  background: #eef2ef;
+}
+
+.account-future h2 {
+  margin: 0 0 0.4rem;
+}
+
+.account-future p:not(.preview-badge) {
+  max-width: 45rem;
+  margin-bottom: 0;
+}
+
+.account-future form {
+  flex: 0 0 auto;
 }
 
 .workspace-shell {
@@ -1267,12 +1402,22 @@ fieldset {
   .pagination .button { width: 100%; }
   .scope-note { align-items: flex-start; flex-direction: column; }
   .scope-note .button { width: 100%; }
+  .account-header,
+  .account-future { align-items: flex-start; flex-direction: column; }
+  .account-summary,
+  .account-action-grid { grid-template-columns: 1fr; }
+  .account-summary .account-details { border-left: 0; border-top: 1px solid #d8e0da; padding: 1.25rem 0 0; }
+  .account-future form,
+  .account-future button { width: 100%; }
 }
 
 @media (forced-colors: active) {
   .status,
   .notice,
   .preview-badge,
+  .account-summary,
+  .account-action-card,
+  .account-future,
   .fact-row span,
   .tag-list li {
     border: 1px solid CanvasText;
