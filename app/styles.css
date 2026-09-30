@@ -555,7 +555,22 @@ fieldset {
 .public-header nav {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
   gap: 1rem;
+}
+
+.public-header nav a:not(.button) {
+  color: #34473d;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.public-header nav a[aria-current="page"] {
+  color: #1f6645;
+  text-decoration: underline;
+  text-decoration-thickness: 0.15em;
+  text-underline-offset: 0.35em;
 }
 
 .wordmark {
@@ -564,6 +579,148 @@ fieldset {
   font-weight: 900;
   letter-spacing: -0.03em;
   text-decoration: none;
+}
+
+.preview-page {
+  min-height: 100vh;
+}
+
+.preview-hero {
+  max-width: 52rem;
+}
+
+.preview-hero h1 {
+  margin: 0.6rem 0 1rem;
+}
+
+.preview-badge {
+  display: inline-flex;
+  margin: 0 0 1.25rem;
+  border: 1px solid #a96f00;
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  color: #72520c;
+  background: #fff6d9;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.map-preview-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(18rem, 0.9fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
+  border: 1px solid #d8e0da;
+  border-radius: 1rem;
+  padding: 1rem;
+  background: white;
+  box-shadow: 0 1rem 3rem rgb(32 65 46 / 6%);
+}
+
+.map-preview-canvas {
+  position: relative;
+  min-height: 27rem;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background:
+    linear-gradient(32deg, transparent 47%, rgb(255 255 255 / 85%) 48% 52%, transparent 53%),
+    linear-gradient(122deg, transparent 46%, rgb(255 255 255 / 80%) 47% 52%, transparent 53%),
+    repeating-linear-gradient(0deg, #dce8e2 0 1px, transparent 1px 4rem),
+    repeating-linear-gradient(90deg, #dce8e2 0 1px, transparent 1px 4rem),
+    #eef4f0;
+}
+
+.map-campus-pin,
+.map-property-pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  border: 3px solid white;
+  border-radius: 999px;
+  padding: 0.55rem 0.75rem;
+  color: white;
+  background: #246b48;
+  box-shadow: 0 0.35rem 1rem rgb(24 34 29 / 18%);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.map-campus-pin { top: 50%; left: 50%; background: #174b93; }
+.map-property-one { top: 26%; left: 24%; }
+.map-property-two { top: 68%; left: 30%; }
+.map-property-three { top: 35%; left: 77%; }
+
+.preview-copy {
+  padding: 1rem;
+}
+
+.preview-copy h2 {
+  margin-top: 0;
+}
+
+.preview-checklist {
+  display: grid;
+  gap: 0.8rem;
+  padding-left: 1.25rem;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 3rem;
+}
+
+.about-grid section {
+  border: 1px solid #d8e0da;
+  border-radius: 1rem;
+  padding: 1.4rem;
+  background: white;
+}
+
+.about-grid h2 {
+  margin: 0.65rem 0;
+  font-size: 1.2rem;
+}
+
+.step-number {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin: 0;
+  place-items: center;
+  border-radius: 999px;
+  color: white;
+  background: #246b48;
+  font-weight: 900;
+}
+
+.scope-note {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  color: white;
+  background: #18221d;
+}
+
+.scope-note h2 {
+  margin: 0.4rem 0;
+}
+
+.scope-note p {
+  max-width: 46rem;
+}
+
+.scope-note .button {
+  flex: 0 0 auto;
+  border-color: white;
+  color: #18221d;
+  background: white;
 }
 
 .discovery-hero h1,
@@ -1089,6 +1246,8 @@ fieldset {
   .workspace-heading .actions .button { flex: 1 1 10rem; }
   .discovery-filters,
   .discovery-grid,
+  .about-grid,
+  .map-preview-panel,
   .skeleton-card-grid,
   .skeleton-detail-layout,
   .detail-layout,
@@ -1106,11 +1265,14 @@ fieldset {
   .pagination { grid-template-columns: 1fr; text-align: center; }
   .pagination > :last-child { justify-self: stretch; }
   .pagination .button { width: 100%; }
+  .scope-note { align-items: flex-start; flex-direction: column; }
+  .scope-note .button { width: 100%; }
 }
 
 @media (forced-colors: active) {
   .status,
   .notice,
+  .preview-badge,
   .fact-row span,
   .tag-list li {
     border: 1px solid CanvasText;

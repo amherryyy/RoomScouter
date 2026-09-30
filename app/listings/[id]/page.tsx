@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { PublicHeader } from "../../../src/components/public-header";
 import { SubmitButton } from "../../../src/components/submit-button";
 import { ROOM_TYPE_LABELS } from "../../../src/features/discovery/model";
 import { approximateDistanceKm, getUniversityConfig } from "../../../src/features/discovery/university";
@@ -119,10 +120,7 @@ export default async function PublicListingPage({ params, searchParams }: Public
 
   return (
     <main className="public-detail-shell" id="main-content" tabIndex={-1}>
-      <header className="public-header">
-        <Link className="wordmark" href="/">RoomScouter</Link>
-        <nav aria-label="Listing navigation"><Link href="/">Back to search</Link></nav>
-      </header>
+      <PublicHeader />
 
       <section className="detail-heading">
         <div>
