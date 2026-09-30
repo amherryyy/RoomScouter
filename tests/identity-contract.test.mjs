@@ -56,10 +56,30 @@ test("completes email confirmation through a guarded PKCE callback", async () =>
   const callback = await readProjectFile("app/auth/callback/route.ts");
 
   assert.match(actions, /emailRedirectTo/);
-  assert.match(actions, /\/auth\/callback\?next=\/account/);
+  assert.match(actions, /callback\.searchParams\.set\("next", nextPath\)/);
   assert.match(callback, /exchangeCodeForSession/);
-  assert.match(callback, /value\.startsWith\("\/\/"\)/);
-  assert.match(callback, /The confirmation link is invalid or has expired\./);
+  assert.match(callback, /value === "\/update-password"/);
+  assert.match(callback, /The authentication link is invalid or has expired\./);
+});
+
+test("recovers passwords without disclosing accounts or retaining recovery sessions", async () => {
+  const actions = await readProjectFile("src/features/auth/actions.ts");
+  const login = await readProjectFile("app/login/page.tsx");
+  const requestPage = await readProjectFile("app/forgot-password/page.tsx");
+  const updatePage = await readProjectFile("app/update-password/page.tsx");
+
+  assert.match(login, /href="\/forgot-password"/);
+  assert.match(actions, /resetPasswordForEmail\(email, \{ redirectTo \}\)/);
+  assert.match(actions, /If an account exists for that email/);
+  assert.doesNotMatch(actions, /No account exists/);
+  assert.match(actions, /confirmation !== password/);
+  assert.match(actions, /auth\.getUser\(\)/);
+  assert.match(actions, /auth\.updateUser\(\{ password \}\)/);
+  assert.match(actions, /auth\.signOut\(\{ scope: "global" \}\)/);
+  assert.match(actions, /ROOMSCOUTER_SITE_URL/);
+  assert.match(requestPage, /autoComplete="email"/);
+  assert.match(updatePage, /autoComplete="new-password"/);
+  assert.match(updatePage, /if \(!user\) redirect/);
 });
 
 test("turns actionable Supabase Auth failures into safe user guidance", async () => {

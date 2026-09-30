@@ -8,6 +8,8 @@ const pageFiles = [
   "app/page.tsx",
   "app/login/page.tsx",
   "app/register/page.tsx",
+  "app/forgot-password/page.tsx",
+  "app/update-password/page.tsx",
   "app/account/page.tsx",
   "app/favorites/page.tsx",
   "app/reports/page.tsx",

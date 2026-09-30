@@ -23,6 +23,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           <input id="password" name="password" type="password" autoComplete="current-password" required />
           <button type="submit">Log in</button>
         </form>
+        <p className="auth-switch"><Link href="/forgot-password">Forgot your password?</Link></p>
         <p className="auth-switch">New here? <Link href="/register">Create an account</Link>.</p>
       </section>
     </main>

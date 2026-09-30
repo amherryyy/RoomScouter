@@ -54,6 +54,8 @@ The identity foundation requires a Supabase project before registration can run:
 
 Registration permits only student and owner accounts. Public registration cannot create an administrator.
 
+Users who forget a password can follow **Forgot your password?** from `/login`. The request always returns the same privacy-preserving response, Supabase sends a time-limited PKCE recovery link, and `/update-password` requires the resulting authenticated recovery session. A successful change signs out all refresh-token sessions before returning to login. See [ADR 0020](docs/decisions/0020-password-recovery.md).
+
 To provision an administrator, first let that person register and confirm their account. Apply all pending migrations, then run the following from a privileged database session such as the Supabase SQL Editor:
 
 ```sql
