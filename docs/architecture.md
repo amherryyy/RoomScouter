@@ -89,6 +89,8 @@ Listing photos use a private-by-default Supabase Storage bucket with explicit re
 
 Public Supabase URL and anonymous key may be exposed through approved public environment variables. Service credentials, if introduced later for a reviewed server-only operation, must never use the browser client. University identity and coordinates are deployment configuration and validated on startup or build.
 
+Hosted rehearsal additionally requires the canonical RoomScouter site origin. A fail-closed release check validates clean HTTPS application and Supabase origins, the browser key class, and university configuration before the build. Vercel application rollback and Supabase migration recovery remain separate operations. See [ADR 0019](decisions/0019-fail-closed-deployment-rehearsal.md).
+
 ## Testing strategy
 
 - Unit tests cover validation, distance calculations, and domain transitions.
@@ -102,4 +104,4 @@ Local demonstrations use an explicit guarded seed command rather than migration 
 
 ## Implementation sequence
 
-Identity, administrator provisioning, listing data, owner workflows, public discovery, community actions, and the core administration workflows are complete. Listing moderation, review moderation, and report resolution use admin-only workspaces backed by transactional database commands. Accessibility contracts, deterministic demo data, and local browser acceptance coverage now form the pilot-hardening baseline.
+Identity, administrator provisioning, listing data, owner workflows, public discovery, community actions, and the core administration workflows are complete. Listing moderation, review moderation, and report resolution use admin-only workspaces backed by transactional database commands. Accessibility contracts, deterministic demo data, local browser acceptance coverage, deployment checks, and a repeatable demonstration script now form the Version 0.1 pilot-hardening baseline.
