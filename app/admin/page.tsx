@@ -36,7 +36,10 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           <h1>Listing moderation</h1>
           <p className="lede">Review submissions before publication and retire listings that should no longer be public.</p>
         </div>
-        <Link className="button secondary" href="/account">Account</Link>
+        <div className="actions">
+          <Link className="button secondary" href="/admin/reviews">Moderate reviews</Link>
+          <Link className="button secondary" href="/account">Account</Link>
+        </div>
       </header>
 
       <nav className="moderation-tabs" aria-label="Listing moderation queues">

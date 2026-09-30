@@ -99,4 +99,4 @@ Public Supabase URL and anonymous key may be exposed through approved public env
 
 ## Implementation sequence
 
-Identity, administrator provisioning, listing data, owner workflows, public discovery, and community actions are complete. Administration now exposes the established listing lifecycle through an admin-only review workspace. Review moderation, report resolution, and pilot hardening remain follow-up slices.
+Identity, administrator provisioning, listing data, owner workflows, public discovery, and community actions are complete. Administration exposes listing and review moderation through admin-only workspaces backed by audited database commands. Report resolution and pilot hardening remain follow-up slices.

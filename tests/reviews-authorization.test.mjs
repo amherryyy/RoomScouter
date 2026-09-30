@@ -87,11 +87,17 @@ test("reviews are student-owned, public when published, and moderation-ready", a
   });
 
   await t.test("hidden reviews leave public results but remain visible to their author and admins", async () => {
-    await database.query(
-      `update public.reviews
-       set status = 'hidden', moderated_by = $1, moderated_at = now(), moderation_note = 'Contains private information.'
-       where id = $2`,
-      [userIds.admin, reviewId],
+    await assert.rejects(
+      actAs(database, "authenticated", userIds.student, () =>
+        database.query("select public.moderate_review($1, 'hidden', 'Contains private information.')", [reviewId]),
+      ),
+      /Only administrators/i,
+    );
+    await actAs(database, "authenticated", userIds.admin, () =>
+      database.query(
+        "select public.moderate_review($1, 'hidden', 'Contains private information.')",
+        [reviewId],
+      ),
     );
     const publicReviews = await actAs(database, "anon", null, () => database.query("select id from public.public_reviews"));
     const ownReviews = await actAs(database, "authenticated", userIds.student, () =>
@@ -107,5 +113,59 @@ test("reviews are student-owned, public when published, and moderation-ready", a
     assert.deepEqual(ownReviews.rows, [{ id: reviewId, status: "hidden" }]);
     assert.deepEqual(adminReviews.rows, [{ id: reviewId, status: "hidden" }]);
     assert.deepEqual(summary.rows, [{ review_count: 0, average_rating: null }]);
+
+    const hiddenEvents = await actAs(database, "authenticated", userIds.admin, () =>
+      database.query(
+        "select action, reason from public.review_moderation_events where review_id = $1",
+        [reviewId],
+      ),
+    );
+    assert.deepEqual(hiddenEvents.rows, [{ action: "hidden", reason: "Contains private information." }]);
+    await assert.rejects(
+      actAs(database, "authenticated", userIds.admin, () =>
+        database.query("select public.moderate_review($1, 'hidden', 'Duplicate action.')", [reviewId]),
+      ),
+      /transition is not allowed/i,
+    );
+  });
+
+  await t.test("administrators restore hidden reviews and append the outcome", async () => {
+    await actAs(database, "authenticated", userIds.admin, () =>
+      database.query(
+        "select public.moderate_review($1, 'published', 'Reviewed and safe to restore.')",
+        [reviewId],
+      ),
+    );
+    const restored = await database.query(
+      "select status, moderated_by, moderated_at, moderation_note from public.reviews where id = $1",
+      [reviewId],
+    );
+    assert.deepEqual(restored.rows, [{
+      status: "published",
+      moderated_by: null,
+      moderated_at: null,
+      moderation_note: null,
+    }]);
+    const events = await actAs(database, "authenticated", userIds.admin, () =>
+      database.query(
+        "select action, reason from public.review_moderation_events where review_id = $1 order by id",
+        [reviewId],
+      ),
+    );
+    assert.deepEqual(events.rows, [
+      { action: "hidden", reason: "Contains private information." },
+      { action: "restored", reason: "Reviewed and safe to restore." },
+    ]);
+    await assert.rejects(
+      actAs(database, "authenticated", userIds.admin, () =>
+        database.query(
+          `insert into public.review_moderation_events
+             (review_id, boarding_house_id, actor_id, action, reason)
+           values ($1, $2, $3, 'hidden', 'Forged event.')`,
+          [reviewId, approvedId, userIds.admin],
+        ),
+      ),
+      /permission denied/i,
+    );
   });
 });
