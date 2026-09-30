@@ -20,40 +20,28 @@ type PublicListingPageProps = {
 };
 
 export default async function PublicListingPage({ params, searchParams }: PublicListingPageProps) {
-  const { id } = await params;
+  const [{ id }, query] = await Promise.all([params, searchParams]);
   if (!isUuid(id)) notFound();
-  const supabase = await createServerSupabaseClient();
-  const { data: listing } = await supabase.from("boarding_houses").select("*").eq("id", id).maybeSingle();
-  if (!listing || listing.status !== "approved" || listing.available_rooms < 1) notFound();
-  const { error, message, reviewPage: rawReviewPage } = await searchParams;
+  const { error, message, reviewPage: rawReviewPage } = query;
   const parsedReviewPage = Number(rawReviewPage ?? "1");
   const reviewPage = Number.isInteger(parsedReviewPage) && parsedReviewPage > 0 && parsedReviewPage <= 10_000
     ? parsedReviewPage
     : 1;
-  const { data: { user } } = await supabase.auth.getUser();
-  const { data: profile } = user
-    ? await supabase.from("profiles").select("role").eq("id", user.id).maybeSingle()
-    : { data: null };
-  const { data: favorite } = user && profile?.role === "student"
-    ? await supabase
-      .from("favorites")
-      .select("boarding_house_id")
-      .eq("student_id", user.id)
-      .eq("boarding_house_id", id)
-      .maybeSingle()
-    : { data: null };
-
+  const supabase = await createServerSupabaseClient();
   const [
+    { data: listing },
+    { data: { user } },
     { data: photos },
     { data: facilityLinks },
     { data: utilityLinks },
     { data: rules },
     { data: facilities },
     { data: utilities },
-    { data: publicReviewRows, count: publicReviewCount },
+    { data: publicReviewRows },
     { data: reviewSummaryRows },
-    { data: ownReviewRows },
   ] = await Promise.all([
+    supabase.from("boarding_houses").select("*").eq("id", id).maybeSingle(),
+    supabase.auth.getUser(),
     supabase.from("listing_photos").select("id, object_path, alt_text, position").eq("boarding_house_id", id).order("position"),
     supabase.from("boarding_house_facilities").select("facility_id").eq("boarding_house_id", id),
     supabase.from("boarding_house_utilities").select("utility_id, is_included, details").eq("boarding_house_id", id),
@@ -62,18 +50,41 @@ export default async function PublicListingPage({ params, searchParams }: Public
     supabase.from("utilities").select("id, name").order("name"),
     supabase
       .from("public_reviews")
-      .select("id, rating, comment, created_at", { count: "exact" })
+      .select("id, rating, comment, created_at")
       .eq("boarding_house_id", id)
       .order("created_at", { ascending: false })
       .range((reviewPage - 1) * REVIEW_PAGE_SIZE, reviewPage * REVIEW_PAGE_SIZE - 1),
     supabase.rpc("get_public_review_summary", { target_id: id }),
-    profile?.role === "student"
-      ? supabase.rpc("get_current_student_review", { target_id: id })
-      : Promise.resolve({ data: [] }),
   ]);
-  const photoGallery = await Promise.all((photos ?? []).map(async (photo) => {
-    const { data } = await supabase.storage.from("listing-photos").createSignedUrl(photo.object_path, 60 * 60);
-    return { ...photo, signedUrl: data?.signedUrl ?? null };
+  if (!listing || listing.status !== "approved" || listing.available_rooms < 1) notFound();
+
+  const { data: profile } = user
+    ? await supabase.from("profiles").select("role").eq("id", user.id).maybeSingle()
+    : { data: null };
+  const [{ data: favorite }, { data: ownReviewRows }] = user && profile?.role === "student"
+    ? await Promise.all([
+      supabase
+        .from("favorites")
+        .select("boarding_house_id")
+        .eq("student_id", user.id)
+        .eq("boarding_house_id", id)
+        .maybeSingle(),
+      supabase.rpc("get_current_student_review", { target_id: id }),
+    ])
+    : [{ data: null }, { data: [] }];
+
+  const storedPhotos = photos ?? [];
+  const { data: signedPhotos } = storedPhotos.length
+    ? await supabase.storage
+      .from("listing-photos")
+      .createSignedUrls(storedPhotos.map((photo) => photo.object_path), 60 * 60)
+    : { data: [] };
+  const signedUrls = new Map(
+    (signedPhotos ?? []).flatMap((photo) => photo.signedUrl ? [[photo.path, photo.signedUrl] as const] : []),
+  );
+  const photoGallery = storedPhotos.map((photo) => ({
+    ...photo,
+    signedUrl: signedUrls.get(photo.object_path) ?? null,
   }));
   const facilityIds = new Set((facilityLinks ?? []).map((link) => link.facility_id));
   const facilityNames = (facilities ?? []).filter((facility) => facilityIds.has(facility.id)).map((facility) => facility.name);
@@ -97,7 +108,7 @@ export default async function PublicListingPage({ params, searchParams }: Public
     moderationNote: ownReviewRow.moderation_note,
   } : null;
   const reviewSummary = reviewSummaryRows?.[0];
-  const reviewCount = Number(reviewSummary?.review_count ?? publicReviewCount ?? 0);
+  const reviewCount = Number(reviewSummary?.review_count ?? 0);
   const averageRating = reviewSummary?.average_rating === null || reviewSummary?.average_rating === undefined
     ? null
     : Number(reviewSummary.average_rating);
