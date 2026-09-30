@@ -45,6 +45,8 @@ test("uses stable scoped records and never reads hosted project credentials", as
   assert.match(seed, /Local Supabase is unavailable/);
   assert.doesNotMatch(seed, /process\.env\.(?:NEXT_PUBLIC_)?SUPABASE/);
   assert.match(seed, /deleteDemoRows/);
+  assert.match(seed, /createStudentClient/);
+  assert.match(seed, /signInWithPassword/);
   assert.match(seed, /student@roomscouter\.example\.test/);
   assert.match(seed, /owner@roomscouter\.example\.test/);
   assert.match(seed, /admin@roomscouter\.example\.test/);

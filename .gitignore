@@ -1,5 +1,9 @@
 .next/
 node_modules/
+.npm-cache/
+.playwright-browsers/
+playwright-report/
+test-results/
 .env
 .env.local
 .flower/cache/

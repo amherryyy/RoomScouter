@@ -41,7 +41,7 @@ export function requireLocalSupabaseUrl(value) {
   return url.origin;
 }
 
-async function readLocalSupabaseEnvironment() {
+export async function readLocalSupabaseEnvironment() {
   const supabaseCli = resolve(repositoryRoot, "node_modules", "supabase", "dist", "supabase.js");
   let stdout;
   try {
@@ -55,8 +55,10 @@ async function readLocalSupabaseEnvironment() {
   const environment = parseSupabaseEnvironment(stdout);
   const apiUrl = requireLocalSupabaseUrl(environment.API_URL ?? environment.SUPABASE_URL ?? "");
   const adminKey = environment.SERVICE_ROLE_KEY ?? environment.SECRET_KEY;
+  const publishableKey = environment.PUBLISHABLE_KEY ?? environment.ANON_KEY;
   if (!adminKey) throw new Error("The running local Supabase stack did not provide an administrator key.");
-  return { apiUrl, adminKey };
+  if (!publishableKey) throw new Error("The running local Supabase stack did not provide a publishable key.");
+  return { apiUrl, adminKey, publishableKey };
 }
 
 function assertSuccess(label, error) {
@@ -102,7 +104,14 @@ async function ensureDemoUser(client, definition) {
   return data.user;
 }
 
-async function deleteDemoRows(client) {
+async function deleteDemoRows(client, ownerId) {
+  const { error: journeyListingError } = await client
+    .from("boarding_houses")
+    .delete()
+    .eq("owner_id", ownerId)
+    .like("title", "E2E %");
+  assertSuccess("Reset browser-journey listings", journeyListingError);
+
   const deletions = [
     ["reports", "id", demoReportIds],
     ["favorites", "boarding_house_id", demoListingIds],
@@ -216,15 +225,42 @@ async function insertDemoRows(client, users) {
   ]);
   assertSuccess("Create demo favorites", result.error);
 
-  result = await client.from("reports").insert([
-    { id: demoReportIds[0], reporter_id: users.secondStudent.id, target_type: "listing", boarding_house_id: demoListingIds[1], reason: "Please verify whether the electricity estimate is current." },
-    { id: demoReportIds[1], reporter_id: users.student.id, target_type: "review", review_id: demoReviewIds[1], reason: "Please check whether this review describes a completed stay." },
+}
+
+async function createStudentClient(apiUrl, publishableKey, email) {
+  const client = createClient(apiUrl, publishableKey, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
+  const { error } = await client.auth.signInWithPassword({ email, password: DEMO_PASSWORD });
+  assertSuccess(`Authenticate ${email} for demo reports`, error);
+  return client;
+}
+
+async function insertDemoReports(apiUrl, publishableKey, users) {
+  const [student, secondStudent] = await Promise.all([
+    createStudentClient(apiUrl, publishableKey, "student@roomscouter.example.test"),
+    createStudentClient(apiUrl, publishableKey, "student2@roomscouter.example.test"),
   ]);
-  assertSuccess("Create demo reports", result.error);
+
+  let result = await secondStudent.from("reports").insert({
+    reporter_id: users.secondStudent.id,
+    target_type: "listing",
+    boarding_house_id: demoListingIds[1],
+    reason: "Please verify whether the electricity estimate is current.",
+  });
+  assertSuccess("Create demo listing report", result.error);
+
+  result = await student.from("reports").insert({
+    reporter_id: users.student.id,
+    target_type: "review",
+    review_id: demoReviewIds[1],
+    reason: "Please check whether this review describes a completed stay.",
+  });
+  assertSuccess("Create demo review report", result.error);
 }
 
 export async function seedLocalDemo() {
-  const { apiUrl, adminKey } = await readLocalSupabaseEnvironment();
+  const { apiUrl, adminKey, publishableKey } = await readLocalSupabaseEnvironment();
   const client = createClient(apiUrl, adminKey, {
     auth: { autoRefreshToken: false, persistSession: false },
   });
@@ -240,8 +276,9 @@ export async function seedLocalDemo() {
 
   const { error: adminError } = await client.from("profiles").update({ role: "admin" }).eq("id", users.admin.id);
   assertSuccess("Provision local demo administrator", adminError);
-  await deleteDemoRows(client);
+  await deleteDemoRows(client, users.owner.id);
   await insertDemoRows(client, users);
+  await insertDemoReports(apiUrl, publishableKey, users);
 
   return {
     apiUrl,

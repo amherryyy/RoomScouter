@@ -94,7 +94,7 @@ Public Supabase URL and anonymous key may be exposed through approved public env
 - Unit tests cover validation, distance calculations, and domain transitions.
 - Ephemeral PostgreSQL tests apply the real migrations and prove grants, triggers, constraints, and RLS behavior for visitor, student, owner, and admin actors.
 - Integration tests cover server-side commands and query composition.
-- End-to-end tests cover the owner-submit, admin-approve, and student-discover flows.
+- A serial, local-only Playwright suite covers student discovery and community actions, owner submission, and administrator listing/review/report moderation. The runner reseeds fixed fictional data and refuses non-loopback Supabase endpoints. See [ADR 0018](decisions/0018-local-browser-acceptance-tests.md).
 - Accessibility contract tests protect landmarks, feedback semantics, form guidance, focus, and narrow-layout behavior; the pilot checklist adds keyboard, zoom, and forced-colors review.
 - Flower validation and security checks guard framework contracts and repository policy.
 
@@ -102,4 +102,4 @@ Local demonstrations use an explicit guarded seed command rather than migration 
 
 ## Implementation sequence
 
-Identity, administrator provisioning, listing data, owner workflows, public discovery, community actions, and the core administration workflows are complete. Listing moderation, review moderation, and report resolution use admin-only workspaces backed by transactional database commands. Pilot hardening is the next delivery milestone.
+Identity, administrator provisioning, listing data, owner workflows, public discovery, community actions, and the core administration workflows are complete. Listing moderation, review moderation, and report resolution use admin-only workspaces backed by transactional database commands. Accessibility contracts, deterministic demo data, and local browser acceptance coverage now form the pilot-hardening baseline.

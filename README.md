@@ -39,6 +39,8 @@ Never commit `.env.local` or Supabase service-role credentials.
 
 For a repeatable local demonstration with fictional student, owner, administrator, listing, review, favorite, and report data, follow [the local demo-data guide](docs/demo-data.md). The seed command is restricted to the loopback Supabase stack and cannot target the linked hosted project.
 
+The browser-level pilot suite proves the connected student, owner, and administrator journeys against that same local stack. Follow [the end-to-end testing guide](docs/end-to-end-testing.md). Its runner refreshes the demo data and supplies only credentials reported by the loopback Supabase service; it does not use the linked hosted project or `.env.local` Supabase values.
+
 ## Supabase identity setup
 
 The identity foundation requires a Supabase project before registration can run:
