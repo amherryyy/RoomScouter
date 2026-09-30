@@ -769,6 +769,82 @@ a:focus-visible {
 .status-resolved { color: #165d3a; background: #eaf7ef; }
 .status-dismissed { color: #526158; background: #e7ece8; }
 
+.moderation-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin: 2rem 0;
+  border-bottom: 1px solid #d8e0da;
+}
+
+.moderation-tabs a {
+  padding: 0.8rem 1rem;
+  color: #526158;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.moderation-tabs a.active {
+  border-bottom: 3px solid #246b48;
+  color: #18221d;
+}
+
+.moderation-detail {
+  max-width: 76rem;
+}
+
+.moderation-detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(18rem, 1fr);
+  align-items: start;
+  gap: 2rem;
+}
+
+.moderation-review-content {
+  display: grid;
+  gap: 1rem;
+}
+
+.moderation-review-content > section,
+.moderation-controls {
+  border: 1px solid #d8e0da;
+  border-radius: 0.85rem;
+  padding: 1.25rem;
+  background: white;
+}
+
+.moderation-review-content h2,
+.moderation-controls h2 {
+  margin-top: 0;
+}
+
+.moderation-controls {
+  position: sticky;
+  top: 1rem;
+}
+
+.moderation-reason-form {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 1.5rem;
+  border-top: 1px solid #e5eae6;
+  padding-top: 1rem;
+}
+
+.moderation-reason-form textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.moderation-event-list {
+  display: grid;
+  gap: 0.75rem;
+  padding-left: 1.5rem;
+}
+
+.moderation-event-list p {
+  margin: 0.25rem 0 0;
+}
+
 .detail-content h2,
 .contact-card h2 {
   margin-top: 0;
@@ -856,4 +932,6 @@ a:focus-visible {
   .public-photo-grid img:first-child { grid-row: auto; min-height: 0; aspect-ratio: 4 / 3; }
   .contact-card { position: static; }
   .reviews-heading { align-items: flex-start; }
+  .moderation-detail-layout { grid-template-columns: 1fr; }
+  .moderation-controls { position: static; }
 }
