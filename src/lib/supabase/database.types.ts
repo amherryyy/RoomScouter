@@ -436,6 +436,65 @@ export type Database = {
           },
         ]
       }
+      review_moderation_events: {
+        Row: {
+          action: Database["public"]["Enums"]["review_moderation_action"]
+          actor_id: string | null
+          boarding_house_id: string
+          created_at: string
+          id: number
+          reason: string
+          review_id: string | null
+        }
+        Insert: {
+          action: Database["public"]["Enums"]["review_moderation_action"]
+          actor_id?: string | null
+          boarding_house_id: string
+          created_at?: string
+          id?: never
+          reason: string
+          review_id?: string | null
+        }
+        Update: {
+          action?: Database["public"]["Enums"]["review_moderation_action"]
+          actor_id?: string | null
+          boarding_house_id?: string
+          created_at?: string
+          id?: never
+          reason?: string
+          review_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "review_moderation_events_actor_id_fkey"
+            columns: ["actor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "review_moderation_events_boarding_house_id_fkey"
+            columns: ["boarding_house_id"]
+            isOneToOne: false
+            referencedRelation: "boarding_houses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "review_moderation_events_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "public_reviews"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "review_moderation_events_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "reviews"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reviews: {
         Row: {
           boarding_house_id: string
@@ -619,6 +678,32 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      moderate_review: {
+        Args: {
+          decision: Database["public"]["Enums"]["review_status"]
+          reason: string
+          target_id: string
+        }
+        Returns: {
+          boarding_house_id: string
+          comment: string
+          created_at: string
+          id: string
+          moderated_at: string | null
+          moderated_by: string | null
+          moderation_note: string | null
+          rating: number
+          status: Database["public"]["Enums"]["review_status"]
+          student_id: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "reviews"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       provision_admin: { Args: { target_email: string }; Returns: string }
       replace_boarding_house_facilities: {
         Args: { target_facility_ids: number[]; target_id: string }
@@ -710,6 +795,7 @@ export type Database = {
       listing_status: "draft" | "pending" | "approved" | "rejected" | "archived"
       report_status: "open" | "resolved" | "dismissed"
       report_target_type: "listing" | "review"
+      review_moderation_action: "hidden" | "restored"
       review_status: "published" | "hidden"
       room_type: "bedspace" | "shared_room" | "private_room" | "studio"
     }
@@ -843,6 +929,7 @@ export const Constants = {
       listing_status: ["draft", "pending", "approved", "rejected", "archived"],
       report_status: ["open", "resolved", "dismissed"],
       report_target_type: ["listing", "review"],
+      review_moderation_action: ["hidden", "restored"],
       review_status: ["published", "hidden"],
       room_type: ["bedspace", "shared_room", "private_room", "studio"],
     },

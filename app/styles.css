@@ -845,6 +845,27 @@ a:focus-visible {
   margin: 0.25rem 0 0;
 }
 
+.admin-review-list {
+  display: grid;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.admin-review-card h2 {
+  margin: 0.4rem 0 0;
+  font-size: 1.2rem;
+}
+
+.review-moderation-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.status-published { color: #165d3a; background: #eaf7ef; }
+.status-hidden { color: #7d251e; background: #fff0ee; }
+
 .detail-content h2,
 .contact-card h2 {
   margin-top: 0;
@@ -934,4 +955,5 @@ a:focus-visible {
   .reviews-heading { align-items: flex-start; }
   .moderation-detail-layout { grid-template-columns: 1fr; }
   .moderation-controls { position: static; }
+  .review-moderation-actions { align-items: stretch; flex-direction: column; }
 }
