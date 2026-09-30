@@ -73,6 +73,8 @@ The core listing lifecycle is now established by the listing-foundation migratio
 
 Policies follow deny-by-default rules. The browser never receives a service-role credential. Role checks based only on client state are insufficient. Admin assignment cannot be self-selected during registration; a restricted, idempotent database function is executable only by a privileged PostgreSQL operator.
 
+Password recovery uses Supabase's PKCE email flow and the allow-listed application callback. Recovery requests return the same response whether an account exists or not. Only an authenticated recovery session may reach the password-update form, and a successful change revokes refresh-token sessions before requiring a new login. See [ADR 0020](decisions/0020-password-recovery.md).
+
 ## Location and distance
 
 Every listing stores latitude and longitude. Version 0.1 stores one configured university coordinate and computes approximate straight-line distance using the Haversine formula. This supports consistent filtering without GPS tracking or route-provider dependence. Display text must label the value as approximate; travel time and road distance are out of scope.

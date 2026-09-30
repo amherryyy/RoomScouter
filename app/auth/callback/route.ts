@@ -2,8 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createServerSupabaseClient } from "../../../src/lib/supabase/server";
 
 function getSafeNextPath(value: string | null): string {
-  if (!value || !value.startsWith("/") || value.startsWith("//")) return "/account";
-  return value;
+  return value === "/update-password" ? value : "/account";
 }
 
 export async function GET(request: NextRequest) {
@@ -27,8 +26,8 @@ export async function GET(request: NextRequest) {
   }
 
   const failure = request.nextUrl.clone();
-  failure.pathname = "/login";
+  failure.pathname = nextPath === "/update-password" ? "/forgot-password" : "/login";
   failure.search = "";
-  failure.searchParams.set("error", "The confirmation link is invalid or has expired.");
+  failure.searchParams.set("error", "The authentication link is invalid or has expired.");
   return NextResponse.redirect(failure);
 }

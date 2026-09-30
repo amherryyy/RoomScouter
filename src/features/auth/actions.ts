@@ -20,13 +20,17 @@ function getRegistrationErrorMessage(code: string | undefined): string {
   return "Registration could not be completed.";
 }
 
-function getAuthCallbackUrl(origin: string | null): string | null {
-  if (!origin) return null;
+function getAuthCallbackUrl(origin: string | null, nextPath: "/account" | "/update-password"): string | null {
+  const configuredOrigin = process.env.ROOMSCOUTER_SITE_URL?.trim();
+  const candidate = configuredOrigin || origin;
+  if (!candidate) return null;
 
   try {
-    const parsedOrigin = new URL(origin);
+    const parsedOrigin = new URL(candidate);
     if (parsedOrigin.protocol !== "http:" && parsedOrigin.protocol !== "https:") return null;
-    return new URL("/auth/callback?next=/account", parsedOrigin.origin).toString();
+    const callback = new URL("/auth/callback", parsedOrigin.origin);
+    callback.searchParams.set("next", nextPath);
+    return callback.toString();
   } catch {
     return null;
   }
@@ -59,7 +63,7 @@ export async function register(formData: FormData): Promise<never> {
   }
 
   const requestHeaders = await headers();
-  const emailRedirectTo = getAuthCallbackUrl(requestHeaders.get("origin"));
+  const emailRedirectTo = getAuthCallbackUrl(requestHeaders.get("origin"), "/account");
   if (!emailRedirectTo) authError("/register", "Registration could not be completed.");
 
   const supabase = await createServerSupabaseClient();
@@ -74,6 +78,41 @@ export async function register(formData: FormData): Promise<never> {
   if (error) authError("/register", getRegistrationErrorMessage(error.code));
 
   redirect(`/login?message=${encodeURIComponent("Check your email to confirm your account, then log in.")}`);
+}
+
+export async function requestPasswordReset(formData: FormData): Promise<never> {
+  const email = parseRequiredText(formData.get("email"), 254);
+  if (!email || !email.includes("@")) authError("/forgot-password", "Enter a valid email address.");
+
+  const requestHeaders = await headers();
+  const redirectTo = getAuthCallbackUrl(requestHeaders.get("origin"), "/update-password");
+  if (!redirectTo) authError("/forgot-password", "Password recovery is temporarily unavailable.");
+
+  const supabase = await createServerSupabaseClient();
+  await supabase.auth.resetPasswordForEmail(email, { redirectTo });
+
+  redirect(`/forgot-password?message=${encodeURIComponent(
+    "If an account exists for that email, a recovery link has been sent. If it does not arrive, wait a few minutes before trying again.",
+  )}`);
+}
+
+export async function updatePassword(formData: FormData): Promise<never> {
+  const password = parsePassword(formData.get("password"));
+  const confirmation = formData.get("passwordConfirmation");
+  if (!password || confirmation !== password) {
+    authError("/update-password", "Use 8 to 128 characters and enter the same password twice.");
+  }
+
+  const supabase = await createServerSupabaseClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) authError("/forgot-password", "Request a new password recovery link.");
+
+  const { error } = await supabase.auth.updateUser({ password });
+  if (error) authError("/update-password", "The password could not be updated. Request a new recovery link.");
+
+  await supabase.auth.signOut({ scope: "global" });
+  revalidatePath("/", "layout");
+  redirect(`/login?message=${encodeURIComponent("Password updated. Log in with your new password.")}`);
 }
 
 export async function logout(): Promise<never> {
