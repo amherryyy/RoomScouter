@@ -106,7 +106,7 @@ export default async function PublicListingPage({ params, searchParams }: Public
   const reportReviewAction = reportReview.bind(null, id);
 
   return (
-    <main className="public-detail-shell">
+    <main className="public-detail-shell" id="main-content" tabIndex={-1}>
       <header className="public-header">
         <Link className="wordmark" href="/">RoomScouter</Link>
         <nav aria-label="Listing navigation"><Link href="/">Back to search</Link></nav>
@@ -171,13 +171,13 @@ export default async function PublicListingPage({ params, searchParams }: Public
           ) : !user ? <p><Link href="/login">Log in as a student to save this listing</Link></p> : null}
           <h2>Location and contact</h2>
           <p>{listing.address_line}</p>
-          <p><a href={mapUrl} target="_blank" rel="noreferrer">View exact pin on OpenStreetMap</a></p>
+          <p><a href={mapUrl} target="_blank" rel="noreferrer">View exact pin on OpenStreetMap<span className="visually-hidden"> (opens in a new tab)</span></a></p>
           <hr />
           <p><strong>{listing.contact_name}</strong></p>
           {listing.contact_phone ? <p><a href={`tel:${listing.contact_phone}`}>{listing.contact_phone}</a></p> : null}
           {listing.contact_email ? <p><a href={`mailto:${listing.contact_email}`}>{listing.contact_email}</a></p> : null}
           <p className="field-help">Contact the owner directly. RoomScouter does not process reservations or payments.</p>
-          {profile?.role === "student" ? <ReportForm label="Report this listing" action={reportListingAction} /> : null}
+          {profile?.role === "student" ? <ReportForm id={`listing-${id}`} label="Report this listing" action={reportListingAction} /> : null}
         </aside>
       </div>
 

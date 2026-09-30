@@ -34,7 +34,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
   const total = count ?? 0;
 
   return (
-    <main className="workspace-shell">
+    <main className="workspace-shell" id="main-content" tabIndex={-1}>
       <header className="workspace-heading">
         <div>
           <p className="eyebrow">Private submissions</p>

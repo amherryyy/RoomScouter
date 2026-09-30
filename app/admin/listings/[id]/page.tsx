@@ -41,7 +41,7 @@ export default async function AdminListingPage({ params, searchParams }: AdminLi
   const { error, message } = await searchParams;
 
   return (
-    <main className="workspace-shell moderation-detail">
+    <main className="workspace-shell moderation-detail" id="main-content" tabIndex={-1}>
       <header className="detail-heading">
         <div>
           <p className="eyebrow">Administrator review</p>

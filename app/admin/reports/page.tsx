@@ -36,7 +36,7 @@ export default async function AdminReportsPage({ searchParams }: AdminReportsPag
   const total = count ?? 0;
 
   return (
-    <main className="workspace-shell">
+    <main className="workspace-shell" id="main-content" tabIndex={-1}>
       <header className="workspace-heading">
         <div>
           <p className="eyebrow">Administrator workspace</p>
@@ -52,9 +52,9 @@ export default async function AdminReportsPage({ searchParams }: AdminReportsPag
       {params.message ? <p className="notice success" role="status">{params.message}</p> : null}
 
       <nav className="moderation-tabs" aria-label="Report queues">
-        <Link className={state === "open" ? "active" : ""} href="/admin/reports?state=open">Open</Link>
-        <Link className={state === "resolved" ? "active" : ""} href="/admin/reports?state=resolved">Resolved</Link>
-        <Link className={state === "dismissed" ? "active" : ""} href="/admin/reports?state=dismissed">Dismissed</Link>
+        <Link aria-current={state === "open" ? "page" : undefined} className={state === "open" ? "active" : ""} href="/admin/reports?state=open">Open</Link>
+        <Link aria-current={state === "resolved" ? "page" : undefined} className={state === "resolved" ? "active" : ""} href="/admin/reports?state=resolved">Resolved</Link>
+        <Link aria-current={state === "dismissed" ? "page" : undefined} className={state === "dismissed" ? "active" : ""} href="/admin/reports?state=dismissed">Dismissed</Link>
       </nav>
 
       {reports?.length ? (

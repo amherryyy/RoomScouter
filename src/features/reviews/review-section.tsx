@@ -99,7 +99,7 @@ export function ReviewSection({
               <p>{review.comment}</p>
               <span className="field-help">Verified RoomScouter student account</span>
               {isStudent && review.id !== ownReview?.id ? (
-                <ReportForm label="Report this review" action={reportAction.bind(null, review.id)} />
+                <ReportForm id={`review-${review.id}`} label="Report this review" action={reportAction.bind(null, review.id)} />
               ) : null}
             </article>
           ))}

@@ -29,7 +29,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const total = count ?? 0;
 
   return (
-    <main className="workspace-shell">
+    <main className="workspace-shell" id="main-content" tabIndex={-1}>
       <header className="workspace-heading">
         <div>
           <p className="eyebrow">Administrator workspace</p>
@@ -44,8 +44,8 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
       </header>
 
       <nav className="moderation-tabs" aria-label="Listing moderation queues">
-        <Link className={state === "pending" ? "active" : ""} href="/admin?state=pending">Pending review</Link>
-        <Link className={state === "approved" ? "active" : ""} href="/admin?state=approved">Published listings</Link>
+        <Link aria-current={state === "pending" ? "page" : undefined} className={state === "pending" ? "active" : ""} href="/admin?state=pending">Pending review</Link>
+        <Link aria-current={state === "approved" ? "page" : undefined} className={state === "approved" ? "active" : ""} href="/admin?state=approved">Published listings</Link>
       </nav>
 
       {listings?.length ? (

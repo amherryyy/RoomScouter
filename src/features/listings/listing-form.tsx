@@ -55,14 +55,14 @@ export function ListingForm({ action, listing, submitLabel }: ListingFormProps) 
         <div className="form-grid">
           <div>
             <label htmlFor="contactPhone">Phone</label>
-            <input id="contactPhone" name="contactPhone" type="tel" defaultValue={listing?.contact_phone ?? ""} maxLength={30} />
+            <input id="contactPhone" name="contactPhone" type="tel" autoComplete="tel" defaultValue={listing?.contact_phone ?? ""} maxLength={30} aria-describedby="contact-help" />
           </div>
           <div>
             <label htmlFor="contactEmail">Email</label>
-            <input id="contactEmail" name="contactEmail" type="email" defaultValue={listing?.contact_email ?? ""} maxLength={254} />
+            <input id="contactEmail" name="contactEmail" type="email" autoComplete="email" defaultValue={listing?.contact_email ?? ""} maxLength={254} aria-describedby="contact-help" />
           </div>
         </div>
-        <p className="field-help">Provide at least one contact method. It becomes public only with an approved listing.</p>
+        <p className="field-help" id="contact-help">Provide at least one contact method. It becomes public only with an approved listing.</p>
       </fieldset>
 
       <fieldset>
@@ -70,14 +70,14 @@ export function ListingForm({ action, listing, submitLabel }: ListingFormProps) 
         <div className="form-grid">
           <div>
             <label htmlFor="latitude">Latitude</label>
-            <input id="latitude" name="latitude" type="number" defaultValue={listing?.latitude} min="-90" max="90" step="0.000001" required />
+            <input id="latitude" name="latitude" type="number" defaultValue={listing?.latitude} min="-90" max="90" step="0.000001" aria-describedby="map-help" required />
           </div>
           <div>
             <label htmlFor="longitude">Longitude</label>
-            <input id="longitude" name="longitude" type="number" defaultValue={listing?.longitude} min="-180" max="180" step="0.000001" required />
+            <input id="longitude" name="longitude" type="number" defaultValue={listing?.longitude} min="-180" max="180" step="0.000001" aria-describedby="map-help" required />
           </div>
         </div>
-        <p className="field-help">Use the boarding house location, not your personal home address.</p>
+        <p className="field-help" id="map-help">Use the boarding house location, not your personal home address.</p>
       </fieldset>
 
       <button type="submit">{submitLabel}</button>

@@ -95,6 +95,7 @@ Public Supabase URL and anonymous key may be exposed through approved public env
 - Ephemeral PostgreSQL tests apply the real migrations and prove grants, triggers, constraints, and RLS behavior for visitor, student, owner, and admin actors.
 - Integration tests cover server-side commands and query composition.
 - End-to-end tests cover the owner-submit, admin-approve, and student-discover flows.
+- Accessibility contract tests protect landmarks, feedback semantics, form guidance, focus, and narrow-layout behavior; the pilot checklist adds keyboard, zoom, and forced-colors review.
 - Flower validation and security checks guard framework contracts and repository policy.
 
 ## Implementation sequence

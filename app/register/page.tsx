@@ -9,7 +9,7 @@ export default async function RegisterPage({ searchParams }: RegisterPageProps) 
   const { error } = await searchParams;
 
   return (
-    <main className="auth-shell">
+    <main className="auth-shell" id="main-content" tabIndex={-1}>
       <section className="auth-card" aria-labelledby="register-title">
         <p className="eyebrow">Join the pilot</p>
         <h1 id="register-title">Create an account</h1>
@@ -21,7 +21,8 @@ export default async function RegisterPage({ searchParams }: RegisterPageProps) 
           <label htmlFor="email">Email address</label>
           <input id="email" name="email" type="email" autoComplete="email" required />
           <label htmlFor="password">Password</label>
-          <input id="password" name="password" type="password" autoComplete="new-password" minLength={8} required />
+          <input id="password" name="password" type="password" autoComplete="new-password" minLength={8} aria-describedby="password-help" required />
+          <p className="field-help" id="password-help">Use at least eight characters.</p>
           <label htmlFor="role">I am a</label>
           <select id="role" name="role" defaultValue="student" required>
             <option value="student">Student looking for a place</option>

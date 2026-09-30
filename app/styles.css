@@ -5,8 +5,45 @@
   background: #f4f7f3;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
+  line-height: 1.5;
+}
+
+img {
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+p,
+li,
+dd {
+  overflow-wrap: anywhere;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 1000;
+  top: 0.75rem;
+  left: 0.75rem;
+  transform: translateY(-200%);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  color: white;
+  background: #18221d;
+  font-weight: 800;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
 }
 
 a {
@@ -114,8 +151,20 @@ select:focus-visible,
 textarea:focus-visible,
 button:focus-visible,
 a:focus-visible {
-  outline: 3px solid #e0a526;
+  outline: 3px solid #7a4f00;
   outline-offset: 3px;
+}
+
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+fieldset {
+  min-inline-size: 0;
 }
 
 .notice {
@@ -181,6 +230,12 @@ a:focus-visible {
 .narrow-workspace h1 {
   margin: 0.5rem 0;
   font-size: clamp(2.25rem, 6vw, 4rem);
+}
+
+.workspace-heading > *,
+.listing-card-heading > *,
+.detail-heading > * {
+  min-width: 0;
 }
 
 .listing-grid {
@@ -771,6 +826,7 @@ a:focus-visible {
 
 .moderation-tabs {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
   margin: 2rem 0;
   border-bottom: 1px solid #d8e0da;
@@ -786,6 +842,12 @@ a:focus-visible {
 .moderation-tabs a.active {
   border-bottom: 3px solid #246b48;
   color: #18221d;
+}
+
+.moderation-tabs a[aria-current="page"] {
+  text-decoration: underline;
+  text-decoration-thickness: 0.15em;
+  text-underline-offset: 0.3em;
 }
 
 .moderation-detail {
@@ -967,6 +1029,10 @@ a:focus-visible {
   .detail-heading,
   .results-heading { align-items: flex-start; flex-direction: column; }
   .public-header { margin-bottom: 2.5rem; }
+  .public-header nav,
+  .workspace-heading .actions { width: 100%; flex-wrap: wrap; }
+  .public-header nav .button,
+  .workspace-heading .actions .button { flex: 1 1 10rem; }
   .discovery-filters,
   .discovery-grid,
   .detail-layout,
@@ -981,4 +1047,20 @@ a:focus-visible {
   .moderation-controls { position: static; }
   .review-moderation-actions { align-items: stretch; flex-direction: column; }
   .report-resolution-grid { grid-template-columns: 1fr; }
+  .pagination { grid-template-columns: 1fr; text-align: center; }
+  .pagination > :last-child { justify-self: stretch; }
+  .pagination .button { width: 100%; }
+}
+
+@media (forced-colors: active) {
+  .status,
+  .notice,
+  .fact-row span,
+  .tag-list li {
+    border: 1px solid CanvasText;
+  }
+
+  .moderation-tabs a[aria-current="page"] {
+    border-color: Highlight;
+  }
 }
