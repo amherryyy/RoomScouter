@@ -34,10 +34,19 @@ export async function loadDiscovery(filters: DiscoveryFilters, university: Unive
       .eq("position", 1)
     : { data: [] };
   const covers = new Map<string, { altText: string; signedUrl: string }>();
-  await Promise.all((coverPhotos ?? []).map(async (photo) => {
-    const { data } = await supabase.storage.from("listing-photos").createSignedUrl(photo.object_path, 60 * 60);
-    if (data?.signedUrl) covers.set(photo.boarding_house_id, { altText: photo.alt_text, signedUrl: data.signedUrl });
-  }));
+  const photos = coverPhotos ?? [];
+  if (photos.length) {
+    const { data: signedPhotos } = await supabase.storage
+      .from("listing-photos")
+      .createSignedUrls(photos.map((photo) => photo.object_path), 60 * 60);
+    const signedUrls = new Map(
+      (signedPhotos ?? []).flatMap((photo) => photo.signedUrl ? [[photo.path, photo.signedUrl] as const] : []),
+    );
+    photos.forEach((photo) => {
+      const signedUrl = signedUrls.get(photo.object_path);
+      if (signedUrl) covers.set(photo.boarding_house_id, { altText: photo.alt_text, signedUrl });
+    });
+  }
 
   return {
     results: rows.map((listing) => ({ ...listing, cover: covers.get(listing.id) ?? null })),
