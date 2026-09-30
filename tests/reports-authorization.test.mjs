@@ -157,4 +157,73 @@ test("reports are private, student-owned, and target only public content", async
       { target_type: "review", status: "open" },
     ]);
   });
+
+  await t.test("only administrators resolve or dismiss open reports", async () => {
+    const reportRows = await actAs(database, "authenticated", userIds.admin, () =>
+      database.query("select id, target_type from public.reports order by target_type"),
+    );
+    const listingReportId = reportRows.rows.find((report) => report.target_type === "listing").id;
+    const reviewReportId = reportRows.rows.find((report) => report.target_type === "review").id;
+
+    await assert.rejects(
+      actAs(database, "authenticated", userIds.student, () =>
+        database.query(
+          "select public.resolve_report($1, 'resolved', 'Address corrected by the owner.')",
+          [listingReportId],
+        ),
+      ),
+      /Only administrators/i,
+    );
+    await assert.rejects(
+      actAs(database, "authenticated", userIds.admin, () =>
+        database.query("select public.resolve_report($1, 'open', 'Invalid outcome.')", [listingReportId]),
+      ),
+      /only be resolved or dismissed/i,
+    );
+
+    await actAs(database, "authenticated", userIds.admin, () =>
+      database.query(
+        "select public.resolve_report($1, 'resolved', '  Address corrected by the owner.  ')",
+        [listingReportId],
+      ),
+    );
+    await actAs(database, "authenticated", userIds.admin, () =>
+      database.query(
+        "select public.resolve_report($1, 'dismissed', 'Review does not violate community rules.')",
+        [reviewReportId],
+      ),
+    );
+
+    const outcomes = await actAs(database, "authenticated", userIds.admin, () =>
+      database.query(
+        `select target_type, status, resolved_by, resolved_at is not null as has_resolved_at, resolution_note
+         from public.reports order by target_type`,
+      ),
+    );
+    assert.deepEqual(outcomes.rows, [
+      {
+        target_type: "listing",
+        status: "resolved",
+        resolved_by: userIds.admin,
+        has_resolved_at: true,
+        resolution_note: "Address corrected by the owner.",
+      },
+      {
+        target_type: "review",
+        status: "dismissed",
+        resolved_by: userIds.admin,
+        has_resolved_at: true,
+        resolution_note: "Review does not violate community rules.",
+      },
+    ]);
+    await assert.rejects(
+      actAs(database, "authenticated", userIds.admin, () =>
+        database.query(
+          "select public.resolve_report($1, 'dismissed', 'Trying to replace the outcome.')",
+          [listingReportId],
+        ),
+      ),
+      /Only open reports/i,
+    );
+  });
 });

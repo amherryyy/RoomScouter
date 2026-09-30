@@ -866,6 +866,30 @@ a:focus-visible {
 .status-published { color: #165d3a; background: #eaf7ef; }
 .status-hidden { color: #7d251e; background: #fff0ee; }
 
+.admin-report-card {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.reported-review,
+.report-outcome {
+  margin: 0;
+  border-left: 4px solid #aebbb2;
+  padding: 1rem;
+  background: #f4f7f3;
+}
+
+.reported-review p,
+.report-outcome p {
+  margin: 0.5rem 0;
+}
+
+.report-resolution-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
 .detail-content h2,
 .contact-card h2 {
   margin-top: 0;
@@ -956,4 +980,5 @@ a:focus-visible {
   .moderation-detail-layout { grid-template-columns: 1fr; }
   .moderation-controls { position: static; }
   .review-moderation-actions { align-items: stretch; flex-direction: column; }
+  .report-resolution-grid { grid-template-columns: 1fr; }
 }
