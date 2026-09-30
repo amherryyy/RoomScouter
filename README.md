@@ -37,6 +37,8 @@ npm.cmd run build
 
 Never commit `.env.local` or Supabase service-role credentials.
 
+For a repeatable local demonstration with fictional student, owner, administrator, listing, review, favorite, and report data, follow [the local demo-data guide](docs/demo-data.md). The seed command is restricted to the loopback Supabase stack and cannot target the linked hosted project.
+
 ## Supabase identity setup
 
 The identity foundation requires a Supabase project before registration can run:
