@@ -98,6 +98,8 @@ Public Supabase URL and anonymous key may be exposed through approved public env
 - Accessibility contract tests protect landmarks, feedback semantics, form guidance, focus, and narrow-layout behavior; the pilot checklist adds keyboard, zoom, and forced-colors review.
 - Flower validation and security checks guard framework contracts and repository policy.
 
+Local demonstrations use an explicit guarded seed command rather than migration or automatic reset data. It accepts credentials only from the loopback Supabase stack, recreates fixed fictional scenarios, and cannot target the linked hosted project.
+
 ## Implementation sequence
 
 Identity, administrator provisioning, listing data, owner workflows, public discovery, community actions, and the core administration workflows are complete. Listing moderation, review moderation, and report resolution use admin-only workspaces backed by transactional database commands. Pilot hardening is the next delivery milestone.
