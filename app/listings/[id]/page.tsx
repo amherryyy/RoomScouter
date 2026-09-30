@@ -6,6 +6,8 @@ import { addFavorite, removeFavorite } from "../../../src/features/favorites/act
 import { isUuid } from "../../../src/features/listings/model";
 import { deleteReview, saveReview } from "../../../src/features/reviews/actions";
 import { ReviewSection } from "../../../src/features/reviews/review-section";
+import { reportListing, reportReview } from "../../../src/features/reports/actions";
+import { ReportForm } from "../../../src/features/reports/report-form";
 import { createServerSupabaseClient } from "../../../src/lib/supabase/server";
 
 const currency = new Intl.NumberFormat("en-PH", { style: "currency", currency: "PHP", maximumFractionDigits: 0 });
@@ -100,6 +102,8 @@ export default async function PublicListingPage({ params, searchParams }: Public
     : Number(reviewSummary.average_rating);
   const saveReviewAction = saveReview.bind(null, id);
   const deleteReviewAction = deleteReview.bind(null, id);
+  const reportListingAction = reportListing.bind(null, id);
+  const reportReviewAction = reportReview.bind(null, id);
 
   return (
     <main className="public-detail-shell">
@@ -173,6 +177,7 @@ export default async function PublicListingPage({ params, searchParams }: Public
           {listing.contact_phone ? <p><a href={`tel:${listing.contact_phone}`}>{listing.contact_phone}</a></p> : null}
           {listing.contact_email ? <p><a href={`mailto:${listing.contact_email}`}>{listing.contact_email}</a></p> : null}
           <p className="field-help">Contact the owner directly. RoomScouter does not process reservations or payments.</p>
+          {profile?.role === "student" ? <ReportForm label="Report this listing" action={reportListingAction} /> : null}
         </aside>
       </div>
 
@@ -188,6 +193,7 @@ export default async function PublicListingPage({ params, searchParams }: Public
         listingId={id}
         saveAction={saveReviewAction}
         deleteAction={deleteReviewAction}
+        reportAction={reportReviewAction}
       />
     </main>
   );
