@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { SubmitButton } from "../../src/components/submit-button";
 import { updatePassword } from "../../src/features/auth/actions";
 import { createServerSupabaseClient } from "../../src/lib/supabase/server";
 
@@ -24,7 +25,7 @@ export default async function UpdatePasswordPage({ searchParams }: UpdatePasswor
           <input id="password" name="password" type="password" autoComplete="new-password" minLength={8} maxLength={128} required />
           <label htmlFor="passwordConfirmation">Confirm new password</label>
           <input id="passwordConfirmation" name="passwordConfirmation" type="password" autoComplete="new-password" minLength={8} maxLength={128} required />
-          <button type="submit">Update password</button>
+          <SubmitButton pendingLabel="Updating password…">Update password</SubmitButton>
         </form>
       </section>
     </main>

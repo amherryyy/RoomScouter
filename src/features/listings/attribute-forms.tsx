@@ -1,3 +1,5 @@
+import { SubmitButton } from "../../components/submit-button";
+
 type CatalogItem = { id: number; name: string };
 type UtilitySelection = { utility_id: number; is_included: boolean; details: string | null };
 type HouseRule = { id: string; rule_text: string; position: number };
@@ -52,7 +54,7 @@ export function AttributeForms({
             ))}
           </div>
         </fieldset>
-        <button type="submit" className="secondary">Save facilities</button>
+        <SubmitButton pendingLabel="Saving facilities…" className="secondary">Save facilities</SubmitButton>
       </form>
 
       <form action={utilityAction} className="attribute-card">
@@ -81,7 +83,7 @@ export function AttributeForms({
             })}
           </div>
         </fieldset>
-        <button type="submit" className="secondary">Save utilities</button>
+        <SubmitButton pendingLabel="Saving utilities…" className="secondary">Save utilities</SubmitButton>
       </form>
 
       <form action={ruleAction} className="attribute-card">
@@ -97,7 +99,7 @@ export function AttributeForms({
             ))}
           </ol>
         </fieldset>
-        <button type="submit" className="secondary">Save house rules</button>
+        <SubmitButton pendingLabel="Saving house rules…" className="secondary">Save house rules</SubmitButton>
       </form>
     </section>
   );

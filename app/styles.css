@@ -163,6 +163,60 @@ textarea:disabled {
   opacity: 0.6;
 }
 
+.skeleton-page {
+  max-width: 76rem;
+}
+
+.skeleton-line,
+.skeleton-input,
+.skeleton-panel {
+  background: linear-gradient(90deg, #e3e9e4 25%, #f2f5f2 50%, #e3e9e4 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+.skeleton-line {
+  height: 1rem;
+  border-radius: 999px;
+}
+
+.skeleton-eyebrow { width: 8rem; }
+.skeleton-title { width: min(34rem, 85%); height: 3.5rem; margin-top: 1.25rem; }
+.skeleton-copy { width: min(42rem, 100%); margin-top: 1.25rem; }
+
+.skeleton-card-grid,
+.skeleton-detail-layout {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 3rem;
+}
+
+.skeleton-panel {
+  min-height: 15rem;
+  border: 1px solid #d8e0da;
+  border-radius: 1rem;
+}
+
+.skeleton-detail-layout { grid-template-columns: minmax(0, 2fr) minmax(18rem, 1fr); }
+.skeleton-detail-body { min-height: 34rem; }
+.skeleton-detail-side { min-height: 22rem; }
+.skeleton-form-panel { max-width: 48rem; margin-top: 3rem; padding: 1.5rem; }
+.skeleton-field + .skeleton-field { margin-top: 1.25rem; }
+.skeleton-label { width: 8rem; }
+.skeleton-input { height: 2.75rem; margin-top: 0.5rem; border-radius: 0.55rem; }
+
+@keyframes skeleton-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-line,
+  .skeleton-input,
+  .skeleton-panel { animation: none; }
+}
+
 fieldset {
   min-inline-size: 0;
 }
@@ -1035,6 +1089,8 @@ fieldset {
   .workspace-heading .actions .button { flex: 1 1 10rem; }
   .discovery-filters,
   .discovery-grid,
+  .skeleton-card-grid,
+  .skeleton-detail-layout,
   .detail-layout,
   .public-photo-grid { grid-template-columns: 1fr; }
   .discovery-filters .search-field { grid-column: auto; }
@@ -1062,5 +1118,12 @@ fieldset {
 
   .moderation-tabs a[aria-current="page"] {
     border-color: Highlight;
+  }
+
+  .skeleton-line,
+  .skeleton-input,
+  .skeleton-panel {
+    border: 1px solid CanvasText;
+    background: Canvas;
   }
 }

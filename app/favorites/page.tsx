@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SubmitButton } from "../../src/components/submit-button";
 import { ROOM_TYPE_LABELS } from "../../src/features/discovery/model";
 import { removeFavorite } from "../../src/features/favorites/actions";
 import { requireStudent } from "../../src/features/students/access";
@@ -55,7 +56,7 @@ export default async function FavoritesPage({ searchParams }: FavoritesPageProps
                 <div className="saved-listing-actions">
                   <Link href={`/listings/${listing.id}`}>View details</Link>
                   <form action={removeFavorite.bind(null, listing.id)}>
-                    <button type="submit" className="secondary">Remove</button>
+                    <SubmitButton pendingLabel="Removing…" className="secondary">Remove</SubmitButton>
                   </form>
                 </div>
               </article>

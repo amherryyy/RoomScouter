@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SubmitButton } from "../../src/components/submit-button";
 import { requestPasswordReset } from "../../src/features/auth/actions";
 
 type ForgotPasswordPageProps = {
@@ -19,7 +20,7 @@ export default async function ForgotPasswordPage({ searchParams }: ForgotPasswor
         <form action={requestPasswordReset}>
           <label htmlFor="email">Email address</label>
           <input id="email" name="email" type="email" autoComplete="email" required />
-          <button type="submit">Send recovery link</button>
+          <SubmitButton pendingLabel="Sending recovery link…">Send recovery link</SubmitButton>
         </form>
         <p className="auth-switch"><Link href="/login">Return to login</Link>.</p>
       </section>

@@ -13,6 +13,8 @@ RoomScouter's pilot interface targets keyboard, screen-reader, high-contrast, zo
 - Status chips remain distinguishable by text and receive borders in forced-colors mode.
 - Layouts collapse at 40rem, navigation actions wrap, and pagination becomes a vertical touch-friendly control at narrow widths.
 - Images have meaningful alternative text; external map navigation announces that it opens a new tab.
+- Route transitions announce a concise loading status while decorative skeleton shapes stay hidden from assistive technology.
+- Server-action buttons announce task-specific progress and disable during submission to prevent duplicate writes.
 
 ## Manual pilot check
 
@@ -24,3 +26,5 @@ Before a demonstration or deployment, verify these flows at 360px width, 200% br
 4. Approve or reject a listing, hide or restore a review, and resolve or dismiss a report.
 
 Confirm that focus remains visible, the skip link reaches the main content, no horizontal page scrolling is required, validation guidance is announced, and every action remains reachable without a pointer.
+
+Skeleton animation must stop when reduced motion is requested and remain distinguishable in Windows High Contrast mode.

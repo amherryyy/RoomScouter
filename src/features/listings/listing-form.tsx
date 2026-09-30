@@ -1,4 +1,5 @@
 import type { Database } from "../../lib/supabase/database.types";
+import { SubmitButton } from "../../components/submit-button";
 import { roomTypes } from "./model";
 
 type Listing = Database["public"]["Tables"]["boarding_houses"]["Row"];
@@ -80,7 +81,7 @@ export function ListingForm({ action, listing, submitLabel }: ListingFormProps) 
         <p className="field-help" id="map-help">Use the boarding house location, not your personal home address.</p>
       </fieldset>
 
-      <button type="submit">{submitLabel}</button>
+      <SubmitButton pendingLabel="Saving listing…">{submitLabel}</SubmitButton>
     </form>
   );
 }

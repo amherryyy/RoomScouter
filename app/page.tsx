@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Form from "next/form";
+import { SubmitButton } from "../src/components/submit-button";
 import { loadDiscovery } from "../src/features/discovery/queries";
 import {
   DISCOVERY_PAGE_SIZE,
@@ -40,7 +42,7 @@ export default async function Home({ searchParams }: HomePageProps) {
         <p className="lede">Search approved listings and compare rent, availability, facilities, utilities, and location.</p>
       </section>
 
-      <form className="discovery-filters" method="get" aria-label="Filter boarding houses">
+      <Form className="discovery-filters" action="/" aria-label="Filter boarding houses">
         <div className="search-field">
           <label htmlFor="q">Search by name, address, or description</label>
           <input id="q" name="q" defaultValue={filters.query} maxLength={120} placeholder="Try a street or neighborhood" />
@@ -84,10 +86,10 @@ export default async function Home({ searchParams }: HomePageProps) {
           </div>
         ) : null}
         <div className="filter-actions">
-          <button type="submit">Show listings</button>
+          <SubmitButton pendingLabel="Searching…">Show listings</SubmitButton>
           <Link className="button secondary" href="/">Clear</Link>
         </div>
-      </form>
+      </Form>
 
       <div className="results-heading" aria-live="polite">
         <div>

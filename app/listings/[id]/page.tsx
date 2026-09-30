@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { SubmitButton } from "../../../src/components/submit-button";
 import { ROOM_TYPE_LABELS } from "../../../src/features/discovery/model";
 import { approximateDistanceKm, getUniversityConfig } from "../../../src/features/discovery/university";
 import { addFavorite, removeFavorite } from "../../../src/features/favorites/actions";
@@ -164,9 +165,12 @@ export default async function PublicListingPage({ params, searchParams }: Public
         <aside className="contact-card">
           {profile?.role === "student" ? (
             <form action={favorite ? removeFavorite.bind(null, id) : addFavorite.bind(null, id)}>
-              <button className={favorite ? "secondary favorite-button" : "favorite-button"} type="submit">
+              <SubmitButton
+                className={favorite ? "secondary favorite-button" : "favorite-button"}
+                pendingLabel={favorite ? "Removing saved listing…" : "Saving listing…"}
+              >
                 {favorite ? "Remove from saved listings" : "Save listing"}
-              </button>
+              </SubmitButton>
             </form>
           ) : !user ? <p><Link href="/login">Log in as a student to save this listing</Link></p> : null}
           <h2>Location and contact</h2>
