@@ -16,6 +16,8 @@ Version 0.1 must prove five things:
 
 The complete scope is defined in [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md), functional requirements in [docs/requirements.md](docs/requirements.md), and technical boundaries in [docs/architecture.md](docs/architecture.md). Findings discovered while using Flower are recorded in [docs/pilot-findings.md](docs/pilot-findings.md).
 
+The team's initial visual direction is mapped to working routes and product boundaries in the [UI design handoff](docs/ui-handoff.md). Preview pages are explicitly labeled when their supporting feature has not been implemented.
+
 ## Local development
 
 ```powershell
