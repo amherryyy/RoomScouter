@@ -7,8 +7,8 @@ This document connects the team's initial RoomScouter wireframe to the working p
 | Wireframe screen | Current route | State |
 | --- | --- | --- |
 | Landing and student browse | `/` | Working; the pilot combines landing, search, filters, and results. |
-| Login | `/login` | Working. |
-| Registration | `/register` | Working for student and owner roles. |
+| Login and account recovery | `/login`, `/forgot-password`, `/update-password` | Working with a shared responsive authentication layout. |
+| Registration | `/register` | Working for student and owner roles with the shared authentication layout. |
 | Property details | `/listings/[id]` | Working for approved, available listings. |
 | Map view | `/map` | Preview only; clearly marked under construction. |
 | Favorites | `/favorites` | Working for signed-in students. |
