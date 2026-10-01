@@ -191,7 +191,17 @@ export async function uploadListingPhoto(listingId: string, formData: FormData):
   const { error: uploadError } = await supabase.storage
     .from(PHOTO_BUCKET)
     .upload(objectPath, file, { contentType: file.type, upsert: false });
-  if (uploadError) actionError(path, "The photo could not be uploaded.");
+  if (uploadError) {
+    console.error("Listing photo upload was rejected by Supabase Storage.", {
+      listingId,
+      ownerId: user.id,
+      objectPath,
+      mediaType: file.type,
+      byteSize: file.size,
+      error: uploadError.message,
+    });
+    actionError(path, "Storage rejected the photo. Refresh the page, sign in again, and retry.");
+  }
 
   const { error: metadataError } = await supabase.from("listing_photos").insert({
     boarding_house_id: listingId,

@@ -83,6 +83,7 @@ test("manages private listing photos through guarded server actions", async () =
   assert.match(actions, /MAX_PHOTO_BYTES = 10 \* 1024 \* 1024/);
   assert.match(actions, /PHOTO_EXTENSIONS/);
   assert.match(actions, /\.upload\(objectPath, file/);
+  assert.match(actions, /Listing photo upload was rejected by Supabase Storage/);
   assert.match(actions, /\.remove\(\[objectPath\]\)/);
   assert.match(actions, /occupiedPositions/);
   assert.match(actions, /rpc\("replace_listing_photo_details"/);

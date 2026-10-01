@@ -8,7 +8,7 @@ const ownerListing = "E2E Riverside Study House";
 async function logIn(page: Page, email: string) {
   await page.goto("/login");
   await page.getByLabel("Email address").fill(email);
-  await page.getByLabel("Password").fill(password);
+  await page.getByLabel("Password", { exact: true }).fill(password);
   await page.getByRole("button", { name: "Log in" }).click();
   await expect(page).toHaveURL(/\/account(?:\?|$)/);
 }
@@ -56,6 +56,18 @@ test.describe.serial("RoomScouter pilot journeys", () => {
     await page.getByRole("button", { name: "Create draft" }).click();
 
     await expect(page.getByRole("heading", { name: "Edit listing" })).toBeVisible();
+    await page.getByLabel("Photo", { exact: true }).setInputFiles({
+      name: "room.png",
+      mimeType: "image/png",
+      buffer: Buffer.from(
+        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=",
+        "base64",
+      ),
+    });
+    await page.getByLabel("Photo description").fill("Bright private room prepared for student viewing");
+    await page.getByRole("button", { name: "Upload photo" }).click();
+    await expect(page.getByRole("status")).toContainText("Photo uploaded");
+    await expect(page.getByAltText("Bright private room prepared for student viewing")).toBeVisible();
     await page.getByRole("button", { name: "Submit for review" }).click();
     await expect(page.getByText("pending", { exact: true })).toBeVisible();
     await expect(page.getByRole("status")).toContainText("submitted for review");

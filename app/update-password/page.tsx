@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { SubmitButton } from "../../src/components/submit-button";
+import { PasswordField } from "../../src/components/password-field";
 import { updatePassword } from "../../src/features/auth/actions";
 import { createServerSupabaseClient } from "../../src/lib/supabase/server";
 
@@ -22,9 +23,9 @@ export default async function UpdatePasswordPage({ searchParams }: UpdatePasswor
         {error ? <p className="notice error" role="alert">{error}</p> : null}
         <form action={updatePassword}>
           <label htmlFor="password">New password</label>
-          <input id="password" name="password" type="password" autoComplete="new-password" minLength={8} maxLength={128} required />
+          <PasswordField id="password" name="password" autoComplete="new-password" minLength={8} maxLength={128} required />
           <label htmlFor="passwordConfirmation">Confirm new password</label>
-          <input id="passwordConfirmation" name="passwordConfirmation" type="password" autoComplete="new-password" minLength={8} maxLength={128} required />
+          <PasswordField id="passwordConfirmation" name="passwordConfirmation" autoComplete="new-password" minLength={8} maxLength={128} required />
           <SubmitButton pendingLabel="Updating password…">Update password</SubmitButton>
         </form>
       </section>

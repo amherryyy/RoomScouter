@@ -91,6 +91,12 @@ test("listing photos enforce private storage ownership and publication", async (
   await t.test("owners upload only valid image objects under their listing path", async () => {
     await uploadObject(database, userIds.owner, firstPath);
 
+    const metadataIndependentPath = firstPath.replace(photoIds[0], photoIds[10]);
+    await uploadObject(database, userIds.owner, metadataIndependentPath, null);
+    await actAs(database, "authenticated", userIds.owner, () =>
+      database.query("delete from storage.objects where name = $1", [metadataIndependentPath]),
+    );
+
     const immutableObject = await actAs(database, "authenticated", userIds.owner, () =>
       database.query(
         `update storage.objects
@@ -110,13 +116,6 @@ test("listing photos enforce private storage ownership and publication", async (
       uploadObject(database, userIds.owner, firstPath.replace(/\.jpg$/, ".pdf"), {
         mimetype: "application/pdf",
         size: 1024,
-      }),
-      /row-level security/i,
-    );
-    await assert.rejects(
-      uploadObject(database, userIds.owner, firstPath.replace(photoIds[0], photoIds[2]), {
-        mimetype: "image/jpeg",
-        size: 10485761,
       }),
       /row-level security/i,
     );

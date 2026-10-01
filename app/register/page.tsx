@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SubmitButton } from "../../src/components/submit-button";
+import { PasswordField } from "../../src/components/password-field";
 import { register } from "../../src/features/auth/actions";
 
 type RegisterPageProps = {
@@ -22,7 +23,7 @@ export default async function RegisterPage({ searchParams }: RegisterPageProps) 
           <label htmlFor="email">Email address</label>
           <input id="email" name="email" type="email" autoComplete="email" required />
           <label htmlFor="password">Password</label>
-          <input id="password" name="password" type="password" autoComplete="new-password" minLength={8} aria-describedby="password-help" required />
+          <PasswordField id="password" name="password" autoComplete="new-password" minLength={8} aria-describedby="password-help" required />
           <p className="field-help" id="password-help">Use at least eight characters.</p>
           <label htmlFor="role">I am a</label>
           <select id="role" name="role" defaultValue="student" required>

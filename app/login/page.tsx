@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SubmitButton } from "../../src/components/submit-button";
+import { PasswordField } from "../../src/components/password-field";
 import { login } from "../../src/features/auth/actions";
 
 type LoginPageProps = {
@@ -21,7 +22,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           <label htmlFor="email">Email address</label>
           <input id="email" name="email" type="email" autoComplete="email" required />
           <label htmlFor="password">Password</label>
-          <input id="password" name="password" type="password" autoComplete="current-password" required />
+          <PasswordField id="password" name="password" autoComplete="current-password" required />
           <SubmitButton pendingLabel="Logging in…">Log in</SubmitButton>
         </form>
         <p className="auth-switch"><Link href="/forgot-password">Forgot your password?</Link></p>
