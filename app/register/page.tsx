@@ -1,4 +1,6 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { AuthPage } from "../../src/components/auth-page";
 import { SubmitButton } from "../../src/components/submit-button";
 import { PasswordField } from "../../src/components/password-field";
 import { register } from "../../src/features/auth/actions";
@@ -7,15 +9,19 @@ type RegisterPageProps = {
   searchParams: Promise<{ error?: string }>;
 };
 
+export const metadata: Metadata = { title: "Create an account | RoomScouter" };
+
 export default async function RegisterPage({ searchParams }: RegisterPageProps) {
   const { error } = await searchParams;
 
   return (
-    <main className="auth-shell" id="main-content" tabIndex={-1}>
-      <section className="auth-card" aria-labelledby="register-title">
-        <p className="eyebrow">Join the pilot</p>
-        <h1 id="register-title">Create an account</h1>
-        <p>Choose how you will use RoomScouter. Administrator access cannot be self-assigned.</p>
+    <AuthPage
+      titleId="register-title"
+      eyebrow="Join RoomScouter"
+      title="Create your account"
+      description="Choose the role that matches how you will use the platform."
+      footer={<p>Already registered? <Link href="/login">Log in</Link>.</p>}
+    >
         {error ? <p className="notice error" role="alert">{error}</p> : null}
         <form action={register}>
           <label htmlFor="displayName">Display name</label>
@@ -30,10 +36,9 @@ export default async function RegisterPage({ searchParams }: RegisterPageProps) 
             <option value="student">Student looking for a place</option>
             <option value="owner">Boarding-house owner</option>
           </select>
+          <p className="auth-security-note">Administrator access is provisioned separately and cannot be selected during registration.</p>
           <SubmitButton pendingLabel="Creating account…">Create account</SubmitButton>
         </form>
-        <p className="auth-switch">Already registered? <Link href="/login">Log in</Link>.</p>
-      </section>
-    </main>
+    </AuthPage>
   );
 }

@@ -25,12 +25,18 @@ const pageFiles = [
 
 test("provides a consistent keyboard bypass to every page's main landmark", async () => {
   const layout = await readProjectFile("app/layout.tsx");
+  const authPage = await readProjectFile("src/components/auth-page.tsx");
   assert.match(layout, /className="skip-link" href="#main-content"/);
   assert.match(layout, /<html lang="en">/);
+  assert.match(authPage, /<main[^>]+id="main-content"[^>]+tabIndex=\{-1\}/);
 
   for (const pageFile of pageFiles) {
     const page = await readProjectFile(pageFile);
-    assert.match(page, /<main[^>]+id="main-content"[^>]+tabIndex=\{-1\}/, `${pageFile} must expose a focusable skip-link target`);
+    assert.match(
+      page,
+      /<main[^>]+id="main-content"[^>]+tabIndex=\{-1\}|<AuthPage/,
+      `${pageFile} must expose a focusable skip-link target`,
+    );
   }
 });
 

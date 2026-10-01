@@ -1,4 +1,6 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { AuthPage } from "../../src/components/auth-page";
 import { SubmitButton } from "../../src/components/submit-button";
 import { PasswordField } from "../../src/components/password-field";
 import { login } from "../../src/features/auth/actions";
@@ -7,15 +9,19 @@ type LoginPageProps = {
   searchParams: Promise<{ error?: string; message?: string }>;
 };
 
+export const metadata: Metadata = { title: "Log in | RoomScouter" };
+
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const { error, message } = await searchParams;
 
   return (
-    <main className="auth-shell" id="main-content" tabIndex={-1}>
-      <section className="auth-card" aria-labelledby="login-title">
-        <p className="eyebrow">Welcome back</p>
-        <h1 id="login-title">Log in</h1>
-        <p>Access your saved listings, owner dashboard, or moderation workspace.</p>
+    <AuthPage
+      titleId="login-title"
+      eyebrow="Welcome back"
+      title="Log in to your account"
+      description="Access saved listings, property management, or moderation tools based on your role."
+      footer={<p>New to RoomScouter? <Link href="/register">Create an account</Link>.</p>}
+    >
         {error ? <p className="notice error" role="alert">{error}</p> : null}
         {message ? <p className="notice success" role="status">{message}</p> : null}
         <form action={login}>
@@ -23,11 +29,9 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           <input id="email" name="email" type="email" autoComplete="email" required />
           <label htmlFor="password">Password</label>
           <PasswordField id="password" name="password" autoComplete="current-password" required />
+          <div className="auth-form-help"><Link href="/forgot-password">Forgot your password?</Link></div>
           <SubmitButton pendingLabel="Logging in…">Log in</SubmitButton>
         </form>
-        <p className="auth-switch"><Link href="/forgot-password">Forgot your password?</Link></p>
-        <p className="auth-switch">New here? <Link href="/register">Create an account</Link>.</p>
-      </section>
-    </main>
+    </AuthPage>
   );
 }
