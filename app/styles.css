@@ -460,6 +460,166 @@ fieldset {
 .status-summary-approved { border-top: 4px solid #2b8057; }
 .status-summary-rejected { border-top: 4px solid #b54a40; }
 
+.admin-dashboard {
+  max-width: 76rem;
+}
+
+.admin-dashboard-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(15rem, 0.7fr);
+  align-items: end;
+  gap: clamp(2rem, 6vw, 5rem);
+  overflow: hidden;
+  border-radius: 1.5rem;
+  padding: clamp(1.5rem, 5vw, 3.5rem);
+  color: white;
+  background:
+    radial-gradient(circle at 92% 10%, rgb(127 177 255 / 35%), transparent 32%),
+    linear-gradient(135deg, #123f70 0%, #165b71 52%, #1e654b 100%);
+  box-shadow: 0 1.5rem 4rem rgb(22 61 55 / 18%);
+}
+
+.admin-dashboard-hero .eyebrow,
+.admin-dashboard-hero .lede {
+  color: #eaf4ff;
+}
+
+.admin-dashboard-hero h1 {
+  max-width: 11ch;
+  margin: 0.65rem 0 1rem;
+  font-size: clamp(2.4rem, 6vw, 4.75rem);
+}
+
+.admin-dashboard-hero .lede {
+  margin-bottom: 0;
+}
+
+.admin-hero-actions {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.admin-dashboard-hero .button {
+  border-color: white;
+  color: #123f70;
+  background: white;
+}
+
+.admin-dashboard-hero .admin-hero-secondary {
+  color: white;
+  background: transparent;
+}
+
+.admin-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0 3.5rem;
+}
+
+.admin-summary-card {
+  display: grid;
+  gap: 0.5rem;
+  min-height: 10.5rem;
+  border: 1px solid #d7e2e7;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  background: white;
+  box-shadow: 0 0.75rem 2rem rgb(32 65 46 / 7%);
+}
+
+.admin-summary-card span {
+  color: #526158;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.admin-summary-card strong {
+  font-size: 2.6rem;
+  line-height: 1;
+}
+
+.admin-summary-card small {
+  align-self: end;
+  color: #526158;
+  line-height: 1.4;
+}
+
+.admin-summary-accounts { border-top: 4px solid #4b75d1; }
+.admin-summary-properties { border-top: 4px solid #2b8057; }
+.admin-summary-pending { border-top: 4px solid #c68a16; }
+.admin-summary-reports { border-top: 4px solid #b54a40; }
+
+.admin-work-queues {
+  margin-bottom: 3.5rem;
+}
+
+.admin-work-queues h2,
+.admin-queue-heading h2 {
+  margin: 0.35rem 0 0;
+  font-size: clamp(1.8rem, 4vw, 2.7rem);
+}
+
+.admin-queue-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.admin-queue-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.35rem 1rem;
+  border: 1px solid #d8e0da;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  color: inherit;
+  background: white;
+  text-decoration: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.admin-queue-card:hover {
+  border-color: #4b75d1;
+  box-shadow: 0 1rem 2.5rem rgb(29 70 112 / 12%);
+  transform: translateY(-2px);
+}
+
+.admin-queue-card strong {
+  font-size: 1.1rem;
+}
+
+.admin-queue-card > span:last-child {
+  grid-column: 2;
+  color: #526158;
+}
+
+.admin-queue-number {
+  grid-row: span 2;
+  color: #3566c0;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.admin-listing-queue {
+  border-top: 1px solid #d8e0da;
+  padding-top: 2.5rem;
+}
+
+.admin-queue-heading {
+  align-items: end;
+}
+
+.admin-queue-heading > p {
+  margin: 0;
+  color: #526158;
+  font-weight: 700;
+}
+
 .owner-listings-heading {
   margin-top: 3rem;
 }
@@ -1467,6 +1627,22 @@ fieldset {
   .account-summary .account-details { border-left: 0; border-top: 1px solid #d8e0da; padding: 1.25rem 0 0; }
   .account-future form,
   .account-future button { width: 100%; }
+  .admin-dashboard-hero,
+  .admin-summary-grid,
+  .admin-queue-grid { grid-template-columns: 1fr; }
+  .admin-dashboard-hero { align-items: stretch; }
+  .admin-summary-card { min-height: 0; }
+  .admin-queue-heading { align-items: flex-start; flex-direction: column; }
+}
+
+@media (min-width: 40.01rem) and (max-width: 68rem) {
+  .admin-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .admin-queue-grid { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-queue-card { transition: none; }
+  .admin-queue-card:hover { transform: none; }
 }
 
 @media (forced-colors: active) {
@@ -1477,6 +1653,9 @@ fieldset {
   .account-action-card,
   .account-future,
   .dashboard-summary-card,
+  .admin-dashboard-hero,
+  .admin-summary-card,
+  .admin-queue-card,
   .owner-future-note,
   .fact-row span,
   .tag-list li {
