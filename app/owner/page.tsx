@@ -1,7 +1,19 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { requireOwner } from "../../src/features/listings/access";
 
 const currency = new Intl.NumberFormat("en-PH", { style: "currency", currency: "PHP" });
+const statusLabels = {
+  draft: "Draft",
+  pending: "Pending review",
+  approved: "Published",
+  rejected: "Needs changes",
+  archived: "Archived",
+} as const;
+
+export const metadata: Metadata = {
+  title: "Owner dashboard | RoomScouter",
+};
 
 export default async function OwnerDashboardPage() {
   const { supabase } = await requireOwner();
@@ -9,25 +21,66 @@ export default async function OwnerDashboardPage() {
     .from("boarding_houses")
     .select("id, title, status, monthly_rent, available_rooms, updated_at")
     .order("updated_at", { ascending: false });
+  const ownerListings = listings ?? [];
+  const summary = {
+    total: ownerListings.length,
+    draft: ownerListings.filter((listing) => listing.status === "draft").length,
+    pending: ownerListings.filter((listing) => listing.status === "pending").length,
+    approved: ownerListings.filter((listing) => listing.status === "approved").length,
+    rejected: ownerListings.filter((listing) => listing.status === "rejected").length,
+  };
 
   return (
     <main className="workspace-shell" id="main-content" tabIndex={-1}>
-      <div className="workspace-heading">
+      <header className="workspace-heading">
         <div>
           <p className="eyebrow">Owner workspace</p>
-          <h1>Your listings</h1>
+          <h1>Owner dashboard</h1>
           <p className="lede">Create accurate drafts, track review status, and keep availability current.</p>
         </div>
-        <Link className="button" href="/owner/listings/new">Create listing</Link>
-      </div>
+        <div className="actions">
+          <Link className="button secondary" href="/account">Account</Link>
+          <Link className="button" href="/owner/listings/new">Create listing</Link>
+        </div>
+      </header>
 
-      {listings?.length ? (
+      <section className="dashboard-summary-grid" aria-label="Listing status summary">
+        <article className="dashboard-summary-card">
+          <span>Total properties</span>
+          <strong>{summary.total}</strong>
+        </article>
+        <article className="dashboard-summary-card status-summary-draft">
+          <span>Private drafts</span>
+          <strong>{summary.draft}</strong>
+        </article>
+        <article className="dashboard-summary-card status-summary-pending">
+          <span>Pending review</span>
+          <strong>{summary.pending}</strong>
+        </article>
+        <article className="dashboard-summary-card status-summary-approved">
+          <span>Published</span>
+          <strong>{summary.approved}</strong>
+        </article>
+        <article className="dashboard-summary-card status-summary-rejected">
+          <span>Needs changes</span>
+          <strong>{summary.rejected}</strong>
+        </article>
+      </section>
+
+      <section className="section-heading owner-listings-heading">
+        <div>
+          <p className="eyebrow">Properties</p>
+          <h2>Your listings</h2>
+        </div>
+      </section>
+
+      {ownerListings.length ? (
         <div className="listing-grid">
-          {listings.map((listing) => (
+          {ownerListings.map((listing) => (
             <article className="listing-card" key={listing.id}>
               <div className="listing-card-heading">
                 <h2>{listing.title}</h2>
-                <span className={`status status-${listing.status}`}>{listing.status}</span>
+                <span className={`status status-${listing.status}`}>{statusLabels[listing.status]}</span>
               </div>
               <p>{currency.format(listing.monthly_rent)} monthly · {listing.available_rooms} available</p>
               <Link href={`/owner/listings/${listing.id}/edit`}>Edit and review details</Link>
@@ -41,7 +94,13 @@ export default async function OwnerDashboardPage() {
         </section>
       )}
 
-      <p><Link href="/account">Back to account</Link></p>
+      <section className="owner-future-note" aria-labelledby="owner-insights-heading">
+        <div>
+          <p className="preview-badge">Under construction</p>
+          <h2 id="owner-insights-heading">Views and inquiries</h2>
+          <p>RoomScouter does not currently track property views or store student-owner conversations. Those figures will appear only after the team approves their privacy and product requirements.</p>
+        </div>
+      </section>
     </main>
   );
 }

@@ -13,7 +13,7 @@ This document connects the team's initial RoomScouter wireframe to the working p
 | Map view | `/map` | Preview only; clearly marked under construction. |
 | Favorites | `/favorites` | Working for signed-in students. |
 | Student profile | `/account` | Partial; identity and role are shown, but profile editing is not implemented. |
-| Owner dashboard | `/owner` | Working. |
+| Owner dashboard | `/owner` | Working with truthful listing lifecycle totals; views and inquiries remain a labeled future concept. |
 | Add and edit property | `/owner/listings/new`, `/owner/listings/[id]/edit` | Working. |
 | Administrator dashboard | `/admin` | Working, with separate listing, review, and report queues. |
 | About | `/about` | Working informational page. |
