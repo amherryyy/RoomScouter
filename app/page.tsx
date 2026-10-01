@@ -32,12 +32,50 @@ export default async function Home({ searchParams }: HomePageProps) {
       <PublicHeader current="home" />
 
       <section className="discovery-hero">
-        <p className="eyebrow">Verified local options</p>
-        <h1>Find a boarding house that fits student life.</h1>
-        <p className="lede">Search approved listings and compare rent, availability, facilities, utilities, and location.</p>
+        <div className="discovery-hero-copy">
+          <p className="eyebrow">Student housing near NVSU</p>
+          <h1>Find a room that fits your student life.</h1>
+          <p className="lede">Compare approved local boarding houses using clear information about rent, availability, amenities, and distance.</p>
+          <Form className="hero-search" action="/">
+            <label className="visually-hidden" htmlFor="hero-query">Search listings near the university</label>
+            <input
+              id="hero-query"
+              name="q"
+              defaultValue={filters.query}
+              maxLength={120}
+              placeholder="Search a property, street, or area"
+            />
+            <SubmitButton pendingLabel="Searching…">Find a room</SubmitButton>
+          </Form>
+          <div className="quick-searches" aria-label="Quick searches">
+            <span>Popular:</span>
+            <Link href="/?maximumRent=5000#browse">Up to ₱5,000</Link>
+            <Link href="/?roomType=private_room#browse">Private rooms</Link>
+            {university ? <Link href="/?maximumDistance=1#browse">Within 1 km</Link> : null}
+          </div>
+        </div>
+        <div className="discovery-hero-visual" aria-hidden="true">
+          <div className="campus-silhouette">
+            <span className="campus-tower" />
+            <span className="campus-wing campus-wing-left" />
+            <span className="campus-wing campus-wing-right" />
+          </div>
+          <div className="hero-location-card">
+            <span>Focused search area</span>
+            <strong>{university?.name ?? "Nueva Vizcaya State University"}</strong>
+          </div>
+        </div>
       </section>
 
-      <Form className="discovery-filters" id="browse" action="/" aria-label="Filter boarding houses">
+      <section className="discovery-browser" id="browse" aria-labelledby="browse-title">
+        <div className="discovery-section-heading">
+          <div>
+            <p className="eyebrow">Browse local options</p>
+            <h2 id="browse-title">Refine your search</h2>
+          </div>
+          <p>Every public result has passed administrator review.</p>
+        </div>
+      <Form className="discovery-filters" action="/" aria-label="Filter boarding houses">
         <div className="search-field">
           <label htmlFor="q">Search by name, address, or description</label>
           <input id="q" name="q" defaultValue={filters.query} maxLength={120} placeholder="Try a street or neighborhood" />
@@ -86,6 +124,7 @@ export default async function Home({ searchParams }: HomePageProps) {
         </div>
       </Form>
 
+
       <div className="results-heading" aria-live="polite">
         <div>
           <p className="eyebrow">Public listings</p>
@@ -104,15 +143,16 @@ export default async function Home({ searchParams }: HomePageProps) {
               <div className="discovery-card-body">
                 <div className="listing-card-heading">
                   <h3><Link href={`/listings/${listing.id}`}>{listing.title}</Link></h3>
-                  <strong>{currency.format(listing.monthly_rent)}</strong>
+                  <span className="availability-badge">Available</span>
                 </div>
-                <p>{listing.address_line}</p>
+                <p className="listing-address">{listing.address_line}</p>
+                <p className="listing-price"><strong>{currency.format(listing.monthly_rent)}</strong> <span>per month</span></p>
                 <div className="fact-row">
                   <span>{ROOM_TYPE_LABELS[listing.room_type]}</span>
                   <span>{listing.available_rooms} available</span>
                   {listing.approximate_distance_km !== null ? <span>About {listing.approximate_distance_km} km</span> : null}
                 </div>
-                <Link href={`/listings/${listing.id}`}>View listing details</Link>
+                <Link className="card-detail-link" href={`/listings/${listing.id}`}>View listing details <span aria-hidden="true">→</span></Link>
               </div>
             </article>
           ))}
@@ -131,6 +171,7 @@ export default async function Home({ searchParams }: HomePageProps) {
           {hasNext ? <Link className="button secondary" href={`/?${discoveryQuery(filters, filters.page + 1)}`}>Next</Link> : <span />}
         </nav>
       ) : null}
+      </section>
     </main>
   );
 }
