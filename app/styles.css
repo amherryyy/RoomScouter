@@ -128,6 +128,28 @@ button {
   margin-top: 1.5rem;
 }
 
+.password-field {
+  position: relative;
+}
+
+.password-field input {
+  width: 100%;
+  padding-right: 4.5rem;
+}
+
+.password-visibility-button {
+  position: absolute;
+  top: 50%;
+  right: 0.45rem;
+  min-height: 2rem;
+  border: 0;
+  padding: 0.25rem 0.5rem;
+  color: #185f42;
+  background: transparent;
+  font-weight: 700;
+  transform: translateY(-50%);
+}
+
 label {
   margin-top: 0.4rem;
   font-weight: 700;
