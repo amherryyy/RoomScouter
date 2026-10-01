@@ -7,7 +7,10 @@ type PublicHeaderProps = {
 export function PublicHeader({ current }: PublicHeaderProps) {
   return (
     <header className="public-header">
-      <Link className="wordmark" href="/">RoomScouter</Link>
+      <Link className="wordmark" href="/" aria-label="RoomScouter home">
+        <span className="public-brand-mark" aria-hidden="true"><span /></span>
+        <span>RoomScouter</span>
+      </Link>
       <nav aria-label="Primary navigation">
         <Link aria-current={current === "home" ? "page" : undefined} href="/">Home</Link>
         <Link href="/#browse">Browse</Link>
