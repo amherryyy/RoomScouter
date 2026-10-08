@@ -6,7 +6,7 @@ This document connects the team's initial RoomScouter wireframe to the working p
 
 | Wireframe screen | Current route | State |
 | --- | --- | --- |
-| Landing and student browse | `/` | Working with a responsive NVSU-focused hero, quick searches, database filters, and approved public results. |
+| Landing and student browse | `/`, `/browse` | Landing page features approved listings; browse page provides database-backed search, filters, and paginated public results. |
 | Login and account recovery | `/login`, `/forgot-password`, `/update-password` | Working with a shared responsive authentication layout. |
 | Registration | `/register` | Working for student and owner roles with the shared authentication layout. |
 | Property details | `/listings/[id]` | Working for approved, available listings. |
