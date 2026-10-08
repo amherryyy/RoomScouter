@@ -24,6 +24,8 @@ test("shows paginated pending and published listing queues", async () => {
   assert.match(dashboard, /\.eq\("status", state\)/);
   assert.match(dashboard, /Pending review/);
   assert.match(dashboard, /Published listings/);
+  assert.match(dashboard, /href="\/admin\?state=pending" scroll=\{false\}/);
+  assert.match(dashboard, /href="\/admin\?state=approved" scroll=\{false\}/);
   assert.match(account, /href="\/admin"/);
 });
 

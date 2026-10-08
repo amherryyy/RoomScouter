@@ -383,6 +383,29 @@ textarea:disabled {
 .skeleton-label { width: 8rem; }
 .skeleton-input { height: 2.75rem; margin-top: 0.5rem; border-radius: 0.55rem; }
 
+.skeleton-admin-summary,
+.skeleton-admin-queues {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.skeleton-admin-summary { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.skeleton-admin-summary .skeleton-panel { min-height: 10.5rem; }
+.skeleton-admin-queues { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.skeleton-admin-heading { width: min(24rem, 75%); height: 2rem; margin-top: 3.5rem; }
+.skeleton-admin-tabs { width: min(18rem, 70%); margin-top: 1.5rem; }
+.skeleton-admin-list { margin-top: 1.5rem; }
+
+@media (max-width: 900px) {
+  .skeleton-admin-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .skeleton-admin-queues { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .skeleton-admin-summary { grid-template-columns: 1fr; }
+}
+
 @keyframes skeleton-shimmer {
   from { background-position: 200% 0; }
   to { background-position: -200% 0; }

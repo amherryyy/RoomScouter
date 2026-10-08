@@ -1,5 +1,5 @@
 import { PageSkeleton } from "../../src/components/page-skeleton";
 
-export default function Loading() {
-  return <PageSkeleton label="Loading the moderation workspace…" />;
+export default function AdminLoading() {
+  return <PageSkeleton label="Loading administrator workspace" variant="admin" />;
 }

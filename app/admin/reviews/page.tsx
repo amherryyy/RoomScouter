@@ -44,8 +44,8 @@ export default async function AdminReviewsPage({ searchParams }: AdminReviewsPag
       {params.message ? <p className="notice success" role="status">{params.message}</p> : null}
 
       <nav className="moderation-tabs" aria-label="Review moderation queues">
-        <Link aria-current={state === "published" ? "page" : undefined} className={state === "published" ? "active" : ""} href="/admin/reviews?state=published">Published reviews</Link>
-        <Link aria-current={state === "hidden" ? "page" : undefined} className={state === "hidden" ? "active" : ""} href="/admin/reviews?state=hidden">Hidden reviews</Link>
+        <Link aria-current={state === "published" ? "page" : undefined} className={state === "published" ? "active" : ""} href="/admin/reviews?state=published" scroll={false}>Published reviews</Link>
+        <Link aria-current={state === "hidden" ? "page" : undefined} className={state === "hidden" ? "active" : ""} href="/admin/reviews?state=hidden" scroll={false}>Hidden reviews</Link>
       </nav>
 
       {reviews?.length ? (
@@ -87,9 +87,9 @@ export default async function AdminReviewsPage({ searchParams }: AdminReviewsPag
 
       {(page > 1 || page * PAGE_SIZE < total) ? (
         <nav className="pagination" aria-label="Review moderation pages">
-          {page > 1 ? <Link className="button secondary" href={`/admin/reviews?state=${state}&page=${page - 1}`}>Previous</Link> : <span />}
+          {page > 1 ? <Link className="button secondary" href={`/admin/reviews?state=${state}&page=${page - 1}`} scroll={false}>Previous</Link> : <span />}
           <span>Page {page}</span>
-          {page * PAGE_SIZE < total ? <Link className="button secondary" href={`/admin/reviews?state=${state}&page=${page + 1}`}>Next</Link> : <span />}
+          {page * PAGE_SIZE < total ? <Link className="button secondary" href={`/admin/reviews?state=${state}&page=${page + 1}`} scroll={false}>Next</Link> : <span />}
         </nav>
       ) : null}
     </main>

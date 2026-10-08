@@ -1,11 +1,15 @@
+"use client";
+
+import { useActionState } from "react";
 import type { Database } from "../../lib/supabase/database.types";
 import { SubmitButton } from "../../components/submit-button";
 import { roomTypes } from "./model";
+import { initialListingFormState, type ListingFormState } from "./listing-form-state";
 
 type Listing = Database["public"]["Tables"]["boarding_houses"]["Row"];
 
 type ListingFormProps = {
-  action: (formData: FormData) => void | Promise<void>;
+  action: (previousState: ListingFormState, formData: FormData) => Promise<ListingFormState>;
   listing?: Listing;
   submitLabel: string;
 };
@@ -18,8 +22,15 @@ const roomTypeLabels = {
 } as const;
 
 export function ListingForm({ action, listing, submitLabel }: ListingFormProps) {
+  const [state, formAction] = useActionState(action, initialListingFormState);
+
   return (
-    <form action={action} className="listing-form">
+    <form action={formAction} className="listing-form">
+      {state.message ? (
+        <p className={`notice ${state.status === "error" ? "error" : "success"}`} role={state.status === "error" ? "alert" : "status"}>
+          {state.message}
+        </p>
+      ) : null}
       <fieldset>
         <legend>Listing details</legend>
         <label htmlFor="title">Listing title</label>
