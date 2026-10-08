@@ -2148,6 +2148,27 @@ fieldset {
 .public-header nav a.button { border-radius: 0.55rem; }
 .wordmark { width: 15rem; min-width: 12rem; height: 3.25rem; }
 .public-wordmark-logo { display: block; width: 100%; height: 100%; object-fit: cover; }
+.profile-menu { position: relative; }
+.profile-menu > summary { display: inline-flex; align-items: center; gap: 0.55rem; min-height: 2.75rem; border: 1px solid #d5e0e4; border-radius: 999px; padding: 0.3rem 0.7rem 0.3rem 0.35rem; color: #173956; background: #fff; font-size: 0.9rem; font-weight: 750; cursor: pointer; list-style: none; }
+.profile-menu > summary::-webkit-details-marker { display: none; }
+.profile-menu-name { max-width: clamp(5rem, 12vw, 10rem); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.profile-menu > summary:hover,
+.profile-menu[open] > summary { border-color: #9bb9c5; background: #f5f9fa; }
+.profile-menu-avatar,
+.profile-card-avatar { display: grid; flex: 0 0 auto; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; color: #fff; background: #246b48; font-size: 0.9rem; font-weight: 800; }
+.profile-menu-chevron { color: #587182; font-size: 1rem; line-height: 1; }
+.profile-card { position: absolute; z-index: 5; top: calc(100% + 0.7rem); right: 0; width: min(21rem, calc(100vw - 2rem)); border: 1px solid #d7e2e7; border-radius: 0.9rem; padding: 1rem; background: #fff; box-shadow: 0 1rem 2.5rem rgb(23 57 86 / 17%); }
+.profile-card-identity { display: flex; align-items: center; gap: 0.75rem; }
+.profile-card-avatar { width: 2.75rem; height: 2.75rem; font-size: 1.1rem; }
+.profile-card-identity > div { display: grid; min-width: 0; gap: 0.12rem; }
+.profile-card-identity strong { overflow: hidden; color: #173956; text-overflow: ellipsis; white-space: nowrap; }
+.profile-card-identity > div > span { color: #5b6e78; font-size: 0.82rem; }
+.profile-card-email { overflow: hidden; margin: 0.8rem 0; border-bottom: 1px solid #e5ebee; padding-bottom: 0.8rem; color: #61737d; font-size: 0.83rem; text-overflow: ellipsis; white-space: nowrap; }
+.profile-card-links { display: grid; gap: 0.15rem; }
+.profile-card-links a { border-radius: 0.45rem; padding: 0.55rem 0.6rem; color: #245f91 !important; font-size: 0.9rem; font-weight: 750; text-decoration: none; }
+.profile-card-links a:hover { background: #eef4f6; }
+.profile-card form { margin-top: 0.65rem; border-top: 1px solid #e5ebee; padding-top: 0.75rem; }
+.profile-card-logout { width: 100%; border-radius: 0.55rem; padding: 0.65rem 0.8rem; }
 
 .discovery-hero,
 .browse-page-hero,
@@ -2352,6 +2373,7 @@ fieldset {
   .public-header { align-items: flex-start; flex-direction: column; padding: 1rem 1.25rem; }
   .public-header nav { justify-content: flex-start; gap: 0.55rem 1rem; }
   .public-header nav a.button { flex: 0 0 auto; }
+  .profile-menu-name { max-width: min(11rem, 48vw); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .discovery-hero,
   .browse-page-hero,
   .featured-listings,
