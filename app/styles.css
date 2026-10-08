@@ -2486,8 +2486,8 @@ fieldset {
 
 .workspace-shell { width: min(100% - 3rem, 78rem); max-width: none; margin: 0 auto; padding: 3rem 0 5rem; }
 .workspace-heading { margin-bottom: 2.2rem; }
-.workspace-heading h1,
-.admin-dashboard-hero h1 { color: #173956; text-wrap: balance; }
+.workspace-heading h1 { color: #173956; text-wrap: balance; }
+.admin-dashboard-hero h1 { color: #fff; text-wrap: balance; }
 .dashboard-summary-grid,
 .admin-summary-grid { gap: 1rem; }
 .dashboard-summary-card,
