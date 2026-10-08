@@ -122,32 +122,49 @@ export default async function PublicListingPage({ params, searchParams }: Public
     <main className="public-detail-shell" id="main-content" tabIndex={-1}>
       <PublicHeader />
 
+      <nav className="detail-breadcrumb" aria-label="Breadcrumb">
+        <Link href="/#browse">Browse listings</Link>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Property details</span>
+      </nav>
+
       <section className="detail-heading">
         <div>
-          <p className="eyebrow">Approved listing</p>
+          <p className="eyebrow detail-status">Approved listing</p>
           <h1>{listing.title}</h1>
-          <p className="lede">{listing.address_line}</p>
+          <p className="detail-address">{listing.address_line}</p>
+          <ul className="detail-meta" aria-label="Listing summary">
+            <li>{ROOM_TYPE_LABELS[listing.room_type]}</li>
+            <li>{listing.available_rooms} {listing.available_rooms === 1 ? "room" : "rooms"} available</li>
+            {distance !== null && university ? <li>About {distance.toFixed(2)} km from {university.name}</li> : null}
+          </ul>
         </div>
         <div className="price-panel">
+          <span className="price-label">Monthly rent</span>
           <strong>{currency.format(listing.monthly_rent)}</strong>
-          <span>per month</span>
+          <span>per month, paid to the owner</span>
         </div>
       </section>
 
       {error ? <p className="notice error" role="alert">{error}</p> : null}
       {message ? <p className="notice success" role="status">{message}</p> : null}
 
-      {photoGallery.length ? (
-        <section className="public-photo-grid" aria-label="Listing photos">
+      {photoGallery.some((photo) => photo.signedUrl) ? (
+        <section className={`public-photo-grid listing-gallery listing-gallery-count-${Math.min(photoGallery.filter((photo) => photo.signedUrl).length, 4)}`} aria-label="Listing photos">
           {photoGallery.map((photo) => photo.signedUrl
             ? <img src={photo.signedUrl} alt={photo.alt_text} key={photo.id} />
             : null)}
         </section>
-      ) : null}
+      ) : (
+        <div className="listing-gallery-empty" role="img" aria-label="No property photos provided">
+          <p>No property photos provided</p>
+        </div>
+      )}
 
       <div className="detail-layout">
         <article className="detail-content">
-          <section>
+          <section className="detail-content-section detail-overview">
+            <p className="section-kicker">The essentials</p>
             <h2>At a glance</h2>
             <dl className="fact-list">
               <div><dt>Room type</dt><dd>{ROOM_TYPE_LABELS[listing.room_type]}</dd></div>
@@ -155,10 +172,11 @@ export default async function PublicListingPage({ params, searchParams }: Public
               {distance !== null && university ? <div><dt>Distance from {university.name}</dt><dd>About {distance.toFixed(2)} km straight-line</dd></div> : null}
             </dl>
           </section>
-          <section><h2>About this boarding house</h2><p className="long-copy">{listing.description}</p></section>
-          {facilityNames.length ? <section><h2>Facilities</h2><ul className="tag-list">{facilityNames.map((name) => <li key={name}>{name}</li>)}</ul></section> : null}
+          <section className="detail-content-section"><p className="section-kicker">About the property</p><h2>About this boarding house</h2><p className="long-copy">{listing.description}</p></section>
+          {facilityNames.length ? <section className="detail-content-section"><p className="section-kicker">Available features</p><h2>Facilities</h2><ul className="tag-list">{facilityNames.map((name) => <li key={name}>{name}</li>)}</ul></section> : null}
           {(utilityLinks ?? []).length ? (
-            <section>
+            <section className="detail-content-section">
+              <p className="section-kicker">Monthly costs</p>
               <h2>Utilities</h2>
               <ul className="detail-list">{(utilityLinks ?? []).map((utility) => (
                 <li key={utility.utility_id}>
@@ -168,10 +186,10 @@ export default async function PublicListingPage({ params, searchParams }: Public
               ))}</ul>
             </section>
           ) : null}
-          {(rules ?? []).length ? <section><h2>House rules</h2><ol className="detail-list">{(rules ?? []).map((rule) => <li key={rule.id}>{rule.rule_text}</li>)}</ol></section> : null}
+          {(rules ?? []).length ? <section className="detail-content-section"><p className="section-kicker">Before you visit</p><h2>House rules</h2><ol className="detail-list">{(rules ?? []).map((rule) => <li key={rule.id}>{rule.rule_text}</li>)}</ol></section> : null}
         </article>
 
-        <aside className="contact-card">
+        <aside className="contact-card listing-contact-card">
           {profile?.role === "student" ? (
             <form action={favorite ? removeFavorite.bind(null, id) : addFavorite.bind(null, id)}>
               <SubmitButton
@@ -182,9 +200,10 @@ export default async function PublicListingPage({ params, searchParams }: Public
               </SubmitButton>
             </form>
           ) : !user ? <p><Link href="/login">Log in as a student to save this listing</Link></p> : null}
+          <p className="section-kicker">Talk with the owner</p>
           <h2>Location and contact</h2>
-          <p>{listing.address_line}</p>
-          <p><a href={mapUrl} target="_blank" rel="noreferrer">View exact pin on OpenStreetMap<span className="visually-hidden"> (opens in a new tab)</span></a></p>
+          <p className="contact-address">{listing.address_line}</p>
+          <p><a className="map-link" href={mapUrl} target="_blank" rel="noreferrer">View exact pin on OpenStreetMap<span className="visually-hidden"> (opens in a new tab)</span></a></p>
           <hr />
           <p><strong>{listing.contact_name}</strong></p>
           {listing.contact_phone ? <p><a href={`tel:${listing.contact_phone}`}>{listing.contact_phone}</a></p> : null}
