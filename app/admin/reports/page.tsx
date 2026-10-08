@@ -53,9 +53,9 @@ export default async function AdminReportsPage({ searchParams }: AdminReportsPag
       {params.message ? <p className="notice success" role="status">{params.message}</p> : null}
 
       <nav className="moderation-tabs" aria-label="Report queues">
-        <Link aria-current={state === "open" ? "page" : undefined} className={state === "open" ? "active" : ""} href="/admin/reports?state=open">Open</Link>
-        <Link aria-current={state === "resolved" ? "page" : undefined} className={state === "resolved" ? "active" : ""} href="/admin/reports?state=resolved">Resolved</Link>
-        <Link aria-current={state === "dismissed" ? "page" : undefined} className={state === "dismissed" ? "active" : ""} href="/admin/reports?state=dismissed">Dismissed</Link>
+        <Link aria-current={state === "open" ? "page" : undefined} className={state === "open" ? "active" : ""} href="/admin/reports?state=open" scroll={false}>Open</Link>
+        <Link aria-current={state === "resolved" ? "page" : undefined} className={state === "resolved" ? "active" : ""} href="/admin/reports?state=resolved" scroll={false}>Resolved</Link>
+        <Link aria-current={state === "dismissed" ? "page" : undefined} className={state === "dismissed" ? "active" : ""} href="/admin/reports?state=dismissed" scroll={false}>Dismissed</Link>
       </nav>
 
       {reports?.length ? (
@@ -115,9 +115,9 @@ export default async function AdminReportsPage({ searchParams }: AdminReportsPag
 
       {(page > 1 || page * PAGE_SIZE < total) ? (
         <nav className="pagination" aria-label="Report queue pages">
-          {page > 1 ? <Link className="button secondary" href={`/admin/reports?state=${state}&page=${page - 1}`}>Previous</Link> : <span />}
+          {page > 1 ? <Link className="button secondary" href={`/admin/reports?state=${state}&page=${page - 1}`} scroll={false}>Previous</Link> : <span />}
           <span>Page {page}</span>
-          {page * PAGE_SIZE < total ? <Link className="button secondary" href={`/admin/reports?state=${state}&page=${page + 1}`}>Next</Link> : <span />}
+          {page * PAGE_SIZE < total ? <Link className="button secondary" href={`/admin/reports?state=${state}&page=${page + 1}`} scroll={false}>Next</Link> : <span />}
         </nav>
       ) : null}
     </main>

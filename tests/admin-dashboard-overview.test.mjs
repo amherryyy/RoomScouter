@@ -13,6 +13,7 @@ test("admin overview derives every headline total from protected database counts
   assert.match(dashboard, /from\("boarding_houses"\)\.select\("id", \{ count: "exact", head: true \}\)/);
   assert.match(dashboard, /\.eq\("status", "pending"\)/);
   assert.match(dashboard, /from\("reports"\)[\s\S]*?\.eq\("status", "open"\)/);
+  assert.match(dashboard, /owner:profiles!boarding_houses_owner_id_fkey\(display_name\)/);
   for (const label of ["Registered accounts", "Total properties", "Awaiting review", "Open reports"]) {
     assert.match(dashboard, new RegExp(label));
   }

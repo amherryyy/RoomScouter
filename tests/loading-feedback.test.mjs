@@ -12,6 +12,7 @@ test("route transitions expose accessible, motion-safe skeletons", async () => {
     "app/account/loading.tsx",
     "app/admin/loading.tsx",
     "app/owner/loading.tsx",
+    "app/owner/listings/[id]/edit/loading.tsx",
     "app/listings/[id]/loading.tsx",
   ]) {
     const loading = await readProjectFile(path);

@@ -40,6 +40,16 @@ test("validates listing input before ownership-scoped writes", async () => {
   assert.match(actions, /rpc\("submit_boarding_house"/);
 });
 
+test("saves listing edits in place with an accessible action result", async () => {
+  const actions = await readProjectFile("src/features/listings/actions.ts");
+  const form = await readProjectFile("src/features/listings/listing-form.tsx");
+
+  assert.match(actions, /return \{ status: "success", message: "Listing saved\." \}/);
+  assert.match(actions, /return \{ status: "error", message: "The listing could not be updated\." \}/);
+  assert.match(form, /useActionState\(action, initialListingFormState\)/);
+  assert.match(form, /role=\{state\.status === "error" \? "alert" : "status"\}/);
+});
+
 test("shows lifecycle state, moderation feedback, and explicit submission", async () => {
   const dashboard = await readProjectFile("app/owner/page.tsx");
   const editPage = await readProjectFile("app/owner/listings/[id]/edit/page.tsx");

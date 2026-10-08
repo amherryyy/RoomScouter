@@ -22,7 +22,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const [listingResult, accountResult, propertyResult, pendingResult, reportResult] = await Promise.all([
     supabase
       .from("boarding_houses")
-      .select("id, owner_id, title, address_line, monthly_rent, available_rooms, status, submitted_at, updated_at", { count: "exact" })
+      .select("id, owner_id, title, address_line, monthly_rent, available_rooms, status, submitted_at, updated_at, owner:profiles!boarding_houses_owner_id_fkey(display_name)", { count: "exact" })
       .eq("status", state)
       .order(state === "pending" ? "submitted_at" : "moderated_at", { ascending: true })
       .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1),
@@ -33,11 +33,6 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   ]);
   const { data: listings, count } = listingResult;
 
-  const ownerIds = [...new Set((listings ?? []).map((listing) => listing.owner_id))];
-  const { data: owners } = ownerIds.length
-    ? await supabase.from("profiles").select("id, display_name").in("id", ownerIds)
-    : { data: [] };
-  const ownerNames = new Map((owners ?? []).map((owner) => [owner.id, owner.display_name]));
   const total = count ?? 0;
 
   return (
@@ -113,8 +108,8 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         </div>
 
       <nav className="moderation-tabs" aria-label="Listing moderation queues">
-        <Link aria-current={state === "pending" ? "page" : undefined} className={state === "pending" ? "active" : ""} href="/admin?state=pending">Pending review</Link>
-        <Link aria-current={state === "approved" ? "page" : undefined} className={state === "approved" ? "active" : ""} href="/admin?state=approved">Published listings</Link>
+        <Link aria-current={state === "pending" ? "page" : undefined} className={state === "pending" ? "active" : ""} href="/admin?state=pending" scroll={false}>Pending review</Link>
+        <Link aria-current={state === "approved" ? "page" : undefined} className={state === "approved" ? "active" : ""} href="/admin?state=approved" scroll={false}>Published listings</Link>
       </nav>
 
       {listings?.length ? (
@@ -127,7 +122,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
               </div>
               <p>{listing.address_line}</p>
               <p>{currency.format(listing.monthly_rent)} monthly · {listing.available_rooms} available</p>
-              <p className="field-help">Owner: {ownerNames.get(listing.owner_id) ?? "Unknown owner"}</p>
+              <p className="field-help">Owner: {listing.owner?.display_name ?? "Unknown owner"}</p>
               <p className="field-help">
                 {state === "pending" && listing.submitted_at
                   ? `Submitted ${dateFormatter.format(new Date(listing.submitted_at))}`
@@ -146,9 +141,9 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 
       {(page > 1 || page * PAGE_SIZE < total) ? (
         <nav className="pagination" aria-label="Moderation queue pages">
-          {page > 1 ? <Link className="button secondary" href={`/admin?state=${state}&page=${page - 1}`}>Previous</Link> : <span />}
+          {page > 1 ? <Link className="button secondary" href={`/admin?state=${state}&page=${page - 1}`} scroll={false}>Previous</Link> : <span />}
           <span>Page {page}</span>
-          {page * PAGE_SIZE < total ? <Link className="button secondary" href={`/admin?state=${state}&page=${page + 1}`}>Next</Link> : <span />}
+          {page * PAGE_SIZE < total ? <Link className="button secondary" href={`/admin?state=${state}&page=${page + 1}`} scroll={false}>Next</Link> : <span />}
         </nav>
       ) : null}
       </section>
