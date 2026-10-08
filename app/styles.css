@@ -473,7 +473,9 @@ textarea:disabled {
 .skeleton-account-meta { display: grid; gap: 1rem; border-left: 1px solid #d8e0da; padding-left: 1.5rem; }
 .skeleton-account-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
 .skeleton-action-card { display: grid; align-content: start; gap: 1rem; min-height: 10rem; padding: 1.35rem; }
-.skeleton-account-note { min-height: 9rem; margin-top: 2rem; }
+.skeleton-account-settings { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(17rem, 0.9fr); gap: 1rem; margin-top: 2rem; }
+.skeleton-account-settings-panel { display: grid; align-content: start; gap: 1rem; min-height: 14rem; padding: 1.5rem; }
+.skeleton-account-settings-panel .skeleton-input { margin: 0; }
 
 .skeleton-editor-form { max-width: 62rem; padding: 1.5rem; }
 .skeleton-editor-legend { width: 12rem; height: 1.5rem; margin-bottom: 1.25rem; }
@@ -674,6 +676,19 @@ fieldset {
   border-left: 1px solid #d8e0da;
   padding-left: 1.5rem;
 }
+
+.account-settings-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(17rem, 0.9fr); gap: 1rem; margin-top: 1.5rem; }
+.account-settings-panel { border: 1px solid #d8e0da; border-radius: 1rem; padding: clamp(1.25rem, 3vw, 1.75rem); background: white; box-shadow: 0 0.75rem 2rem rgb(32 65 46 / 5%); }
+.account-settings-panel .section-heading h2 { margin: 0.35rem 0 0; }
+.account-settings-panel .section-heading > p:last-child { margin: 0.5rem 0 0; color: #526158; }
+.profile-editor-form { display: grid; gap: 1rem; margin-top: 1.5rem; }
+.profile-editor-field { display: grid; gap: 0.5rem; }
+.profile-editor-field label { margin: 0; }
+.profile-editor-form .notice { margin: 0; }
+.profile-editor-form button { justify-self: start; }
+.account-security-panel .account-details { margin: 1.5rem 0 1rem; }
+.account-security-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-top: 1.5rem; }
+.account-security-actions form { margin: 0; }
 
 .account-section {
   margin-top: 3rem;
@@ -2225,13 +2240,15 @@ fieldset {
   .pagination .button { width: 100%; }
   .scope-note { align-items: flex-start; flex-direction: column; }
   .scope-note .button { width: 100%; }
-  .account-header,
-  .account-future { align-items: flex-start; flex-direction: column; }
+  .account-header { align-items: flex-start; flex-direction: column; }
   .account-summary,
-  .account-action-grid { grid-template-columns: 1fr; }
+  .account-action-grid,
+  .account-settings-grid,
+  .skeleton-account-settings { grid-template-columns: 1fr; }
   .account-summary .account-details { border-left: 0; border-top: 1px solid #d8e0da; padding: 1.25rem 0 0; }
-  .account-future form,
-  .account-future button { width: 100%; }
+  .profile-editor-form button,
+  .account-security-actions > *,
+  .account-security-actions .button { width: 100%; }
   .admin-dashboard-hero,
   .admin-summary-grid,
   .admin-queue-grid { grid-template-columns: 1fr; }
@@ -2270,7 +2287,7 @@ fieldset {
   .preview-badge,
   .account-summary,
   .account-action-card,
-  .account-future,
+  .account-settings-panel,
   .dashboard-summary-card,
   .admin-dashboard-hero,
   .admin-summary-card,

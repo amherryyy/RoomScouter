@@ -186,11 +186,14 @@ function SkeletonAccount() {
   return (
     <div className="skeleton-account-content" aria-hidden="true">
       <div className="skeleton-panel skeleton-account-summary"><div className="skeleton-avatar" /><div><div className="skeleton-line skeleton-title" /><div className="skeleton-line skeleton-copy" /></div><div className="skeleton-account-meta"><div className="skeleton-line" /><div className="skeleton-line" /></div></div>
+      <div className="skeleton-account-settings">
+        <div className="skeleton-panel skeleton-account-settings-panel"><div className="skeleton-line skeleton-copy-medium" /><div className="skeleton-input" /><div className="skeleton-input" /></div>
+        <div className="skeleton-panel skeleton-account-settings-panel"><div className="skeleton-line skeleton-copy-medium" /><div className="skeleton-line skeleton-copy-wide" /><div className="skeleton-line skeleton-copy-medium" /></div>
+      </div>
       <SkeletonSectionHeading />
       <div className="skeleton-account-actions">
         {Array.from({ length: 3 }, (_, index) => <div className="skeleton-panel skeleton-action-card" key={index}><div className="skeleton-line skeleton-copy-short" /><div className="skeleton-line skeleton-copy-wide" /><div className="skeleton-line skeleton-copy-medium" /></div>)}
       </div>
-      <div className="skeleton-panel skeleton-account-note" />
     </div>
   );
 }

@@ -19,13 +19,17 @@ test("account hub gives each verified role only its relevant destinations", asyn
   assert.match(account, /href="\/admin\/reports"/);
 });
 
-test("unfinished profile editing is honest and does not expose a fake control", async () => {
+test("profile editing updates only the current user's display name", async () => {
   const account = await readProjectFile("app/account/page.tsx");
+  const action = await readProjectFile("src/features/profiles/actions.ts");
+  const form = await readProjectFile("src/features/profiles/profile-form.tsx");
 
-  assert.match(account, /Under construction/);
-  assert.match(account, /Profile editing/);
-  assert.match(account, /identity and role changes remain protected/);
-  assert.doesNotMatch(account, /Edit profile|Save profile/);
+  assert.match(account, /ProfileForm initialDisplayName/);
+  assert.match(action, /\.eq\("id", user\.id\)/);
+  assert.match(action, /\.update\(\{ display_name: displayName \}\)/);
+  assert.doesNotMatch(action, /\.update\(\{[^}]*role/);
+  assert.match(form, /maxLength={80}/);
+  assert.match(form, /role={state.status === "success" \? "status" : "alert"}/);
 });
 
 test("account hub remains responsive and motion safe", async () => {
@@ -34,4 +38,5 @@ test("account hub remains responsive and motion safe", async () => {
   assert.match(styles, /\.account-action-grid/);
   assert.match(styles, /prefers-reduced-motion[\s\S]*\.account-action-card/);
   assert.match(styles, /max-width: 40rem[\s\S]*\.account-summary[\s\S]*grid-template-columns: 1fr/);
+  assert.match(styles, /\.account-settings-grid/);
 });

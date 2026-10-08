@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "../../src/components/submit-button";
 import { logout } from "../../src/features/auth/actions";
+import { ProfileForm } from "../../src/features/profiles/profile-form";
 import { createServerSupabaseClient } from "../../src/lib/supabase/server";
 
 type AccountPageProps = {
@@ -45,14 +46,36 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
       <section className="account-summary" aria-labelledby="account-name">
         <div className="account-avatar" aria-hidden="true">{accountInitial}</div>
         <div className="account-identity">
-          <p className="eyebrow">Your account</p>
+          <p className="eyebrow">Your RoomScouter profile</p>
           <h1 id="account-name">{displayName}</h1>
           <p className="role-label">{role ? roleLabels[role] : "Profile setup pending"}</p>
         </div>
-        <dl className="account-details">
-          <div><dt>Email</dt><dd>{user.email}</dd></div>
-          <div><dt>Account type</dt><dd>{role ? roleLabels[role] : "Pending"}</dd></div>
-        </dl>
+      </section>
+
+      <section className="account-settings-grid" aria-label="Profile and security settings">
+        <div className="account-settings-panel">
+          <div className="section-heading">
+            <p className="eyebrow">Profile details</p>
+            <h2>Edit your display name</h2>
+            <p>Update the name RoomScouter uses for your account.</p>
+          </div>
+          <ProfileForm initialDisplayName={displayName} />
+        </div>
+        <div className="account-settings-panel account-security-panel">
+          <div className="section-heading">
+            <p className="eyebrow">Account access</p>
+            <h2>Sign-in and security</h2>
+          </div>
+          <dl className="account-details">
+            <div><dt>Email address</dt><dd>{user.email ?? "Not available"}</dd></div>
+            <div><dt>Account type</dt><dd>{role ? roleLabels[role] : "Pending"}</dd></div>
+          </dl>
+          <p className="field-help">Email and account type are protected account details and can’t be changed here.</p>
+          <div className="account-security-actions">
+            <Link className="button secondary" href="/forgot-password">Reset password</Link>
+            <form action={logout}><SubmitButton pendingLabel="Logging out…" className="secondary">Log out</SubmitButton></form>
+          </div>
+        </div>
       </section>
 
       <section className="account-section" aria-labelledby="account-actions-heading">
@@ -118,16 +141,6 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
         </div>
       </section>
 
-      <section className="account-future" aria-labelledby="profile-editing-heading">
-        <div>
-          <p className="preview-badge">Under construction</p>
-          <h2 id="profile-editing-heading">Profile editing</h2>
-          <p>A future RoomScouter update may include editable profile details. For now, identity and role changes remain protected.</p>
-        </div>
-        <form action={logout}>
-          <SubmitButton pendingLabel="Logging out…" className="secondary">Log out</SubmitButton>
-        </form>
-      </section>
     </main>
   );
 }
