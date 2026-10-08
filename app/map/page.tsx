@@ -16,7 +16,7 @@ export default function MapPreviewPage() {
     : null;
 
   return (
-    <main className="discovery-shell preview-page" id="main-content" tabIndex={-1}>
+    <main className="discovery-shell preview-page map-page" id="main-content" tabIndex={-1}>
       <PublicHeader current="map" />
       <section className="preview-hero">
         <p className="preview-badge">Under construction</p>
@@ -27,7 +27,7 @@ export default function MapPreviewPage() {
           available listings around the university without exposing unpublished owner information.
         </p>
         <div className="actions">
-          <Link className="button" href="/#browse">Browse available listings</Link>
+          <Link className="button" href="/browse">Browse available listings</Link>
           {campusMapUrl ? (
             <a className="button secondary" href={campusMapUrl} target="_blank" rel="noreferrer">
               View {university?.name} on OpenStreetMap

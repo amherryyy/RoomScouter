@@ -28,6 +28,7 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
   const hasPrevious = filters.page > 1;
   const hasNext = lastResult < total;
   const searchPath = "/browse";
+  const heroPhoto = results.find((listing) => listing.cover)?.cover ?? null;
 
   return (
     <main className={`discovery-shell${browseMode ? " browse-page-shell" : ""}`} id="main-content" tabIndex={-1}>
@@ -48,8 +49,8 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
       <section className="discovery-hero">
         <div className="discovery-hero-copy">
           <p className="eyebrow">Student housing near NVSU</p>
-          <h1>Find a room that fits your student life.</h1>
-          <p className="lede">Compare approved local boarding houses using clear information about rent, availability, amenities, and distance.</p>
+          <h1>Find your perfect boarding house.</h1>
+          <p className="lede">Explore approved rooms around NVSU with clear details on rent, availability, amenities, and distance.</p>
           <Form className="hero-search" action={searchPath}>
             <label className="visually-hidden" htmlFor="hero-query">Search listings near the university</label>
             <input
@@ -68,16 +69,21 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
             {university ? <Link href="/browse?maximumDistance=1">Within 1 km</Link> : null}
           </div>
         </div>
-        <div className="discovery-hero-visual" aria-hidden="true">
-          <div className="campus-silhouette">
-            <span className="campus-tower" />
-            <span className="campus-wing campus-wing-left" />
-            <span className="campus-wing campus-wing-right" />
-          </div>
-          <div className="hero-location-card">
-            <span>Focused search area</span>
-            <strong>{university?.name ?? "Nueva Vizcaya State University"}</strong>
-          </div>
+        <div className={`discovery-hero-visual${heroPhoto ? " has-hero-photo" : ""}`}>
+          {heroPhoto ? (
+            <img className="hero-property-photo" src={heroPhoto.signedUrl} alt={heroPhoto.altText} />
+          ) : (
+            <div className="hero-brand-art" aria-hidden="true">
+              <img src="/roomscouter-icon.jpg" alt="" width="1692" height="2046" />
+              <span>Local homes, easier to compare</span>
+            </div>
+          )}
+          {heroPhoto ? (
+            <div className="hero-location-card">
+              <span>Explore homes near</span>
+              <strong>{university?.name ?? "Nueva Vizcaya State University"}</strong>
+            </div>
+          ) : null}
         </div>
       </section>
       )}
@@ -87,7 +93,7 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
           <div className="discovery-section-heading">
             <div>
               <p className="eyebrow">Places to start</p>
-              <h2 id="featured-title">Explore available homes</h2>
+              <h2 id="featured-title">Available boarding houses</h2>
             </div>
             <Link className="text-link" href="/browse">See all listings <span aria-hidden="true">→</span></Link>
           </div>
@@ -95,11 +101,12 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
             {results.slice(0, 3).map((listing) => (
               <article className="featured-card" key={listing.id}>
                 <Link className="featured-cover-link" href={`/listings/${listing.id}`} aria-label={`View ${listing.title}`}>
-                  {listing.cover ? <img className="featured-cover" src={listing.cover.signedUrl} alt={listing.cover.altText} /> : <span className="featured-cover featured-cover-empty">Photo coming soon</span>}
+                  {listing.cover ? <img className="featured-cover" src={listing.cover.signedUrl} alt={listing.cover.altText} /> : <span className="featured-cover featured-cover-empty"><img src="/icon.jpg" width="1692" height="2046" alt="" /><span>Photos coming soon</span></span>}
                 </Link>
                 <div className="featured-card-body">
                   <p className="featured-location">{listing.address_line}</p>
                   <h3><Link href={`/listings/${listing.id}`}>{listing.title}</Link></h3>
+                  <p className="featured-location">{ROOM_TYPE_LABELS[listing.room_type]} · {listing.available_rooms} available</p>
                   <p className="listing-price"><strong>{currency.format(listing.monthly_rent)}</strong> <span>per month</span></p>
                 </div>
               </article>
@@ -181,7 +188,7 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
             <article className="discovery-card" key={listing.id}>
               {listing.cover ? (
                 <img className="listing-cover" src={listing.cover.signedUrl} alt={listing.cover.altText} />
-              ) : <div className="listing-cover cover-placeholder">Photo coming soon</div>}
+              ) : <div className="listing-cover cover-placeholder"><img src="/roomscouter-icon.jpg" width="1692" height="2046" alt="" /><span>Photo coming soon</span></div>}
               <div className="discovery-card-body">
                 <div className="listing-card-heading">
                   <h3><Link href={`/listings/${listing.id}`}>{listing.title}</Link></h3>
