@@ -116,13 +116,15 @@ export default async function EditListingPage({ params, searchParams }: EditList
         deleteAction={deletePhotoAction}
       />
 
-      {canSubmit ? (
+      {(canSubmit || listing.status === "pending") ? (
         <section className="submission-panel">
           <div>
-            <h2>Ready for review?</h2>
-            <p>Check every fact before sending this listing to an administrator.</p>
+            <h2>{canSubmit ? "Ready for review?" : "Awaiting administrator review"}</h2>
+            <p>{canSubmit ? "Check every fact before sending this listing to an administrator." : "Your listing is in the moderation queue."}</p>
           </div>
-          <SubmitListingForm action={submitAction} />
+          {canSubmit ? <SubmitListingForm action={submitAction} /> : (
+            <p className="notice success" role="status">Listing submitted for review.</p>
+          )}
         </section>
       ) : null}
 

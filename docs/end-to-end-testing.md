@@ -28,7 +28,7 @@ npx.cmd supabase db reset --local
 npm.cmd run test:e2e:local
 ```
 
-The runner reads credentials directly from `supabase status -o env`, rejects every API endpoint except `http://127.0.0.1:54321` or its `localhost` equivalent, and reseeds the fixed fictional demo scenario before opening the app. It starts a separate development server at `http://127.0.0.1:3100` and runs one Chromium worker so the role journeys remain deterministic.
+The runner reads credentials directly from `supabase status -o env`, rejects every API endpoint except `http://127.0.0.1:54321` or its `localhost` equivalent, and reseeds the fixed fictional demo scenario. It builds the app with those local values, starts a production server at `http://127.0.0.1:3100`, and runs one Chromium worker so the role journeys remain deterministic without development compilation delays.
 
 The seed refreshes the known demo records. Do not use this command when you need to preserve edits made to those fictional local records.
 
