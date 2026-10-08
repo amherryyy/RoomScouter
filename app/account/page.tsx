@@ -38,7 +38,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
     <main className="workspace-shell account-hub" id="main-content" tabIndex={-1}>
       <header className="account-header">
         <Link className="wordmark" href="/">RoomScouter</Link>
-        <Link href="/#browse">Browse listings</Link>
+        <Link href="/browse">Browse listings</Link>
       </header>
       {error ? <p className="notice error" role="alert">{error}</p> : null}
 
@@ -110,7 +110,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
               </Link>
             </>
           ) : null}
-          <Link className="account-action-card" href="/#browse">
+          <Link className="account-action-card" href="/browse">
             <span className="action-kicker">Discover</span>
             <strong>Browse approved listings</strong>
             <span>Search available rooms and compare their details.</span>

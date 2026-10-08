@@ -18,6 +18,18 @@ test("public navigation exposes the approved wireframe destinations", async () =
   assert.match(detail, /<PublicHeader/);
 });
 
+test("public navigation shows an authenticated profile card with account actions", async () => {
+  const header = await readProjectFile("src/components/public-header.tsx");
+
+  assert.match(header, /supabase\.auth\.getUser\(\)/);
+  assert.match(header, /from\("profiles"\)\.select\("display_name, role"\)/);
+  assert.match(header, /className="profile-menu"/);
+  assert.match(header, /href="\/account">My account/);
+  assert.match(header, /action=\{logout\}/);
+  assert.match(header, /href="\/login">Log in/);
+  assert.match(header, /href="\/register">Create account/);
+});
+
 test("unfinished map behavior is presented honestly and without fake controls", async () => {
   const map = await readProjectFile("app/map/page.tsx");
 
