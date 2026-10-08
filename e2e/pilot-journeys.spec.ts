@@ -97,6 +97,6 @@ test.describe.serial("RoomScouter pilot journeys", () => {
     await page.goto("/");
     await page.getByRole("textbox", { name: "Search listings near the university" }).fill(ownerListing);
     await page.getByRole("button", { name: "Find a room" }).click();
-    await expect(page.getByRole("link", { name: ownerListing })).toBeVisible();
+    await expect(page.getByRole("link", { name: ownerListing, exact: true })).toBeVisible();
   });
 });

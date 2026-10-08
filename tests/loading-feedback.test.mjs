@@ -9,11 +9,18 @@ test("route transitions expose accessible, motion-safe skeletons", async () => {
   const styles = await readProjectFile("app/styles.css");
   for (const path of [
     "app/loading.tsx",
+    "app/browse/loading.tsx",
     "app/account/loading.tsx",
     "app/admin/loading.tsx",
+    "app/admin/listings/[id]/loading.tsx",
+    "app/admin/reviews/loading.tsx",
+    "app/admin/reports/loading.tsx",
     "app/owner/loading.tsx",
+    "app/owner/listings/new/loading.tsx",
     "app/owner/listings/[id]/edit/loading.tsx",
     "app/listings/[id]/loading.tsx",
+    "app/favorites/loading.tsx",
+    "app/reports/loading.tsx",
   ]) {
     const loading = await readProjectFile(path);
     assert.match(loading, /PageSkeleton/);
