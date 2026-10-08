@@ -18,6 +18,8 @@ The complete scope is defined in [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md), funct
 
 The team's initial visual direction is mapped to working routes and product boundaries in the [UI design handoff](docs/ui-handoff.md). Preview pages are explicitly labeled when their supporting feature has not been implemented.
 
+Project-specific engineering instructions are in [AGENTS.md](AGENTS.md), with the verification and review workflow in [docs/engineering-workflow.md](docs/engineering-workflow.md).
+
 ## Local development
 
 ```powershell
