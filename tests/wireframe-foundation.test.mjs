@@ -7,12 +7,14 @@ const readProjectFile = (path) => readFile(new URL(`../${path}`, import.meta.url
 test("public navigation exposes the approved wireframe destinations", async () => {
   const header = await readProjectFile("src/components/public-header.tsx");
   const home = await readProjectFile("app/page.tsx");
+  const browse = await readProjectFile("app/browse/page.tsx");
   const detail = await readProjectFile("app/listings/[id]/page.tsx");
 
-  for (const destination of ["/", "/#browse", "/map", "/about", "/login", "/register"]) {
+  for (const destination of ["/", "/browse", "/map", "/about", "/login", "/register"]) {
     assert.ok(header.includes(`href="${destination}"`), `missing public destination ${destination}`);
   }
-  assert.match(home, /<PublicHeader current="home"/);
+  assert.match(home, /<PublicHeader current=\{browseMode \? "browse" : "home"\}/);
+  assert.match(browse, /<Home searchParams=\{searchParams\} browseMode/);
   assert.match(detail, /<PublicHeader/);
 });
 

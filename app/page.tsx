@@ -16,9 +16,10 @@ const currency = new Intl.NumberFormat("en-PH", { style: "currency", currency: "
 
 type HomePageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
+  browseMode?: boolean;
 };
 
-export default async function Home({ searchParams }: HomePageProps) {
+export default async function Home({ searchParams, browseMode = false }: HomePageProps) {
   const filters = parseDiscoveryFilters(await searchParams);
   const university = getUniversityConfig();
   const { results, facilities, utilities, total } = await loadDiscovery(filters, university);
@@ -26,17 +27,30 @@ export default async function Home({ searchParams }: HomePageProps) {
   const lastResult = Math.min(filters.page * DISCOVERY_PAGE_SIZE, total);
   const hasPrevious = filters.page > 1;
   const hasNext = lastResult < total;
+  const searchPath = "/browse";
 
   return (
-    <main className="discovery-shell" id="main-content" tabIndex={-1}>
-      <PublicHeader current="home" />
+    <main className={`discovery-shell${browseMode ? " browse-page-shell" : ""}`} id="main-content" tabIndex={-1}>
+      <PublicHeader current={browseMode ? "browse" : "home"} />
 
+      {browseMode ? (
+        <section className="browse-page-hero">
+          <p className="eyebrow">RoomScouter listings</p>
+          <h1>Find a place that feels like yours.</h1>
+          <p>Search verified boarding houses and compare real availability, rent, and amenities.</p>
+          <Form className="hero-search" action={searchPath}>
+            <label className="visually-hidden" htmlFor="hero-query">Search listings</label>
+            <input id="hero-query" name="q" defaultValue={filters.query} maxLength={120} placeholder="Search location, area, or property name" />
+            <SubmitButton pendingLabel="Searching…">Search</SubmitButton>
+          </Form>
+        </section>
+      ) : (
       <section className="discovery-hero">
         <div className="discovery-hero-copy">
           <p className="eyebrow">Student housing near NVSU</p>
           <h1>Find a room that fits your student life.</h1>
           <p className="lede">Compare approved local boarding houses using clear information about rent, availability, amenities, and distance.</p>
-          <Form className="hero-search" action="/">
+          <Form className="hero-search" action={searchPath}>
             <label className="visually-hidden" htmlFor="hero-query">Search listings near the university</label>
             <input
               id="hero-query"
@@ -49,9 +63,9 @@ export default async function Home({ searchParams }: HomePageProps) {
           </Form>
           <div className="quick-searches" aria-label="Quick searches">
             <span>Popular:</span>
-            <Link href="/?maximumRent=5000#browse">Up to ₱5,000</Link>
-            <Link href="/?roomType=private_room#browse">Private rooms</Link>
-            {university ? <Link href="/?maximumDistance=1#browse">Within 1 km</Link> : null}
+            <Link href="/browse?maximumRent=5000">Up to ₱5,000</Link>
+            <Link href="/browse?roomType=private_room">Private rooms</Link>
+            {university ? <Link href="/browse?maximumDistance=1">Within 1 km</Link> : null}
           </div>
         </div>
         <div className="discovery-hero-visual" aria-hidden="true">
@@ -66,16 +80,44 @@ export default async function Home({ searchParams }: HomePageProps) {
           </div>
         </div>
       </section>
+      )}
 
-      <section className="discovery-browser" id="browse" aria-labelledby="browse-title">
+      {!browseMode ? (
+        <section className="featured-listings" aria-labelledby="featured-title">
+          <div className="discovery-section-heading">
+            <div>
+              <p className="eyebrow">Places to start</p>
+              <h2 id="featured-title">Explore available homes</h2>
+            </div>
+            <Link className="text-link" href="/browse">See all listings <span aria-hidden="true">→</span></Link>
+          </div>
+          {results.length ? <div className="featured-grid">
+            {results.slice(0, 3).map((listing) => (
+              <article className="featured-card" key={listing.id}>
+                <Link className="featured-cover-link" href={`/listings/${listing.id}`} aria-label={`View ${listing.title}`}>
+                  {listing.cover ? <img className="featured-cover" src={listing.cover.signedUrl} alt={listing.cover.altText} /> : <span className="featured-cover featured-cover-empty">Photo coming soon</span>}
+                </Link>
+                <div className="featured-card-body">
+                  <p className="featured-location">{listing.address_line}</p>
+                  <h3><Link href={`/listings/${listing.id}`}>{listing.title}</Link></h3>
+                  <p className="listing-price"><strong>{currency.format(listing.monthly_rent)}</strong> <span>per month</span></p>
+                </div>
+              </article>
+            ))}
+          </div> : <div className="empty-state"><h3>No available homes yet</h3><p>Check back soon, or browse again when more local listings are approved.</p></div>}
+        </section>
+      ) : null}
+
+      {browseMode ? <section className="discovery-browser browse-results-section" id="browse" aria-labelledby="browse-title">
         <div className="discovery-section-heading">
           <div>
             <p className="eyebrow">Browse local options</p>
-            <h2 id="browse-title">Refine your search</h2>
+            <h2 id="browse-title">{browseMode ? "Available boarding houses" : "Refine your search"}</h2>
           </div>
-          <p>Every public result has passed administrator review.</p>
+          <p>{browseMode ? `${total} approved ${total === 1 ? "listing" : "listings"} available to explore` : "Every public result has passed administrator review."}</p>
         </div>
-      <Form className="discovery-filters" action="/" aria-label="Filter boarding houses">
+      <div className={browseMode ? "browse-results-layout" : undefined}>
+      <Form className={`discovery-filters${browseMode ? " browse-filter-panel" : ""}`} action={searchPath} aria-label="Filter boarding houses">
         <div className="search-field">
           <label htmlFor="q">Search by name, address, or description</label>
           <input id="q" name="q" defaultValue={filters.query} maxLength={120} placeholder="Try a street or neighborhood" />
@@ -120,7 +162,7 @@ export default async function Home({ searchParams }: HomePageProps) {
         ) : null}
         <div className="filter-actions">
           <SubmitButton pendingLabel="Searching…">Show listings</SubmitButton>
-          <Link className="button secondary" href="/">Clear</Link>
+          <Link className="button secondary" href={searchPath}>Clear</Link>
         </div>
       </Form>
 
@@ -166,12 +208,13 @@ export default async function Home({ searchParams }: HomePageProps) {
 
       {(hasPrevious || hasNext) ? (
         <nav className="pagination" aria-label="Search results pages">
-          {hasPrevious ? <Link className="button secondary" href={`/?${discoveryQuery(filters, filters.page - 1)}`}>Previous</Link> : <span />}
+          {hasPrevious ? <Link className="button secondary" href={`${searchPath}?${discoveryQuery(filters, filters.page - 1)}`}>Previous</Link> : <span />}
           <span>Page {filters.page}</span>
-          {hasNext ? <Link className="button secondary" href={`/?${discoveryQuery(filters, filters.page + 1)}`}>Next</Link> : <span />}
+          {hasNext ? <Link className="button secondary" href={`${searchPath}?${discoveryQuery(filters, filters.page + 1)}`}>Next</Link> : <span />}
         </nav>
       ) : null}
-      </section>
+      </div>
+      </section> : null}
     </main>
   );
 }
