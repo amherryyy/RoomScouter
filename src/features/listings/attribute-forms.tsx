@@ -1,4 +1,9 @@
+"use client";
+
+import { useActionState } from "react";
 import { SubmitButton } from "../../components/submit-button";
+import { ActionNotice } from "./action-notice";
+import { initialListingFormState, type ListingFormState } from "./listing-form-state";
 
 type CatalogItem = { id: number; name: string };
 type UtilitySelection = { utility_id: number; is_included: boolean; details: string | null };
@@ -10,9 +15,9 @@ type AttributeFormsProps = {
   utilities: CatalogItem[];
   selectedUtilities: UtilitySelection[];
   rules: HouseRule[];
-  facilityAction: (formData: FormData) => void | Promise<void>;
-  utilityAction: (formData: FormData) => void | Promise<void>;
-  ruleAction: (formData: FormData) => void | Promise<void>;
+  facilityAction: (previousState: ListingFormState, formData: FormData) => Promise<ListingFormState>;
+  utilityAction: (previousState: ListingFormState, formData: FormData) => Promise<ListingFormState>;
+  ruleAction: (previousState: ListingFormState, formData: FormData) => Promise<ListingFormState>;
 };
 
 export function AttributeForms({
@@ -28,6 +33,9 @@ export function AttributeForms({
   const selectedFacilities = new Set(selectedFacilityIds);
   const utilitySelections = new Map(selectedUtilities.map((selection) => [selection.utility_id, selection]));
   const ruleSlots = Array.from({ length: 10 }, (_, index) => rules[index]?.rule_text ?? "");
+  const [facilityState, facilityFormAction] = useActionState(facilityAction, initialListingFormState);
+  const [utilityState, utilityFormAction] = useActionState(utilityAction, initialListingFormState);
+  const [ruleState, ruleFormAction] = useActionState(ruleAction, initialListingFormState);
 
   return (
     <section className="attribute-editor" aria-labelledby="attributes-title">
@@ -37,7 +45,8 @@ export function AttributeForms({
         <p>Changes to approved content require another review. Saving an unchanged section does not.</p>
       </div>
 
-      <form action={facilityAction} className="attribute-card">
+      <form action={facilityFormAction} className="attribute-card">
+        <ActionNotice state={facilityState} />
         <fieldset>
           <legend>Facilities</legend>
           <div className="choice-grid">
@@ -57,7 +66,8 @@ export function AttributeForms({
         <SubmitButton pendingLabel="Saving facilities…" className="secondary">Save facilities</SubmitButton>
       </form>
 
-      <form action={utilityAction} className="attribute-card">
+      <form action={utilityFormAction} className="attribute-card">
+        <ActionNotice state={utilityState} />
         <fieldset>
           <legend>Utilities</legend>
           <p className="field-help">Select each available utility, mark whether it is included, and add a short pricing note when useful.</p>
@@ -86,7 +96,8 @@ export function AttributeForms({
         <SubmitButton pendingLabel="Saving utilities…" className="secondary">Save utilities</SubmitButton>
       </form>
 
-      <form action={ruleAction} className="attribute-card">
+      <form action={ruleFormAction} className="attribute-card">
+        <ActionNotice state={ruleState} />
         <fieldset>
           <legend>House rules</legend>
           <p className="field-help">Rules appear in this order. Clear a field to remove that rule.</p>

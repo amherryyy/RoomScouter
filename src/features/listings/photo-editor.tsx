@@ -1,7 +1,9 @@
 "use client";
 
-import { type ChangeEvent, useEffect, useState } from "react";
+import { type ChangeEvent, useActionState, useEffect, useState } from "react";
 import { SubmitButton } from "../../components/submit-button";
+import { ActionNotice } from "./action-notice";
+import { initialListingFormState, type ListingFormState } from "./listing-form-state";
 
 type ListingPhoto = {
   id: string;
@@ -14,9 +16,9 @@ type ListingPhoto = {
 
 type PhotoEditorProps = {
   photos: ListingPhoto[];
-  uploadAction: (formData: FormData) => void | Promise<void>;
-  saveAction: (formData: FormData) => void | Promise<void>;
-  deleteAction: (photoId: string, formData: FormData) => void | Promise<void>;
+  uploadAction: (previousState: ListingFormState, formData: FormData) => Promise<ListingFormState>;
+  saveAction: (previousState: ListingFormState, formData: FormData) => Promise<ListingFormState>;
+  deleteAction: (previousState: ListingFormState, formData: FormData) => Promise<ListingFormState>;
 };
 
 function formatBytes(bytes: number): string {
@@ -25,10 +27,17 @@ function formatBytes(bytes: number): string {
 
 export function PhotoEditor({ photos, uploadAction, saveAction, deleteAction }: PhotoEditorProps) {
   const [selectedPreview, setSelectedPreview] = useState<string | null>(null);
+  const [uploadState, uploadFormAction] = useActionState(uploadAction, initialListingFormState);
+  const [saveState, saveFormAction] = useActionState(saveAction, initialListingFormState);
+  const [deleteState, deleteFormAction] = useActionState(deleteAction, initialListingFormState);
 
   useEffect(() => () => {
     if (selectedPreview) URL.revokeObjectURL(selectedPreview);
   }, [selectedPreview]);
+
+  useEffect(() => {
+    if (uploadState.status === "success") setSelectedPreview(null);
+  }, [uploadState]);
 
   function previewSelection(event: ChangeEvent<HTMLInputElement>) {
     if (selectedPreview) URL.revokeObjectURL(selectedPreview);
@@ -43,8 +52,10 @@ export function PhotoEditor({ photos, uploadAction, saveAction, deleteAction }: 
         <h2 id="photos-title">Show students the space</h2>
         <p>Upload up to ten JPEG or PNG photos. Each photo needs a useful description.</p>
       </div>
+      <ActionNotice state={deleteState} />
 
-      <form action={uploadAction} className="attribute-card photo-upload-form">
+      <form action={uploadFormAction} className="attribute-card photo-upload-form">
+        <ActionNotice state={uploadState} />
         <label htmlFor="listing-photo">Photo</label>
         <input
           id="listing-photo"
@@ -73,7 +84,8 @@ export function PhotoEditor({ photos, uploadAction, saveAction, deleteAction }: 
       </form>
 
       {photos.length ? (
-        <form action={saveAction} className="photo-grid-form">
+        <form action={saveFormAction} className="photo-grid-form">
+          <ActionNotice state={saveState} />
           <div className="photo-grid">
             {photos.map((photo) => (
               <article className="photo-card" key={photo.id}>
@@ -101,7 +113,7 @@ export function PhotoEditor({ photos, uploadAction, saveAction, deleteAction }: 
                 >
                   {photos.map((_, index) => <option value={index + 1} key={index + 1}>{index + 1}</option>)}
                 </select>
-                <SubmitButton className="danger-button" pendingLabel="Removing photo…" formAction={deleteAction.bind(null, photo.id)}>
+                <SubmitButton className="danger-button" pendingLabel="Removing photo…" formAction={deleteFormAction} name="photoId" value={photo.id}>
                   Remove photo
                 </SubmitButton>
               </article>
