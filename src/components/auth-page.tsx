@@ -15,10 +15,10 @@ export function AuthPage({ titleId, eyebrow, title, description, children, foote
   return (
     <main className="auth-shell" id="main-content" tabIndex={-1}>
       <div className="auth-layout">
+        <Link className="auth-brand" href="/" aria-label="RoomScouter home">
+          <BrandLogo className="auth-logo-image" />
+        </Link>
         <aside className="auth-story" aria-label="About RoomScouter">
-          <Link className="auth-brand" href="/" aria-label="RoomScouter home">
-            <BrandLogo className="auth-logo-image" />
-          </Link>
           <div className="auth-story-copy">
             <p className="eyebrow">Student housing, made clearer</p>
             <h2>Find a room with facts you can compare.</h2>
@@ -32,9 +32,6 @@ export function AuthPage({ titleId, eyebrow, title, description, children, foote
         </aside>
 
         <section className="auth-card" aria-labelledby={titleId}>
-          <Link className="auth-mobile-brand" href="/" aria-label="RoomScouter home">
-            <BrandLogo className="auth-logo-image" />
-          </Link>
           <p className="eyebrow">{eyebrow}</p>
           <h1 id={titleId}>{title}</h1>
           <p className="auth-description">{description}</p>

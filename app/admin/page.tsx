@@ -116,6 +116,9 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         <div className="listing-grid">
           {listings.map((listing) => (
             <article className="listing-card" key={listing.id}>
+              <div className="workspace-listing-media" aria-hidden="true">
+                <img src="/roomscouter-icon.png" width="1141" height="1379" alt="" />
+              </div>
               <div className="listing-card-heading">
                 <h2>{listing.title}</h2>
                 <span className={`status status-${listing.status}`}>{listing.status}</span>

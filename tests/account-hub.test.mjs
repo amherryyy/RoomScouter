@@ -28,7 +28,7 @@ test("profile editing updates only the current user's display name", async () =>
   assert.match(action, /\.eq\("id", user\.id\)/);
   assert.match(action, /\.update\(\{ display_name: displayName \}\)/);
   assert.doesNotMatch(action, /\.update\(\{[^}]*role/);
-  assert.match(form, /maxLength={80}/);
+  assert.match(form, /maxLength=\{80\}/);
   assert.match(form, /role={state.status === "success" \? "status" : "alert"}/);
 });
 

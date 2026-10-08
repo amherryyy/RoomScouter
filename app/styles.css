@@ -2938,3 +2938,150 @@ fieldset {
     background: Canvas;
   }
 }
+
+/* Teammate UI integration: keep RoomScouter's current blue and green palette. */
+:root {
+  --rs-ink: #173956;
+  --rs-blue: #245f91;
+  --rs-green: #246b48;
+  --rs-muted: #526158;
+  --rs-border: #d8e0da;
+}
+
+.workspace-topbar {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 4.875rem;
+  padding: 0.55rem max(5vw, calc((100vw - 78rem) / 2));
+  border-bottom: 1px solid var(--rs-border);
+  background: #fff;
+}
+
+.workspace-topbar-brand { display: inline-flex; flex: 0 0 auto; align-items: center; }
+.workspace-topbar-logo { display: block; width: clamp(10rem, 18vw, 15rem); height: 3.8rem; object-fit: contain; }
+.workspace-topbar nav { display: flex; align-items: center; justify-content: flex-end; gap: clamp(0.8rem, 2vw, 1.75rem); }
+.workspace-topbar nav > a { color: var(--rs-ink); font-size: 0.94rem; font-weight: 600; text-decoration: none; }
+.workspace-topbar nav > a:hover { color: var(--rs-green); text-decoration: underline; text-underline-offset: 0.25em; }
+.workspace-profile-menu { position: relative; }
+.workspace-profile-menu > summary { display: flex; align-items: center; gap: 0.55rem; cursor: pointer; list-style: none; }
+.workspace-profile-menu > summary::-webkit-details-marker { display: none; }
+.workspace-profile-menu > summary::marker { content: ""; }
+.workspace-profile-menu .profile-menu-name { color: var(--rs-ink); font-weight: 650; }
+.workspace-profile-menu .profile-menu-chevron { color: var(--rs-muted); }
+
+.auth-layout { display: flex; width: min(100%, 31.25rem); min-height: 0; flex-direction: column; align-items: center; overflow: visible; border: 0; background: transparent; box-shadow: none; }
+.auth-brand { display: flex; justify-content: center; margin: 0 0 1.25rem; }
+.auth-logo-image { display: block; width: min(18rem, 72vw); height: auto; object-fit: contain; }
+.auth-card { width: 100%; border: 1px solid var(--rs-border); border-radius: 0.9rem; background: #fff; box-shadow: 0 0.75rem 2.2rem rgb(23 57 86 / 8%); }
+.auth-mobile-brand { display: none; }
+
+.owner-workspace .workspace-heading { align-items: flex-end; border-bottom: 1px solid var(--rs-border); padding-bottom: 1.8rem; }
+.owner-workspace .listing-card { min-height: 8.5rem; border-radius: 0.75rem; padding: 1.25rem 1.5rem; }
+.workspace-listing-media { display: grid; min-width: 0; min-height: 5rem; place-items: center; overflow: hidden; border-radius: 0.55rem; background: #e7eef3; }
+.workspace-listing-media img { display: block; width: 2.8rem; height: 3.4rem; object-fit: contain; mix-blend-mode: multiply; }
+.owner-workspace .listing-card { grid-template-columns: 8rem minmax(0, 1fr) auto; }
+.owner-workspace .workspace-listing-media { grid-column: 1; grid-row: 1 / span 4; min-height: 6rem; }
+.owner-workspace .listing-card-heading { grid-column: 2 / 4; }
+.owner-workspace .listing-card-heading h2 { font-size: clamp(1.05rem, 2vw, 1.3rem); }
+.owner-workspace .listing-card > a { color: var(--rs-blue); text-underline-offset: 0.2em; }
+.owner-workspace .listing-card > a { grid-column: 3; grid-row: 2 / span 2; align-self: center; }
+.admin-dashboard .listing-card { display: grid; grid-template-columns: 6rem minmax(0, 1fr); align-items: center; gap: 0.45rem 1.1rem; }
+.admin-dashboard .workspace-listing-media { grid-column: 1; grid-row: 1 / span 6; width: 6rem; min-height: 5rem; height: 100%; }
+.admin-dashboard .listing-card-heading, .admin-dashboard .listing-card > p, .admin-dashboard .listing-card > a { grid-column: 2; }
+.favorites-workspace .workspace-listing-media { width: 100%; min-height: 10rem; margin-bottom: 0.25rem; }
+.favorites-workspace .workspace-listing-media img { width: 3.5rem; height: 4rem; }
+.dashboard-summary-card, .admin-summary-card { min-height: 7.5rem; justify-content: space-between; background: #fff; }
+.admin-dashboard-hero { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(15rem, 0.65fr); align-items: end; gap: 2rem; padding: clamp(2rem, 5vw, 4rem); color: #fff; background: linear-gradient(125deg, #174b78, #246b61); }
+.admin-dashboard-hero .admin-hero-actions { justify-content: flex-end; }
+.admin-work-queues, .admin-listing-queue, .owner-listings-heading { margin-top: 3.2rem; }
+.admin-queue-card { min-height: 11rem; padding: 1.4rem; }
+.admin-queue-number { color: var(--rs-blue); }
+
+.discovery-hero { width: 100%; max-width: none; min-height: 27.5rem; margin: 0; border-radius: 0; padding: clamp(3rem, 6vw, 5.5rem) max(6vw, calc((100vw - 78rem) / 2)); background: #e7eef3; }
+.discovery-hero h1 { max-width: 16ch; font-size: clamp(2.55rem, 4.8vw, 4.1rem); line-height: 1.03; }
+.discovery-hero-visual { min-height: 21rem; border-radius: 11rem 0.85rem 0.85rem 11rem; }
+.featured-listings { padding-top: clamp(3rem, 6vw, 4.5rem); }
+.featured-listings .discovery-section-heading { align-items: baseline; }
+.featured-listings .discovery-section-heading h2 { font-size: clamp(1.65rem, 3vw, 2.1rem); letter-spacing: 0.04em; }
+.featured-grid { gap: clamp(1rem, 2.2vw, 2rem); }
+.featured-card { border-radius: 0.65rem; box-shadow: 0 0.35rem 1.15rem rgb(23 57 86 / 7%); }
+.featured-cover { height: auto; aspect-ratio: 1.42; }
+.featured-card-body { min-height: 9rem; padding: 1.25rem 1.4rem 1.4rem; }
+.featured-card h3 { font-size: 1.25rem; }
+
+.browse-page-hero { width: 100%; max-width: none; margin: 0; border-radius: 0; padding: clamp(2.5rem, 5vw, 4rem) max(6vw, calc((100vw - 78rem) / 2)); background: #e7eef3; }
+.browse-page-hero h1 { max-width: 22ch; font-size: clamp(2.25rem, 4vw, 3rem); }
+.browse-results-section { padding-top: 2.8rem; }
+.browse-results-layout { grid-template-columns: minmax(15rem, 0.32fr) minmax(0, 1fr); gap: clamp(1.5rem, 3vw, 2.75rem); }
+.browse-filter-panel { top: 1.5rem; border-radius: 0.75rem; padding: 1.4rem; }
+.browse-results-section .discovery-card { min-height: 13rem; border-radius: 0.75rem; }
+.browse-results-section .listing-cover { min-height: 13rem; }
+.discovery-card-body { gap: 0.65rem; padding: 1.3rem 1.45rem; }
+.discovery-card h3 a { color: var(--rs-ink); }
+.listing-price strong { color: var(--rs-blue); }
+
+.preview-page > .preview-hero { margin-top: clamp(2.5rem, 5vw, 4rem); }
+.preview-hero { padding: clamp(2rem, 5vw, 3.75rem); border: 1px solid var(--rs-border); border-radius: 0.9rem; background: #e7eef3; }
+.about-page .preview-hero h1, .map-page .preview-hero h1 { max-width: 17ch; font-size: clamp(2.45rem, 5vw, 4.2rem); }
+.about-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.35rem; margin-top: 2rem; }
+.about-grid section { display: grid; align-content: start; justify-items: start; min-height: 15rem; border: 1px solid var(--rs-border); background: #fff; }
+.about-grid .step-number { display: grid; width: 2.5rem; height: 2.5rem; place-items: center; border-radius: 50%; color: #fff; background: var(--rs-green); }
+.scope-note { align-items: center; gap: 2rem; margin-top: 1.35rem; padding: clamp(1.5rem, 4vw, 2.6rem); background: #174b78; }
+.map-preview-panel { grid-template-columns: minmax(0, 1.05fr) minmax(18rem, 0.95fr); align-items: stretch; gap: 1.5rem; margin-top: 2rem; border: 1px solid var(--rs-border); background: #fff; }
+.map-preview-canvas { min-height: 28rem; border-radius: 0.7rem; background-color: #edf2ee; }
+
+.account-page-heading { max-width: 56rem; margin: 0 auto 1.5rem; }
+.account-page-heading h1 { max-width: none; margin: 0.35rem 0; color: var(--rs-ink); font-size: clamp(2rem, 4vw, 3rem); }
+.account-page-heading > p:last-child { color: var(--rs-muted); }
+.account-profile-card { max-width: 56rem; margin: 0 auto; overflow: hidden; border: 1px solid var(--rs-border); border-radius: 0.9rem; background: #fff; box-shadow: 0 0.5rem 1.8rem rgb(23 57 86 / 7%); }
+.account-profile-card .account-summary { display: flex; flex-direction: column; align-items: center; gap: 0.8rem; margin: 0; padding: 2.3rem 1.5rem 1.7rem; border-bottom: 1px solid var(--rs-border); text-align: center; }
+.account-profile-card .account-avatar { width: 6.25rem; height: 6.25rem; font-size: 2rem; }
+.account-profile-card .account-identity h2 { margin: 0.3rem 0; color: var(--rs-ink); font-size: 1.5rem; }
+.account-profile-card .account-identity .profile-email { margin: 0.3rem 0 0; color: var(--rs-muted); }
+.account-settings-grid { grid-template-columns: 1fr; gap: 0; }
+.account-profile-card .account-settings-panel { border: 0; border-bottom: 1px solid var(--rs-border); border-radius: 0; box-shadow: none; }
+.account-profile-card .account-security-panel .account-details { margin-top: 1rem; }
+.account-profile-card .account-section { margin: 0; border: 0; padding: 1.5rem 1.7rem 1.8rem; }
+.account-profile-card .account-action-grid { grid-template-columns: 1fr; gap: 0; border-top: 1px solid var(--rs-border); }
+.account-profile-card .account-action-card { position: relative; display: block; min-height: 0; border: 0; border-bottom: 1px solid var(--rs-border); border-radius: 0; padding: 1rem 2.5rem 1rem 0.3rem; box-shadow: none; }
+.account-profile-card .account-action-card::after { position: absolute; top: 50%; right: 0.4rem; content: "›"; transform: translateY(-50%); color: var(--rs-blue); font-size: 1.4rem; }
+.account-profile-card .account-action-card:hover { transform: none; background: #f7f9f7; }
+.account-profile-card .account-action-card strong { color: var(--rs-ink); }
+
+@media (max-width: 54rem) {
+  .admin-dashboard-hero { grid-template-columns: 1fr; align-items: start; }
+  .admin-dashboard-hero .admin-hero-actions { justify-content: flex-start; }
+  .browse-results-layout { grid-template-columns: 1fr; }
+  .browse-filter-panel { position: static; }
+  .about-grid { grid-template-columns: 1fr; }
+  .about-grid section { min-height: 0; }
+  .map-preview-panel { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 42rem) {
+  .workspace-topbar { align-items: flex-start; flex-direction: column; gap: 0.3rem; padding: 0.6rem 1rem 0.8rem; }
+  .workspace-topbar-logo { width: 10.5rem; height: 3rem; }
+  .auth-layout { width: min(100%, 31.25rem); }
+  .auth-brand { margin-bottom: 0.9rem; }
+  .workspace-topbar nav { width: 100%; justify-content: flex-start; flex-wrap: wrap; gap: 0.65rem 1rem; }
+  .workspace-profile-menu[open] .profile-card { left: auto; right: 0; }
+  .owner-workspace .listing-card { grid-template-columns: 1fr; }
+  .owner-workspace .workspace-listing-media { grid-column: 1; grid-row: auto; width: 100%; min-height: 9rem; }
+  .owner-workspace .listing-card-heading { grid-column: 1; }
+  .owner-workspace .listing-card > a { grid-column: 1; grid-row: auto; justify-self: start; }
+  .admin-dashboard .listing-card { grid-template-columns: 1fr; }
+  .admin-dashboard .workspace-listing-media { grid-column: 1; grid-row: auto; width: 100%; min-height: 9rem; }
+  .admin-dashboard .listing-card-heading, .admin-dashboard .listing-card > p, .admin-dashboard .listing-card > a { grid-column: 1; }
+  .discovery-hero { grid-template-columns: 1fr; padding: 2rem 1rem 1.5rem; }
+  .discovery-hero-visual { min-height: 15rem; border-radius: 1rem; }
+  .browse-page-hero { padding: 2rem 1rem; }
+  .featured-listings, .discovery-browser { width: calc(100% - 2rem); }
+  .preview-page > .preview-hero, .preview-page > .about-grid, .preview-page > .scope-note, .preview-page > .map-preview-panel { width: calc(100% - 2rem); }
+  .about-page .preview-hero h1, .map-page .preview-hero h1 { font-size: clamp(2.15rem, 9vw, 3rem); }
+  .account-page-heading, .account-profile-card { width: calc(100% - 1rem); }
+  .account-security-actions { align-items: stretch; flex-direction: column; }
+  .account-security-actions .button, .account-security-actions form, .account-security-actions button { width: 100%; }
+}

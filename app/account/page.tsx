@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { PublicHeader } from "../../src/components/public-header";
 import { SubmitButton } from "../../src/components/submit-button";
 import { logout } from "../../src/features/auth/actions";
 import { ProfileForm } from "../../src/features/profiles/profile-form";
@@ -36,19 +37,24 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
   const accountInitial = displayName.trim().charAt(0).toUpperCase() || "R";
 
   return (
-    <main className="workspace-shell account-hub" id="main-content" tabIndex={-1}>
-      <header className="account-header">
-        <Link className="wordmark" href="/">RoomScouter</Link>
-        <Link href="/browse">Browse listings</Link>
-      </header>
+    <>
+      <PublicHeader />
+      <main className="workspace-shell account-hub" id="main-content" tabIndex={-1}>
+      <div className="account-page-heading">
+        <p className="eyebrow">Your account</p>
+        <h1>Profile and settings</h1>
+        <p>Manage your profile, sign-in details, and RoomScouter workspace.</p>
+      </div>
       {error ? <p className="notice error" role="alert">{error}</p> : null}
 
+      <article className="account-profile-card">
       <section className="account-summary" aria-labelledby="account-name">
         <div className="account-avatar" aria-hidden="true">{accountInitial}</div>
         <div className="account-identity">
-          <p className="eyebrow">Your RoomScouter profile</p>
-          <h1 id="account-name">{displayName}</h1>
+          <p className="eyebrow">RoomScouter profile</p>
+          <h2 id="account-name">{displayName}</h2>
           <p className="role-label">{role ? roleLabels[role] : "Profile setup pending"}</p>
+          <p className="profile-email">{user.email ?? "Email not available"}</p>
         </div>
       </section>
 
@@ -82,7 +88,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
         <div className="section-heading">
           <div>
             <p className="eyebrow">Workspace</p>
-            <h2 id="account-actions-heading">What would you like to do?</h2>
+            <h2 id="account-actions-heading">Quick links</h2>
           </div>
         </div>
         <div className="account-action-grid">
@@ -90,7 +96,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
             <>
               <Link className="account-action-card" href="/favorites">
                 <span className="action-kicker">Saved</span>
-                <strong>View favorite listings</strong>
+                <strong>View your favorites</strong>
                 <span>Return to the approved rooms you are comparing.</span>
               </Link>
               <Link className="account-action-card" href="/reports">
@@ -140,7 +146,8 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
           </Link>
         </div>
       </section>
-
-    </main>
+      </article>
+      </main>
+    </>
   );
 }
