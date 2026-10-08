@@ -31,7 +31,7 @@ export default async function OwnerDashboardPage() {
   };
 
   return (
-    <main className="workspace-shell" id="main-content" tabIndex={-1}>
+    <main className="workspace-shell owner-workspace" id="main-content" tabIndex={-1}>
       <header className="workspace-heading">
         <div>
           <p className="eyebrow">Owner workspace</p>
