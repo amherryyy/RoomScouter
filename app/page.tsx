@@ -74,7 +74,7 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
             <img className="hero-property-photo" src={heroPhoto.signedUrl} alt={heroPhoto.altText} />
           ) : (
             <div className="hero-brand-art" aria-hidden="true">
-              <img src="/roomscouter-icon.jpg" alt="" width="1692" height="2046" />
+              <img src="/roomscouter-icon.png" alt="" width="1141" height="1379" />
               <span>Local homes, easier to compare</span>
             </div>
           )}
@@ -101,7 +101,7 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
             {results.slice(0, 3).map((listing) => (
               <article className="featured-card" key={listing.id}>
                 <Link className="featured-cover-link" href={`/listings/${listing.id}`} aria-label={`View ${listing.title}`}>
-                  {listing.cover ? <img className="featured-cover" src={listing.cover.signedUrl} alt={listing.cover.altText} /> : <span className="featured-cover featured-cover-empty"><img src="/icon.jpg" width="1692" height="2046" alt="" /><span>Photos coming soon</span></span>}
+                  {listing.cover ? <img className="featured-cover" src={listing.cover.signedUrl} alt={listing.cover.altText} /> : <span className="featured-cover featured-cover-empty"><img src="/roomscouter-icon.png" width="1141" height="1379" alt="" /><span>Photos coming soon</span></span>}
                 </Link>
                 <div className="featured-card-body">
                   <p className="featured-location">{listing.address_line}</p>
@@ -188,7 +188,7 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
             <article className="discovery-card" key={listing.id}>
               {listing.cover ? (
                 <img className="listing-cover" src={listing.cover.signedUrl} alt={listing.cover.altText} />
-              ) : <div className="listing-cover cover-placeholder"><img src="/roomscouter-icon.jpg" width="1692" height="2046" alt="" /><span>Photo coming soon</span></div>}
+              ) : <div className="listing-cover cover-placeholder"><img src="/roomscouter-icon.png" width="1141" height="1379" alt="" /><span>Photo coming soon</span></div>}
               <div className="discovery-card-body">
                 <div className="listing-card-heading">
                   <h3><Link href={`/listings/${listing.id}`}>{listing.title}</Link></h3>
