@@ -53,17 +53,17 @@ export async function updateListing(
   return { status: "success", message: "Listing saved." };
 }
 
-export async function submitListing(listingId: string): Promise<never> {
+export async function submitListing(listingId: string, _previousState: ListingFormState, _formData: FormData): Promise<ListingFormState> {
   if (!isUuid(listingId)) actionError("/owner", "The listing could not be found.");
   const path = `/owner/listings/${listingId}/edit`;
   const { supabase } = await requireOwner();
   const { error } = await supabase.rpc("submit_boarding_house", { target_id: listingId });
 
-  if (error) actionError(path, "Only a complete draft or rejected listing can be submitted.");
+  if (error) return { status: "error", message: "Only a complete draft or rejected listing can be submitted." };
 
   revalidatePath("/owner");
   revalidatePath(path);
-  redirect(`${path}?message=${encodeURIComponent("Listing submitted for review.")}`);
+  return { status: "success", message: "Listing submitted for review." };
 }
 
 function parseCatalogIds(values: FormDataEntryValue[]): number[] | null {
@@ -78,27 +78,27 @@ function attributePath(listingId: string): string {
   return `/owner/listings/${listingId}/edit`;
 }
 
-export async function saveFacilities(listingId: string, formData: FormData): Promise<never> {
+export async function saveFacilities(listingId: string, _previousState: ListingFormState, formData: FormData): Promise<ListingFormState> {
   const path = attributePath(listingId);
   const facilityIds = parseCatalogIds(formData.getAll("facilityIds"));
-  if (!facilityIds) actionError(path, "The facility selection is invalid.");
+  if (!facilityIds) return { status: "error", message: "The facility selection is invalid." };
 
   const { supabase } = await requireOwner();
   const { error } = await supabase.rpc("replace_boarding_house_facilities", {
     target_id: listingId,
     target_facility_ids: facilityIds,
   });
-  if (error) actionError(path, "Facilities could not be saved.");
+  if (error) return { status: "error", message: "Facilities could not be saved." };
 
   revalidatePath("/owner");
   revalidatePath(path);
-  redirect(`${path}?message=${encodeURIComponent("Facilities saved.")}`);
+  return { status: "success", message: "Facilities saved." };
 }
 
-export async function saveUtilities(listingId: string, formData: FormData): Promise<never> {
+export async function saveUtilities(listingId: string, _previousState: ListingFormState, formData: FormData): Promise<ListingFormState> {
   const path = attributePath(listingId);
   const utilityIds = parseCatalogIds(formData.getAll("utilityIds"));
-  if (!utilityIds) actionError(path, "The utility selection is invalid.");
+  if (!utilityIds) return { status: "error", message: "The utility selection is invalid." };
 
   const includedValues: boolean[] = [];
   const detailValues: string[] = [];
@@ -106,7 +106,7 @@ export async function saveUtilities(listingId: string, formData: FormData): Prom
     includedValues.push(formData.get(`utilityIncluded:${utilityId}`) === "on");
     const rawDetails = formData.get(`utilityDetails:${utilityId}`);
     if (typeof rawDetails !== "string" || rawDetails.trim().length > 240) {
-      actionError(path, "Utility details must contain at most 240 characters.");
+      return { status: "error", message: "Utility details must contain at most 240 characters." };
     }
     detailValues.push(rawDetails.trim());
   }
@@ -118,22 +118,22 @@ export async function saveUtilities(listingId: string, formData: FormData): Prom
     target_included_values: includedValues,
     target_detail_values: detailValues,
   });
-  if (error) actionError(path, "Utilities could not be saved.");
+  if (error) return { status: "error", message: "Utilities could not be saved." };
 
   revalidatePath("/owner");
   revalidatePath(path);
-  redirect(`${path}?message=${encodeURIComponent("Utilities saved.")}`);
+  return { status: "success", message: "Utilities saved." };
 }
 
-export async function saveHouseRules(listingId: string, formData: FormData): Promise<never> {
+export async function saveHouseRules(listingId: string, _previousState: ListingFormState, formData: FormData): Promise<ListingFormState> {
   const path = attributePath(listingId);
   const rawRules = formData.getAll("rules");
   if (rawRules.length > 10 || rawRules.some((rule) => typeof rule !== "string")) {
-    actionError(path, "House rules are invalid.");
+    return { status: "error", message: "House rules are invalid." };
   }
   const rules = (rawRules as string[]).map((rule) => rule.trim()).filter(Boolean);
   if (rules.some((rule) => rule.length < 3 || rule.length > 500)) {
-    actionError(path, "Each house rule must contain between 3 and 500 characters.");
+    return { status: "error", message: "Each house rule must contain between 3 and 500 characters." };
   }
 
   const { supabase } = await requireOwner();
@@ -141,11 +141,11 @@ export async function saveHouseRules(listingId: string, formData: FormData): Pro
     target_id: listingId,
     target_rules: rules,
   });
-  if (error) actionError(path, "House rules could not be saved.");
+  if (error) return { status: "error", message: "House rules could not be saved." };
 
   revalidatePath("/owner");
   revalidatePath(path);
-  redirect(`${path}?message=${encodeURIComponent("House rules saved.")}`);
+  return { status: "success", message: "House rules saved." };
 }
 
 const PHOTO_BUCKET = "listing-photos";
@@ -161,16 +161,16 @@ function parsePhotoAltText(value: FormDataEntryValue | null): string | null {
   return altText.length >= 3 && altText.length <= 200 ? altText : null;
 }
 
-export async function uploadListingPhoto(listingId: string, formData: FormData): Promise<never> {
+export async function uploadListingPhoto(listingId: string, _previousState: ListingFormState, formData: FormData): Promise<ListingFormState> {
   const path = attributePath(listingId);
   const file = formData.get("photo");
   const altText = parsePhotoAltText(formData.get("altText"));
-  if (!(file instanceof File) || file.size === 0) actionError(path, "Choose a photo to upload.");
+  if (!(file instanceof File) || file.size === 0) return { status: "error", message: "Choose a photo to upload." };
   const extension = PHOTO_EXTENSIONS[file.type];
   if (!extension || file.size > MAX_PHOTO_BYTES) {
-    actionError(path, "Photos must be JPEG or PNG files no larger than 10 MiB.");
+    return { status: "error", message: "Photos must be JPEG or PNG files no larger than 10 MiB." };
   }
-  if (!altText) actionError(path, "Describe the photo using 3 to 200 characters.");
+  if (!altText) return { status: "error", message: "Describe the photo using 3 to 200 characters." };
 
   const { supabase, user } = await requireOwner();
   const { data: listing } = await supabase
@@ -185,12 +185,12 @@ export async function uploadListingPhoto(listingId: string, formData: FormData):
     .from("listing_photos")
     .select("position")
     .eq("boarding_house_id", listingId);
-  if (photoReadError) actionError(path, "Photos could not be loaded.");
-  if (photos.length >= 10) actionError(path, "A listing can contain at most 10 photos.");
+  if (photoReadError) return { status: "error", message: "Photos could not be loaded." };
+  if (photos.length >= 10) return { status: "error", message: "A listing can contain at most 10 photos." };
   const occupiedPositions = new Set(photos.map((photo) => photo.position));
   const nextPosition = Array.from({ length: 10 }, (_, index) => index + 1)
     .find((position) => !occupiedPositions.has(position));
-  if (!nextPosition) actionError(path, "A listing can contain at most 10 photos.");
+  if (!nextPosition) return { status: "error", message: "A listing can contain at most 10 photos." };
 
   const objectPath = `${user.id}/${listingId}/${crypto.randomUUID()}.${extension}`;
   const { error: uploadError } = await supabase.storage
@@ -205,7 +205,7 @@ export async function uploadListingPhoto(listingId: string, formData: FormData):
       byteSize: file.size,
       error: uploadError.message,
     });
-    actionError(path, "Storage rejected the photo. Refresh the page, sign in again, and retry.");
+    return { status: "error", message: "Storage rejected the photo. Refresh the page, sign in again, and retry." };
   }
 
   const { error: metadataError } = await supabase.from("listing_photos").insert({
@@ -219,19 +219,19 @@ export async function uploadListingPhoto(listingId: string, formData: FormData):
   });
   if (metadataError) {
     await supabase.storage.from(PHOTO_BUCKET).remove([objectPath]);
-    actionError(path, "The photo could not be added to the listing.");
+    return { status: "error", message: "The photo could not be added to the listing." };
   }
 
   revalidatePath("/owner");
   revalidatePath(path);
-  redirect(`${path}?message=${encodeURIComponent("Photo uploaded.")}`);
+  return { status: "success", message: "Photo uploaded." };
 }
 
-export async function savePhotoDetails(listingId: string, formData: FormData): Promise<never> {
+export async function savePhotoDetails(listingId: string, _previousState: ListingFormState, formData: FormData): Promise<ListingFormState> {
   const path = attributePath(listingId);
   const photoIds = formData.getAll("photoIds");
   if (photoIds.length > 10 || photoIds.some((id) => typeof id !== "string" || !isUuid(id))) {
-    actionError(path, "The photo selection is invalid.");
+    return { status: "error", message: "The photo selection is invalid." };
   }
 
   const details = (photoIds as string[]).map((id) => ({
@@ -245,7 +245,7 @@ export async function savePhotoDetails(listingId: string, formData: FormData): P
     || new Set(positions).size !== details.length
     || positions.some((position) => position < 1 || position > details.length)
   ) {
-    actionError(path, "Each photo needs unique ordering and alternative text.");
+    return { status: "error", message: "Each photo needs unique ordering and alternative text." };
   }
   details.sort((left, right) => left.position - right.position);
 
@@ -255,20 +255,21 @@ export async function savePhotoDetails(listingId: string, formData: FormData): P
     target_photo_ids: details.map((photo) => photo.id),
     target_alt_texts: details.map((photo) => photo.altText as string),
   });
-  if (error) actionError(path, "Photo details could not be saved.");
+  if (error) return { status: "error", message: "Photo details could not be saved." };
 
   revalidatePath("/owner");
   revalidatePath(path);
-  redirect(`${path}?message=${encodeURIComponent("Photo details saved.")}`);
+  return { status: "success", message: "Photo details saved." };
 }
 
 export async function deleteListingPhoto(
   listingId: string,
-  photoId: string,
-  _formData: FormData,
-): Promise<never> {
+  _previousState: ListingFormState,
+  formData: FormData,
+): Promise<ListingFormState> {
   const path = attributePath(listingId);
-  if (!isUuid(photoId)) actionError(path, "The photo could not be found.");
+  const photoId = formData.get("photoId");
+  if (typeof photoId !== "string" || !isUuid(photoId)) return { status: "error", message: "The photo could not be found." };
 
   const { supabase } = await requireOwner();
   const { data: photo, error: readError } = await supabase
@@ -277,20 +278,20 @@ export async function deleteListingPhoto(
     .eq("id", photoId)
     .eq("boarding_house_id", listingId)
     .maybeSingle();
-  if (readError || !photo) actionError(path, "The photo could not be found.");
+  if (readError || !photo) return { status: "error", message: "The photo could not be found." };
 
   const { error: deleteError } = await supabase
     .from("listing_photos")
     .delete()
     .eq("id", photo.id)
     .eq("boarding_house_id", listingId);
-  if (deleteError) actionError(path, "The photo could not be removed.");
+  if (deleteError) return { status: "error", message: "The photo could not be removed." };
 
   const { error: storageError } = await supabase.storage.from(PHOTO_BUCKET).remove([photo.object_path]);
   revalidatePath("/owner");
   revalidatePath(path);
   if (storageError) {
-    actionError(path, "The photo was hidden, but private file cleanup is pending.");
+    return { status: "error", message: "The photo was hidden, but private file cleanup is pending." };
   }
-  redirect(`${path}?message=${encodeURIComponent("Photo removed.")}`);
+  return { status: "success", message: "Photo removed." };
 }

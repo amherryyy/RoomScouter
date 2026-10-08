@@ -53,11 +53,13 @@ test("saves listing edits in place with an accessible action result", async () =
 test("shows lifecycle state, moderation feedback, and explicit submission", async () => {
   const dashboard = await readProjectFile("app/owner/page.tsx");
   const editPage = await readProjectFile("app/owner/listings/[id]/edit/page.tsx");
+  const submitForm = await readProjectFile("src/features/listings/submit-listing-form.tsx");
 
   assert.match(dashboard, /listing\.status/);
   assert.match(editPage, /listing\.moderation_note/);
   assert.match(editPage, /Changing listing details will return this listing to pending review/);
-  assert.match(editPage, /Submit for review/);
+  assert.match(editPage, /<SubmitListingForm/);
+  assert.match(submitForm, /Submit for review/);
   assert.match(editPage, /listing\.status === "draft" \|\| listing\.status === "rejected"/);
 });
 

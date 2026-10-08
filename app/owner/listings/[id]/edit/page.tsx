@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { SubmitButton } from "../../../../../src/components/submit-button";
 import {
   deleteListingPhoto,
   saveFacilities,
@@ -16,6 +15,7 @@ import { AttributeForms } from "../../../../../src/features/listings/attribute-f
 import { ListingForm } from "../../../../../src/features/listings/listing-form";
 import { isUuid } from "../../../../../src/features/listings/model";
 import { PhotoEditor } from "../../../../../src/features/listings/photo-editor";
+import { SubmitListingForm } from "../../../../../src/features/listings/submit-listing-form";
 
 type EditListingPageProps = {
   params: Promise<{ id: string }>;
@@ -122,7 +122,7 @@ export default async function EditListingPage({ params, searchParams }: EditList
             <h2>Ready for review?</h2>
             <p>Check every fact before sending this listing to an administrator.</p>
           </div>
-          <form action={submitAction}><SubmitButton pendingLabel="Submitting for review…">Submit for review</SubmitButton></form>
+          <SubmitListingForm action={submitAction} />
         </section>
       ) : null}
 
