@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <main className="discovery-shell preview-page" id="main-content" tabIndex={-1}>
+    <main className="discovery-shell preview-page about-page" id="main-content" tabIndex={-1}>
       <PublicHeader current="about" />
       <section className="preview-hero">
         <p className="eyebrow">About RoomScouter</p>
@@ -44,7 +44,7 @@ export default function AboutPage() {
           <h2>RoomScouter supports discovery—not transactions.</h2>
           <p>Students contact owners directly. RoomScouter does not process reservations, rental agreements, or payments.</p>
         </div>
-        <Link className="button" href="/#browse">Start browsing</Link>
+        <Link className="button" href="/browse">Start browsing</Link>
       </section>
     </main>
   );

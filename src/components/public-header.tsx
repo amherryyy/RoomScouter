@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BrandLogo } from "./brand-logo";
 
 type PublicHeaderProps = {
   current?: "home" | "browse" | "map" | "about";
@@ -8,8 +9,7 @@ export function PublicHeader({ current }: PublicHeaderProps) {
   return (
     <header className="public-header">
       <Link className="wordmark" href="/" aria-label="RoomScouter home">
-        <span className="public-brand-mark" aria-hidden="true"><span /></span>
-        <span>RoomScouter</span>
+        <BrandLogo className="public-wordmark-logo" />
       </Link>
       <nav aria-label="Primary navigation">
         <Link aria-current={current === "home" ? "page" : undefined} href="/">Home</Link>

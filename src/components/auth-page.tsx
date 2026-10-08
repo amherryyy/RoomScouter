@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { BrandLogo } from "./brand-logo";
 
 type AuthPageProps = {
   titleId: string;
@@ -16,8 +17,7 @@ export function AuthPage({ titleId, eyebrow, title, description, children, foote
       <div className="auth-layout">
         <aside className="auth-story" aria-label="About RoomScouter">
           <Link className="auth-brand" href="/" aria-label="RoomScouter home">
-            <span className="auth-brand-mark" aria-hidden="true"><span /></span>
-            <span>RoomScouter</span>
+            <BrandLogo className="auth-logo-image" />
           </Link>
           <div className="auth-story-copy">
             <p className="eyebrow">Student housing, made clearer</p>
@@ -33,8 +33,7 @@ export function AuthPage({ titleId, eyebrow, title, description, children, foote
 
         <section className="auth-card" aria-labelledby={titleId}>
           <Link className="auth-mobile-brand" href="/" aria-label="RoomScouter home">
-            <span className="auth-brand-mark" aria-hidden="true"><span /></span>
-            <span>RoomScouter</span>
+            <BrandLogo className="auth-logo-image" />
           </Link>
           <p className="eyebrow">{eyebrow}</p>
           <h1 id={titleId}>{title}</h1>
