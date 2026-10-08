@@ -17,8 +17,8 @@ test.describe.serial("RoomScouter pilot journeys", () => {
   test("student searches, saves, reviews, and reports", async ({ page }) => {
     await logIn(page, "student2@roomscouter.example.test");
     await page.goto("/");
-    await page.getByLabel("Search by name, address, or description").fill("Bayombong Study Suites");
-    await page.getByRole("button", { name: "Show listings" }).click();
+    await page.getByRole("textbox", { name: "Search listings near the university" }).fill("Bayombong Study Suites");
+    await page.getByRole("button", { name: "Find a room" }).click();
     await page.getByRole("link", { name: "Bayombong Study Suites" }).click();
 
     await page.getByRole("button", { name: "Save listing" }).click();
@@ -66,11 +66,11 @@ test.describe.serial("RoomScouter pilot journeys", () => {
     });
     await page.getByLabel("Photo description").fill("Bright private room prepared for student viewing");
     await page.getByRole("button", { name: "Upload photo" }).click();
-    await expect(page.getByRole("status")).toContainText("Photo uploaded");
+    await expect(page.getByRole("status").filter({ hasText: "Photo uploaded" })).toBeVisible();
     await expect(page.getByAltText("Bright private room prepared for student viewing")).toBeVisible();
     await page.getByRole("button", { name: "Submit for review" }).click();
     await expect(page.getByText("pending", { exact: true })).toBeVisible();
-    await expect(page.getByRole("status")).toContainText("submitted for review");
+    await expect(page.getByRole("status").filter({ hasText: "submitted for review" })).toBeVisible();
   });
 
   test("administrator moderates the listing, review, and report", async ({ page }) => {
@@ -95,8 +95,8 @@ test.describe.serial("RoomScouter pilot journeys", () => {
     await expect(page.getByRole("status")).toContainText("Report resolved");
 
     await page.goto("/");
-    await page.getByLabel("Search by name, address, or description").fill(ownerListing);
-    await page.getByRole("button", { name: "Show listings" }).click();
+    await page.getByRole("textbox", { name: "Search listings near the university" }).fill(ownerListing);
+    await page.getByRole("button", { name: "Find a room" }).click();
     await expect(page.getByRole("link", { name: ownerListing })).toBeVisible();
   });
 });

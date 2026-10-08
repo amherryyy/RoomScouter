@@ -12,7 +12,7 @@ RoomScouter's unit, contract, and ephemeral PostgreSQL tests prove individual bo
 
 The pilot uses Playwright with one Chromium worker to exercise serial student, owner, and administrator journeys. A dedicated runner obtains the API URL and public key from the running local Supabase CLI, applies the existing loopback URL guard, and refreshes deterministic demo data before starting the application.
 
-The Next.js process receives those verified local values directly. It does not derive its database target from `.env.local`, and neither the browser nor the application receives the local administrator key. Browser artifacts and downloaded test browsers remain untracked.
+The Next.js build and server receive those verified local values directly. The suite runs against a production build to avoid development compilation delays. It does not derive its database target from `.env.local`, and neither the browser nor the application receives the local administrator key. Browser artifacts and downloaded test browsers remain untracked.
 
 ## Consequences
 
