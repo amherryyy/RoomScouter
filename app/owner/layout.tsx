@@ -6,6 +6,5 @@ export default function OwnerLayout({ children }: Readonly<{ children: ReactNode
     { label: "Home", href: "/" },
     { label: "Browse", href: "/browse" },
     { label: "Dashboard", href: "/owner" },
-    { label: "Add property", href: "/owner/listings/new" },
   ]} />{children}</>;
 }

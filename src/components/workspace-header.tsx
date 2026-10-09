@@ -3,6 +3,7 @@ import { BrandLogo } from "./brand-logo";
 import { SubmitButton } from "./submit-button";
 import { logout } from "../features/auth/actions";
 import { createServerSupabaseClient } from "../lib/supabase/server";
+import { ResponsiveNavigation, WorkspaceNavigationLink } from "./navigation-controls";
 
 type WorkspaceHeaderProps = { links: Array<{ label: string; href: string }> };
 const roleLabels = { student: "Student", owner: "Property owner", admin: "Administrator" } as const;
@@ -23,8 +24,9 @@ export async function WorkspaceHeader({ links }: WorkspaceHeaderProps) {
       <Link className="workspace-topbar-brand" href="/" aria-label="RoomScouter home">
         <BrandLogo className="workspace-topbar-logo" />
       </Link>
+      <ResponsiveNavigation className="workspace-navigation">
       <nav aria-label="Workspace navigation">
-        {links.map((link) => <Link href={link.href} key={link.href}>{link.label}</Link>)}
+        {links.map((link) => <WorkspaceNavigationLink href={link.href} key={link.href} label={link.label} />)}
         <details className="profile-menu workspace-profile-menu">
           <summary aria-label={`Open profile menu for ${displayName}`}>
             <span className="profile-menu-avatar" aria-hidden="true">{initial}</span>
@@ -47,6 +49,7 @@ export async function WorkspaceHeader({ links }: WorkspaceHeaderProps) {
           </section>
         </details>
       </nav>
+      </ResponsiveNavigation>
     </header>
   );
 }
