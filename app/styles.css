@@ -3156,7 +3156,7 @@ fieldset {
   .public-header .responsive-navigation-panel nav, .workspace-topbar .responsive-navigation-panel nav { display: grid; width: 100%; justify-content: stretch; gap: 0.15rem; }
   .public-header .responsive-navigation-panel nav > a, .workspace-topbar .responsive-navigation-panel nav > a { display: flex; min-height: 3rem; align-items: center; }
   .public-header .responsive-navigation-panel nav > a.button { justify-content: center; }
-  .responsive-navigation-panel .desktop-profile-menu, .responsive-navigation-panel .desktop-account-actions { display: none; }
+  .responsive-navigation-panel .profile-menu, .responsive-navigation-panel .desktop-account-actions { display: none; }
   .mobile-navigation-profile { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.65rem; border-bottom: 1px solid #e5ebee; padding-bottom: 0.85rem; }
   .mobile-navigation-profile > div { display: grid; min-width: 0; gap: 0.12rem; }
   .mobile-navigation-profile strong { overflow: hidden; color: #173956; text-overflow: ellipsis; white-space: nowrap; }

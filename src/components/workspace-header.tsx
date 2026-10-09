@@ -43,7 +43,7 @@ export async function WorkspaceHeader({ links }: WorkspaceHeaderProps) {
       >
         <nav aria-label="Workspace navigation">
           {links.map((link) => <WorkspaceNavigationLink href={link.href} key={link.href} label={link.label} />)}
-          <details className="profile-menu desktop-profile-menu">
+          <details className="profile-menu workspace-profile-menu">
             <summary aria-label={"Open profile menu for " + displayName}>
               <span className="profile-menu-avatar" aria-hidden="true">{initial}</span>
               <span className="profile-menu-name">{displayName}</span>

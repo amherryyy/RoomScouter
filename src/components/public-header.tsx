@@ -65,7 +65,7 @@ export async function PublicHeader({ current }: PublicHeaderProps) {
           <Link aria-current={current === "map" ? "page" : undefined} href="/map">Map</Link>
           <Link aria-current={current === "about" ? "page" : undefined} href="/about">About</Link>
           {user ? (
-            <details className="profile-menu desktop-profile-menu">
+            <details className="profile-menu">
               <summary aria-label={"Open profile menu for " + displayName}>
                 <span className="profile-menu-avatar" aria-hidden="true">{initial}</span>
                 <span className="profile-menu-name">{displayName}</span>
