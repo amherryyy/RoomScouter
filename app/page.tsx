@@ -1,3 +1,5 @@
+import Image from "next/image";
+import nvsuCampusImage from "../logo&icon/nvsu.jpg";
 import Link from "next/link";
 import Form from "next/form";
 import { PublicHeader } from "../src/components/public-header";
@@ -28,7 +30,6 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
   const hasPrevious = filters.page > 1;
   const hasNext = lastResult < total;
   const searchPath = "/browse";
-  const heroPhoto = results.find((listing) => listing.cover)?.cover ?? null;
 
   return (
     <main className={`discovery-shell${browseMode ? " browse-page-shell" : ""}`} id="main-content" tabIndex={-1}>
@@ -69,21 +70,19 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
             {university ? <Link href="/browse?maximumDistance=1">Within 1 km</Link> : null}
           </div>
         </div>
-        <div className={`discovery-hero-visual${heroPhoto ? " has-hero-photo" : ""}`}>
-          {heroPhoto ? (
-            <img className="hero-property-photo" src={heroPhoto.signedUrl} alt={heroPhoto.altText} />
-          ) : (
-            <div className="hero-brand-art" aria-hidden="true">
-              <img src="/roomscouter-icon.png" alt="" width="1141" height="1379" />
-              <span>Local homes, easier to compare</span>
-            </div>
-          )}
-          {heroPhoto ? (
-            <div className="hero-location-card">
-              <span>Explore homes near</span>
-              <strong>{university?.name ?? "Nueva Vizcaya State University"}</strong>
-            </div>
-          ) : null}
+        <div className="discovery-hero-visual has-hero-photo">
+          <Image
+            className="hero-property-photo"
+            src={nvsuCampusImage}
+            alt="Nueva Vizcaya State University Bayombong Campus"
+            fill
+            preload
+            sizes="(max-width: 900px) 100vw, 45vw"
+          />
+          <div className="hero-location-card">
+            <span>Explore homes near</span>
+            <strong>Nueva Vizcaya State University Bayombong Campus</strong>
+          </div>
         </div>
       </section>
       )}
