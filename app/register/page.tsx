@@ -37,6 +37,10 @@ export default async function RegisterPage({ searchParams }: RegisterPageProps) 
             <option value="owner">Boarding-house owner</option>
           </select>
           <p className="auth-security-note">Administrator access is provisioned separately and cannot be selected during registration.</p>
+          <label className="policy-acceptance">
+            <input type="checkbox" name="acceptPolicies" value="yes" required />
+            <span>I agree to the <Link href="/terms">Terms of Use</Link> and acknowledge the <Link href="/privacy">Privacy Notice</Link>.</span>
+          </label>
           <SubmitButton pendingLabel="Creating account…">Create account</SubmitButton>
         </form>
     </AuthPage>
