@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <body style="margin:0;background:#f3f6f3;color:#20352b;font-family:Arial,Helvetica,sans-serif;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="padding:32px 16px;background:#f3f6f3;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:560px;background:#ffffff;border:1px solid #dce5dd;border-radius:16px;">
+            <tr>
+              <td style="padding:36px 32px;text-align:left;">
+                <p style="margin:0 0 12px;color:#2b684f;font-size:13px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;">RoomScouter</p>
+                <h1 style="margin:0 0 16px;color:#173956;font-size:26px;line-height:1.25;">Finish creating your account</h1>
+                <p style="margin:0 0 24px;color:#526158;font-size:16px;line-height:1.6;">Thanks for joining RoomScouter. Confirm that this email address belongs to you to finish signing up.</p>
+                <p style="margin:0 0 24px;">
+                  <a href="{{ .ConfirmationURL }}" style="display:inline-block;padding:13px 20px;border-radius:8px;background:#246b61;color:#ffffff;font-size:16px;font-weight:bold;text-decoration:none;">Confirm email address</a>
+                </p>
+                <p style="margin:0 0 8px;color:#6c7971;font-size:13px;line-height:1.6;">If the button does not work, copy this link into your browser:</p>
+                <p style="margin:0 0 24px;font-size:13px;line-height:1.6;word-break:break-all;"><a href="{{ .ConfirmationURL }}" style="color:#174b78;">{{ .ConfirmationURL }}</a></p>
+                <p style="margin:0;color:#6c7971;font-size:13px;line-height:1.6;">If you did not create a RoomScouter account, you can ignore this email.</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
