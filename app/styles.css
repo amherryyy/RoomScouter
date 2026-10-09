@@ -3046,7 +3046,7 @@ fieldset {
 .account-profile-card .account-security-panel .account-details { margin-top: 1rem; }
 .account-profile-card .account-section { margin: 0; border: 0; padding: 1.5rem 1.7rem 1.8rem; }
 .account-profile-card .account-action-grid { grid-template-columns: 1fr; gap: 0; border-top: 1px solid var(--rs-border); }
-.account-profile-card .account-action-card { position: relative; display: block; min-height: 0; border: 0; border-bottom: 1px solid var(--rs-border); border-radius: 0; padding: 1rem 2.5rem 1rem 0.3rem; box-shadow: none; }
+.account-profile-card .account-action-card { position: relative; display: grid; justify-items: start; gap: 0.3rem; min-height: 0; border: 0; border-bottom: 1px solid var(--rs-border); border-radius: 0; padding: 1rem 2.5rem 1rem 0.3rem; box-shadow: none; }
 .account-profile-card .account-action-card::after { position: absolute; top: 50%; right: 0.4rem; content: "›"; transform: translateY(-50%); color: var(--rs-blue); font-size: 1.4rem; }
 .account-profile-card .account-action-card:hover { transform: none; background: #f7f9f7; }
 .account-profile-card .account-action-card strong { color: var(--rs-ink); }

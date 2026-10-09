@@ -6,6 +6,7 @@ import { createServerSupabaseClient } from "../lib/supabase/server";
 
 type PublicHeaderProps = {
   current?: "home" | "browse" | "map" | "about";
+  showOwnerDashboard?: boolean;
 };
 
 const roleLabels = {
@@ -20,7 +21,7 @@ const dashboardPaths = {
   admin: "/admin",
 } as const;
 
-export async function PublicHeader({ current }: PublicHeaderProps) {
+export async function PublicHeader({ current, showOwnerDashboard }: PublicHeaderProps) {
   const supabase = await createServerSupabaseClient();
   const { data: { user } } = await supabase.auth.getUser();
   const { data: profile } = user
@@ -39,6 +40,7 @@ export async function PublicHeader({ current }: PublicHeaderProps) {
         <Link aria-current={current === "browse" ? "page" : undefined} href="/browse">Browse</Link>
         <Link aria-current={current === "map" ? "page" : undefined} href="/map">Map</Link>
         <Link aria-current={current === "about" ? "page" : undefined} href="/about">About</Link>
+        {showOwnerDashboard && profile?.role === "owner" ? <Link className="button" href="/owner">Dashboard</Link> : null}
         {user ? (
           <details className="profile-menu">
             <summary aria-label={`Open profile menu for ${displayName}`}>
