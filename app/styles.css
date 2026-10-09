@@ -2221,7 +2221,7 @@ fieldset {
   .public-photo-grid { grid-template-columns: 1fr; }
   .discovery-filters .search-field { grid-column: auto; }
   .discovery-hero { padding: 1.5rem; }
-  .discovery-hero-visual { display: none; }
+  .discovery-hero-visual { display: grid; min-height: 16rem; }
   .hero-search { grid-template-columns: 1fr; }
   .hero-search button { width: 100%; }
   .discovery-section-heading { align-items: flex-start; flex-direction: column; gap: 0.5rem; }
@@ -2417,8 +2417,23 @@ fieldset {
 .campus-tower,
 .campus-wing { background: rgb(23 57 86 / 48%); }
 .campus-tower::before { background: rgb(23 57 86 / 48%); }
-.hero-location-card { z-index: 1; color: #173956; box-shadow: 0 0.5rem 1.5rem rgb(23 57 86 / 12%); }
-.hero-location-card strong { overflow-wrap: anywhere; }
+.hero-location-card {
+  z-index: 1;
+  justify-self: start;
+  width: min(100%, 28rem);
+  min-width: 0;
+  box-sizing: border-box;
+  color: #173956;
+  box-shadow: 0 0.5rem 1.5rem rgb(23 57 86 / 12%);
+}
+.hero-location-card strong {
+  display: block;
+  min-width: 0;
+  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+  line-height: 1.3;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
 
 .hero-search {
   border: 1px solid #cfdae2;
