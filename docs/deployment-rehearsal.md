@@ -36,6 +36,11 @@ In the hosted Supabase dashboard:
 2. Add `<ROOMSCOUTER_SITE_URL>/auth/callback` to the permitted redirect URLs.
 3. Add a preview callback only when that preview will be used for authentication testing.
 4. Keep email confirmation enabled for the release rehearsal.
+5. Configure a custom SMTP service under **Authentication > Emails > SMTP Settings**. Supabase's built-in sender is for development, only sends to project team members, and is limited to two emails per hour. A custom SMTP connection works with providers such as Resend, Amazon SES, Postmark, SendGrid, and Brevo. New custom SMTP setups start at 30 auth emails per hour; adjust **Authentication > Rate Limits** to a value supported by both Supabase and the provider.
+6. Verify the sender domain with the provider and publish its SPF, DKIM, and DMARC DNS records. Use a dedicated authentication sender address and keep auth email separate from marketing email.
+7. In **Authentication > Emails > Email Templates**, configure the confirmation and password recovery templates using the content in `supabase/templates/confirmation.html` and `supabase/templates/recovery.html`. Keep the Supabase `{{ .ConfirmationURL }}` link: registration and recovery already route through RoomScouter's allow-listed PKCE callback. This pilot uses links; an OTP code-entry screen would require a separate app flow.
+
+For local development, `supabase/config.toml` enables confirmations and defines matching templates. Supabase's local email inbox captures those messages; open the **Inbucket URL** reported by `npx.cmd supabase status` (normally `http://127.0.0.1:54324`) to inspect and click the links. Local demo accounts are created as already confirmed so the guarded Playwright journeys remain deterministic.
 
 Do not place a database password, secret key, or service-role key in Vercel browser-visible variables.
 

@@ -19,7 +19,7 @@ test.describe.serial("RoomScouter pilot journeys", () => {
     await page.goto("/");
     await page.getByRole("textbox", { name: "Search listings near the university" }).fill("Bayombong Study Suites");
     await page.getByRole("button", { name: "Find a room" }).click();
-    await page.getByRole("link", { name: "Bayombong Study Suites" }).click();
+    await page.getByRole("link", { name: "Bayombong Study Suites", exact: true }).click();
 
     await page.getByRole("button", { name: "Save listing" }).click();
     await expect(page.getByRole("button", { name: "Remove from saved listings" })).toBeVisible();

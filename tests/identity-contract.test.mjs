@@ -54,12 +54,23 @@ test("restricts repeatable administrator provisioning to privileged database ope
 test("completes email confirmation through a guarded PKCE callback", async () => {
   const actions = await readProjectFile("src/features/auth/actions.ts");
   const callback = await readProjectFile("app/auth/callback/route.ts");
+  const config = await readProjectFile("supabase/config.toml");
+  const confirmationTemplate = await readProjectFile("supabase/templates/confirmation.html");
+  const recoveryTemplate = await readProjectFile("supabase/templates/recovery.html");
 
   assert.match(actions, /emailRedirectTo/);
   assert.match(actions, /callback\.searchParams\.set\("next", nextPath\)/);
   assert.match(callback, /exchangeCodeForSession/);
   assert.match(callback, /value === "\/update-password"/);
   assert.match(callback, /The authentication link is invalid or has expired\./);
+  assert.match(config, /enable_confirmations = true/);
+  assert.match(config, /\[auth\.email\.template\.confirmation\]/);
+  assert.match(config, /\[auth\.email\.template\.recovery\]/);
+  assert.match(confirmationTemplate, /href="\{\{ \.ConfirmationURL \}\}"/);
+  assert.match(recoveryTemplate, /href="\{\{ \.ConfirmationURL \}\}"/);
+  assert.match(confirmationTemplate, /If the button does not work, copy this link/);
+  assert.match(recoveryTemplate, /Your current password will stay the same/);
+  assert.match(recoveryTemplate, /your password will not change/);
 });
 
 test("recovers passwords without disclosing accounts or retaining recovery sessions", async () => {
