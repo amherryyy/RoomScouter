@@ -38,7 +38,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
 
   return (
     <>
-      <PublicHeader showOwnerDashboard />
+      <PublicHeader />
       <main className="workspace-shell account-hub" id="main-content" tabIndex={-1}>
       <div className="account-page-heading">
         <p className="eyebrow">Your account</p>

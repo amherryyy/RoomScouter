@@ -120,7 +120,7 @@ export default async function PublicListingPage({ params, searchParams }: Public
 
   return (
     <main className="public-detail-shell" id="main-content" tabIndex={-1}>
-      <PublicHeader />
+      <PublicHeader current="browse" />
 
       <nav className="detail-breadcrumb" aria-label="Breadcrumb">
         <Link href="/#browse">Browse listings</Link>
