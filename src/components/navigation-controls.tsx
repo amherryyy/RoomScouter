@@ -4,7 +4,25 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 
-export function ResponsiveNavigation({ children, className = "" }: { children: ReactNode; className?: string }) {
+type ResponsiveNavigationProps = {
+  children: ReactNode;
+  className?: string;
+  displayName?: string;
+  initial?: string;
+  email?: string | null;
+  roleLabel?: string;
+  mobileAccount: ReactNode;
+};
+
+export function ResponsiveNavigation({
+  children,
+  className = "",
+  displayName,
+  initial = "R",
+  email,
+  roleLabel,
+  mobileAccount,
+}: ResponsiveNavigationProps) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const panelId = useId();
@@ -31,12 +49,52 @@ export function ResponsiveNavigation({ children, className = "" }: { children: R
     };
   }, [open]);
 
-  return <div className={"responsive-navigation " + className} ref={rootRef}>
-    <button aria-controls={panelId} aria-expanded={open} aria-label={open ? "Close navigation menu" : "Open navigation menu"} className="responsive-navigation-toggle" onClick={() => setOpen((value) => !value)} ref={toggleRef} type="button">
-      <span>{open ? "Close" : "Menu"}</span>
-    </button>
-    <div className="responsive-navigation-panel" data-open={open} id={panelId} onClick={(event) => { if (event.target instanceof Element && event.target.closest("a")) setOpen(false); }}>{children}</div>
-  </div>;
+  return (
+    <div className={"responsive-navigation " + className} ref={rootRef}>
+      <button
+        aria-controls={panelId}
+        aria-expanded={open}
+        aria-label={open
+          ? "Close profile and navigation menu"
+          : displayName
+            ? "Open profile and navigation menu for " + displayName
+            : "Open navigation menu"}
+        className="responsive-navigation-toggle profile-menu-trigger"
+        onClick={() => setOpen((value) => !value)}
+        ref={toggleRef}
+        type="button"
+      >
+        {displayName ? (
+          <>
+            <span className="profile-menu-avatar" aria-hidden="true">{initial}</span>
+            <span className="profile-menu-name">{displayName}</span>
+            <span className="profile-menu-chevron" aria-hidden="true">{open ? "^" : "v"}</span>
+          </>
+        ) : <span>Menu</span>}
+      </button>
+      <div
+        className="responsive-navigation-panel"
+        data-open={open}
+        id={panelId}
+        onClick={(event) => {
+          if (event.target instanceof Element && event.target.closest("a")) setOpen(false);
+        }}
+      >
+        {displayName ? (
+          <div className="mobile-navigation-profile">
+            <span className="profile-card-avatar" aria-hidden="true">{initial}</span>
+            <div>
+              <strong>{displayName}</strong>
+              {roleLabel ? <span>{roleLabel}</span> : null}
+              {email ? <span className="mobile-navigation-email">{email}</span> : null}
+            </div>
+          </div>
+        ) : null}
+        {children}
+        <div className="mobile-navigation-account">{mobileAccount}</div>
+      </div>
+    </div>
+  );
 }
 
 export function WorkspaceNavigationLink({ href, label }: { href: string; label: string }) {

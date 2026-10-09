@@ -29,52 +29,75 @@ export async function PublicHeader({ current }: PublicHeaderProps) {
     : { data: null };
   const displayName = profile?.display_name ?? user?.email?.split("@")[0] ?? "Your account";
   const initial = displayName.trim().charAt(0).toUpperCase() || "R";
+  const mobileAccount = user ? (
+    <>
+      <Link href="/account">My account</Link>
+      {profile?.role && profile.role !== "student" ? (
+        <Link href={dashboardPaths[profile.role]}>Open dashboard</Link>
+      ) : null}
+      <form action={logout}>
+        <SubmitButton className="profile-card-logout" pendingLabel="Logging out...">Log out</SubmitButton>
+      </form>
+    </>
+  ) : (
+    <>
+      <Link href="/login">Log in</Link>
+      <Link className="button" href="/register">Create account</Link>
+    </>
+  );
 
   return (
     <header className="public-header">
       <Link className="wordmark" href="/" aria-label="RoomScouter home">
         <BrandLogo className="public-wordmark-logo" />
       </Link>
-      <ResponsiveNavigation className="public-navigation">
-      <nav aria-label="Primary navigation">
-        <Link aria-current={current === "home" ? "page" : undefined} href="/">Home</Link>
-        <Link aria-current={current === "browse" ? "page" : undefined} href="/browse">Browse</Link>
-        <Link aria-current={current === "map" ? "page" : undefined} href="/map">Map</Link>
-        <Link aria-current={current === "about" ? "page" : undefined} href="/about">About</Link>
-        {user ? (
-          <details className="profile-menu">
-            <summary aria-label={`Open profile menu for ${displayName}`}>
-              <span className="profile-menu-avatar" aria-hidden="true">{initial}</span>
-              <span className="profile-menu-name">{displayName}</span>
-              <span className="profile-menu-chevron" aria-hidden="true">⌄</span>
-            </summary>
-            <section className="profile-card" aria-label="Your profile">
-              <div className="profile-card-identity">
-                <span className="profile-card-avatar" aria-hidden="true">{initial}</span>
-                <div>
-                  <strong>{displayName}</strong>
-                  <span>{profile?.role ? roleLabels[profile.role] : "Account"}</span>
+      <ResponsiveNavigation
+        className="public-navigation"
+        displayName={user ? displayName : undefined}
+        email={user?.email}
+        initial={initial}
+        mobileAccount={mobileAccount}
+        roleLabel={profile?.role ? roleLabels[profile.role] : undefined}
+      >
+        <nav aria-label="Primary navigation">
+          <Link aria-current={current === "home" ? "page" : undefined} href="/">Home</Link>
+          <Link aria-current={current === "browse" ? "page" : undefined} href="/browse">Browse</Link>
+          <Link aria-current={current === "map" ? "page" : undefined} href="/map">Map</Link>
+          <Link aria-current={current === "about" ? "page" : undefined} href="/about">About</Link>
+          {user ? (
+            <details className="profile-menu desktop-profile-menu">
+              <summary aria-label={"Open profile menu for " + displayName}>
+                <span className="profile-menu-avatar" aria-hidden="true">{initial}</span>
+                <span className="profile-menu-name">{displayName}</span>
+                <span className="profile-menu-chevron" aria-hidden="true">v</span>
+              </summary>
+              <section className="profile-card" aria-label="Your profile">
+                <div className="profile-card-identity">
+                  <span className="profile-card-avatar" aria-hidden="true">{initial}</span>
+                  <div>
+                    <strong>{displayName}</strong>
+                    <span>{profile?.role ? roleLabels[profile.role] : "Account"}</span>
+                  </div>
                 </div>
-              </div>
-              {user.email ? <p className="profile-card-email">{user.email}</p> : null}
-              <div className="profile-card-links">
-                <Link href="/account">My account</Link>
-                {profile?.role && profile.role !== "student" ? (
-                  <Link href={dashboardPaths[profile.role]}>Open {profile.role === "owner" ? "owner" : "admin"} dashboard</Link>
-                ) : null}
-              </div>
-              <form action={logout}>
-                <SubmitButton className="profile-card-logout" pendingLabel="Logging out…">Log out</SubmitButton>
-              </form>
-            </section>
-          </details>
-        ) : (
-          <>
-            <Link href="/login">Log in</Link>
-            <Link className="button" href="/register">Create account</Link>
-          </>
-        )}
-      </nav>
+                {user.email ? <p className="profile-card-email">{user.email}</p> : null}
+                <div className="profile-card-links">
+                  <Link href="/account">My account</Link>
+                  {profile?.role && profile.role !== "student" ? (
+                    <Link href={dashboardPaths[profile.role]}>Open dashboard</Link>
+                  ) : null}
+                </div>
+                <form action={logout}>
+                  <SubmitButton className="profile-card-logout" pendingLabel="Logging out...">Log out</SubmitButton>
+                </form>
+              </section>
+            </details>
+          ) : (
+            <div className="desktop-account-actions">
+              <Link href="/login">Log in</Link>
+              <Link className="button" href="/register">Create account</Link>
+            </div>
+          )}
+        </nav>
       </ResponsiveNavigation>
     </header>
   );

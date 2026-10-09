@@ -2338,6 +2338,7 @@ fieldset {
 
 .public-header nav { gap: clamp(0.75rem, 2vw, 1.8rem); }
 .public-header nav a:not(.button) { color: #294b68; }
+.desktop-account-actions { display: flex; align-items: center; gap: clamp(0.75rem, 2vw, 1.8rem); }
 .wordmark { color: #173956; }
 .public-brand-mark { border-color: #3566c0; }
 .public-brand-mark span { background: #3566c0; }
@@ -3133,25 +3134,39 @@ fieldset {
 }
 
 /* Responsive navigation keeps the established RoomScouter header styling. */
-.responsive-navigation { display: flex; align-items: center; }
-.responsive-navigation-toggle { display: none; min-height: 3rem; align-items: center; gap: 0.5rem; border: 1px solid var(--rs-border); border-radius: 0.55rem; padding: 0.45rem 0.8rem; color: var(--rs-ink); background: #fff; font: inherit; font-weight: 700; cursor: pointer; }
+.responsive-navigation { position: relative; display: flex; align-items: center; }
+.responsive-navigation-toggle { display: none; min-height: 3rem; align-items: center; gap: 0.55rem; border: 1px solid #d5e0e4; border-radius: 999px; padding: 0.3rem 0.7rem 0.3rem 0.35rem; color: #173956; background: #fff; font: inherit; font-size: 0.9rem; font-weight: 750; cursor: pointer; }
 .responsive-navigation-toggle:focus-visible, .responsive-navigation a:focus-visible, .profile-menu > summary:focus-visible { outline: 3px solid var(--rs-blue); outline-offset: 3px; }
 .workspace-topbar nav a[aria-current="page"] { color: var(--rs-green); text-decoration: underline; text-decoration-thickness: 0.15em; text-underline-offset: 0.35em; }
 .profile-menu > summary { min-height: 3rem; }
 .profile-card-links a { display: flex; min-height: 3rem; align-items: center; }
+.mobile-navigation-profile, .mobile-navigation-account { display: none; }
+
 @media (max-width: 54rem) {
   .public-header, .workspace-topbar { position: relative; align-items: center; flex-wrap: wrap; }
   .public-header { flex-direction: row; }
   .workspace-topbar { flex-direction: row; gap: 0.5rem; }
   .responsive-navigation { margin-left: auto; }
-  .responsive-navigation-toggle { display: inline-flex; }
+  .responsive-navigation-toggle { display: inline-flex; max-width: min(15rem, calc(100vw - 13rem)); }
+  .responsive-navigation-toggle .profile-menu-avatar { display: grid; flex: 0 0 auto; width: 2rem; height: 2rem; place-items: center; border-radius: 50%; color: #fff; background: #246b48; font-size: 0.9rem; font-weight: 800; }
+  .responsive-navigation-toggle .profile-menu-name { max-width: 9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .responsive-navigation-toggle .profile-menu-chevron { color: #587182; }
   .responsive-navigation-panel[data-open="false"] { display: none; }
-  .responsive-navigation-panel[data-open="true"] { position: absolute; z-index: 30; top: calc(100% + 1px); right: 0; left: 0; border-bottom: 1px solid var(--rs-border); padding: 0.75rem max(1rem, 5vw) 1rem; background: #fff; box-shadow: 0 0.8rem 1.5rem rgb(23 57 86 / 10%); }
-  .public-header .responsive-navigation-panel nav, .workspace-topbar .responsive-navigation-panel nav { display: grid; width: 100%; justify-content: stretch; gap: 0.2rem; }
+  .responsive-navigation-panel[data-open="true"] { position: absolute; z-index: 30; top: calc(100% + 0.55rem); right: 0; width: min(21rem, calc(100vw - 2rem)); max-height: calc(100dvh - 6rem); overflow-y: auto; border: 1px solid #d7e2e7; border-radius: 0.9rem; padding: 1rem; background: #fff; box-shadow: 0 1rem 2.5rem rgb(23 57 86 / 17%); }
+  .public-header .responsive-navigation-panel nav, .workspace-topbar .responsive-navigation-panel nav { display: grid; width: 100%; justify-content: stretch; gap: 0.15rem; }
   .public-header .responsive-navigation-panel nav > a, .workspace-topbar .responsive-navigation-panel nav > a { display: flex; min-height: 3rem; align-items: center; }
   .public-header .responsive-navigation-panel nav > a.button { justify-content: center; }
+  .responsive-navigation-panel .desktop-profile-menu, .responsive-navigation-panel .desktop-account-actions { display: none; }
+  .mobile-navigation-profile { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.65rem; border-bottom: 1px solid #e5ebee; padding-bottom: 0.85rem; }
+  .mobile-navigation-profile > div { display: grid; min-width: 0; gap: 0.12rem; }
+  .mobile-navigation-profile strong { overflow: hidden; color: #173956; text-overflow: ellipsis; white-space: nowrap; }
+  .mobile-navigation-profile > div > span { color: #5b6e78; font-size: 0.82rem; }
+  .mobile-navigation-profile .mobile-navigation-email { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mobile-navigation-account { display: grid; gap: 0.15rem; margin-top: 0.65rem; border-top: 1px solid #e5ebee; padding-top: 0.65rem; }
+  .mobile-navigation-account > a { display: flex; min-height: 3rem; align-items: center; border-radius: 0.45rem; padding: 0 0.6rem; color: #245f91; font-size: 0.9rem; font-weight: 750; text-decoration: none; }
+  .mobile-navigation-account > a:hover { background: #eef4f6; }
+  .mobile-navigation-account > a.button { justify-content: center; }
+  .mobile-navigation-account form { margin-top: 0.35rem; border-top: 1px solid #e5ebee; padding-top: 0.65rem; }
   .workspace-profile-menu[open] .profile-card { right: 0; left: auto; }
 }
-
-.public-header nav > a,
-.workspace-topbar nav > a { display: inline-flex; min-height: 3rem; align-items: center; }
+.public-header nav > a, .workspace-topbar nav > a { display: inline-flex; min-height: 3rem; align-items: center; }
