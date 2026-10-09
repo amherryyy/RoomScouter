@@ -57,8 +57,9 @@ export async function register(formData: FormData): Promise<never> {
   const email = parseRequiredText(formData.get("email"), 254);
   const password = parsePassword(formData.get("password"));
   const requestedRole = parseSelfAssignableRole(formData.get("role"));
+  const acceptedPolicies = formData.get("acceptPolicies") === "yes";
 
-  if (!displayName || !email || !password || !requestedRole) {
+  if (!displayName || !email || !password || !requestedRole || !acceptedPolicies) {
     authError("/register", "Complete every field and use a password with at least eight characters.");
   }
 
@@ -71,7 +72,13 @@ export async function register(formData: FormData): Promise<never> {
     email,
     password,
     options: {
-      data: { display_name: displayName, requested_role: requestedRole },
+      data: {
+        display_name: displayName,
+        requested_role: requestedRole,
+        accepted_terms_version: "2026-10-09",
+        accepted_privacy_notice_version: "2026-10-09",
+        accepted_at: new Date().toISOString(),
+      },
       emailRedirectTo,
     },
   });
