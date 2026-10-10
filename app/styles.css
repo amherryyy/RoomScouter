@@ -2296,7 +2296,7 @@ fieldset {
 .discovery-shell .discovery-hero-copy > h1 { text-wrap: balance; }
 .discovery-shell .discovery-hero-copy > .lede { max-width: 38rem; }
 .discovery-shell .discovery-hero-copy > .quick-searches { justify-content: center; }
-.discovery-shell .discovery-hero-copy > .home-get-started { display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem; width: 8.5rem; min-height: 3.25rem; margin: 0 auto 1.35rem; border-radius: 0.55rem; padding: 0.8rem 1.1rem; color: #fff; background: #245f91; font-weight: 750; text-decoration: none; box-shadow: 0 0.35rem 0.8rem rgb(23 57 86 / 16%); transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease; }
+.discovery-shell .discovery-hero-copy > .home-get-started { display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem; width: 10rem; min-height: 3.25rem; margin: 0 auto 1.35rem; border-radius: 0.55rem; padding: 0.8rem 0.9rem; color: #fff; background: #245f91; font-weight: 750; text-decoration: none; white-space: nowrap; box-shadow: 0 0.35rem 0.8rem rgb(23 57 86 / 16%); transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease; }
 .discovery-shell .discovery-hero-copy > .home-get-started:hover { background: #174b78; box-shadow: 0 0.45rem 0.95rem rgb(23 57 86 / 22%); transform: translateY(-1px); }
 .discovery-shell .discovery-hero-copy > .home-get-started:active { transform: translateY(1px); }
 .discovery-shell .discovery-hero-copy > .home-get-started:focus-visible { outline: 3px solid rgb(36 95 145 / 32%); outline-offset: 3px; }
