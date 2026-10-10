@@ -33,6 +33,7 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
   const searchPath = "/browse";
 
   return (
+    <>
     <main className={`discovery-shell${browseMode ? " browse-page-shell" : ""}`} id="main-content" tabIndex={-1}>
       <PublicHeader current={browseMode ? "browse" : "home"} />
 
@@ -53,6 +54,7 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
           <p className="eyebrow">Student housing near NVSU</p>
           <h1>Find your perfect boarding house.</h1>
           <p className="lede">Explore approved rooms around NVSU with clear details on rent, availability, amenities, and distance.</p>
+          <Link className="button home-get-started" href="/register"><UiIcon className="ui-icon" name="user-round-plus" /><span>Get started</span></Link>
           <Form className="hero-search" action={searchPath}>
             <label className="visually-hidden" htmlFor="hero-query">Search listings near the university</label>
             <input
@@ -64,7 +66,6 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
             />
             <SubmitButton pendingLabel="Searching…">Find a room</SubmitButton>
           </Form>
-          <Link className="button secondary home-get-started" href="/register"><UiIcon className="ui-icon" name="user-plus" /><span>Get started</span></Link>
           <div className="quick-searches" aria-label="Quick searches">
             <span>Popular:</span>
             <Link href="/browse?maximumRent=5000">Up to ₱5,000</Link>
@@ -188,21 +189,22 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
       </div>
       </section> : null}
 
-      {!browseMode ? (
-        <section className="home-developer-note" aria-labelledby="developers-title">
-          <div>
-            <p className="eyebrow">Built for the NVSU community</p>
-            <h2 id="developers-title">About the developers</h2>
-            <p>Find the developer contact channels on our About page, or send a problem report through the website.</p>
-            <p className="home-developer-privacy">Problem reports become public GitHub issues. Leave out passwords, account details, and private rental information.</p>
-          </div>
-          <div className="home-developer-actions">
-            <Link className="button" href="/about#contact"><UiIcon className="ui-icon" name="mail" /> Contact developers</Link>
-            <Link className="button secondary" href="/report-problem"><UiIcon className="ui-icon" name="reports" /> Report a problem</Link>
-            <a className="button secondary" href="https://github.com/amherryyy/RoomScouter"><UiIcon className="ui-icon" name="github" /> View on GitHub</a>
-          </div>
-        </section>
-      ) : null}
     </main>
+    {!browseMode ? (
+      <aside className="home-developer-note" aria-labelledby="developers-title">
+        <div>
+          <p className="eyebrow">Built for the NVSU community</p>
+          <h2 id="developers-title">About the developers</h2>
+          <p>Find the developer contact channels on our About page, or send a problem report through the website.</p>
+          <p className="home-developer-privacy">Problem reports become public GitHub issues. Leave out passwords, account details, and private rental information.</p>
+        </div>
+        <div className="home-developer-actions">
+          <Link className="button" href="/about#contact"><UiIcon className="ui-icon" name="mail" /> Contact developers</Link>
+          <Link className="button secondary" href="/report-problem"><UiIcon className="ui-icon" name="reports" /> Report a problem</Link>
+          <a className="button secondary" href="https://github.com/amherryyy/RoomScouter"><UiIcon className="ui-icon" name="github" /> View on GitHub</a>
+        </div>
+      </aside>
+    ) : null}
+    </>
   );
 }
