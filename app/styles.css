@@ -2815,6 +2815,17 @@ fieldset {
   font-size: 1.05rem;
 }
 
+.travel-estimates { margin-top: 1.5rem; border-top: 1px solid #d8e5df; padding-top: 1.2rem; }
+.travel-estimates .section-kicker { margin: 0 0 0.2rem; }
+.travel-estimates h3 { margin: 0; color: #173956; font-size: 1.15rem; }
+.travel-estimate-distance { margin: 0.45rem 0 0; color: #526578; font-size: 0.88rem; }
+.travel-estimate-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; margin: 0.85rem 0 0; padding: 0; list-style: none; }
+.travel-estimate-grid li { display: grid; align-content: start; gap: 0.25rem; border: 1px solid #d8e7df; border-radius: 0.7rem; padding: 0.85rem; background: rgb(255 255 255 / 78%); }
+.travel-estimate-grid li > span { color: #526578; font-size: 0.86rem; font-weight: 750; }
+.travel-estimate-grid strong { color: #174b35; font-size: 1.12rem; }
+.travel-estimate-grid small { color: #61737d; font-size: 0.78rem; }
+.travel-estimate-note { margin: 0.75rem 0 0; color: #526578; font-size: 0.82rem; line-height: 1.5; }
+
 .tag-list li {
   border: 1px solid #dcebe1;
   border-radius: 0.55rem;
