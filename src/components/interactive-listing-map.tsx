@@ -2,7 +2,12 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import type { Map as LeafletMap, Marker } from "leaflet";
+import type {
+  GeoJSON as LeafletGeoJSON,
+  LayersControlEvent,
+  Map as LeafletMap,
+  Marker,
+} from "leaflet";
 import { ROOM_TYPE_LABELS, type RoomType } from "../features/discovery/model";
 import type { UniversityConfig } from "../features/discovery/university";
 
@@ -75,6 +80,35 @@ export function InteractiveListingMap({
         attribution: satelliteAttribution,
         maxZoom: 19,
       });
+      const boundaryStyles = {
+        street: {
+          color: "#246b48",
+          weight: 1.6,
+          opacity: 0.78,
+          dashArray: "6 5",
+          lineCap: "round" as const,
+          lineJoin: "round" as const,
+          fillColor: "#43a86f",
+          fillOpacity: 0.02,
+        },
+        satellite: {
+          color: "#f4fff7",
+          weight: 2,
+          opacity: 0.94,
+          lineCap: "round" as const,
+          lineJoin: "round" as const,
+          fillColor: "#43a86f",
+          fillOpacity: 0.18,
+        },
+      };
+      let activeBasemapName = "Street map";
+      let barangayLayer: LeafletGeoJSON | null = null;
+      map.on("baselayerchange", (event: LayersControlEvent) => {
+        activeBasemapName = event.name;
+        barangayLayer?.setStyle(
+          event.name === "Satellite" ? boundaryStyles.satellite : boundaryStyles.street,
+        );
+      });
       L.control.layers(
         { "Street map": streetLayer, Satellite: satelliteLayer },
         undefined,
@@ -87,23 +121,19 @@ export function InteractiveListingMap({
         })
         .then((data) => {
           if (cancelled) return;
-          L.geoJSON(data, {
-            style: {
-              color: "#f4fff7",
-              weight: 2,
-              opacity: 0.92,
-              lineCap: "round",
-              lineJoin: "round",
-              fillColor: "#43a86f",
-              fillOpacity: 0.22,
-            },
+          barangayLayer = L.geoJSON(data, {
+            style: boundaryStyles.street,
             onEachFeature: (feature, layer) => {
               const barangayName = feature.properties?.brgy_name;
               if (typeof barangayName === "string" && barangayName.trim()) {
                 layer.bindTooltip(barangayName, { direction: "center" });
               }
             },
-          }).addTo(map);
+          });
+          if (activeBasemapName === "Satellite") {
+            barangayLayer.setStyle(boundaryStyles.satellite);
+          }
+          barangayLayer.addTo(map);
         })
         .catch((error: unknown) => {
           if (!cancelled) console.error("Failed to load Bayombong barangay boundaries.", error);
