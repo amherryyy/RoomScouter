@@ -3172,6 +3172,19 @@ fieldset {
 .map-discovery-layout { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(19rem, 0.9fr); align-items: start; gap: 1.25rem; }
 .map-canvas-panel, .map-results-panel { min-width: 0; overflow: hidden; border: 1px solid #d7e2e7; border-radius: 0.9rem; background: #fff; box-shadow: 0 0.6rem 1.8rem rgb(23 57 86 / 7%); }
 .map-canvas-panel { padding: 0.65rem; }
+.map-canvas-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.6rem; }
+.map-canvas-toolbar > span { color: #526578; font-size: 0.85rem; font-weight: 700; }
+.map-canvas-expand { display: inline-flex; min-height: 2.75rem; align-items: center; justify-content: center; border: 1px solid #b9ccc2; border-radius: 0.55rem; padding: 0.5rem 0.8rem; color: #174b35; background: #fff; font: inherit; font-size: 0.88rem; font-weight: 750; cursor: pointer; }
+.map-canvas-expand:hover { border-color: #246b48; background: #eff6f1; }
+.map-canvas-expand:focus-visible { outline: 3px solid #3566c0; outline-offset: 2px; }
+.map-discovery-layout.is-map-expanded { display: block; }
+.map-discovery-layout.is-map-expanded .map-results-panel { display: none; }
+.map-canvas-panel.is-expanded { position: fixed; z-index: 1500; inset: 0; display: flex; flex-direction: column; gap: 0.55rem; box-sizing: border-box; border: 0; border-radius: 0; padding: max(0.65rem, env(safe-area-inset-top)) max(0.65rem, env(safe-area-inset-right)) max(0.65rem, env(safe-area-inset-bottom)) max(0.65rem, env(safe-area-inset-left)); background: #fff; box-shadow: none; }
+.map-canvas-panel.is-expanded .map-canvas-toolbar { flex: 0 0 auto; margin: 0; }
+.map-canvas-panel.is-expanded .map-canvas-frame { flex: 1 1 auto; min-height: 0; }
+.map-canvas-panel.is-expanded .map-canvas { height: 100%; min-height: 0; }
+.map-canvas-panel.is-expanded .map-canvas-unavailable { flex: 1 1 auto; min-height: 0; }
+.map-canvas-panel.is-expanded .map-attribution-note { flex: 0 0 auto; margin: 0; }
 .map-canvas-frame { position: relative; overflow: hidden; border-radius: 0.6rem; background: #e6ece8; }
 .map-canvas { width: 100%; height: min(68dvh, 48rem); min-height: 31rem; background: #e6ece8; }
 .map-canvas.leaflet-container { color: #173956; font: inherit; }

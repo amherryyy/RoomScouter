@@ -40,12 +40,14 @@ export function InteractiveListingMap({
   total: number;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const mapPanelRef = useRef<HTMLElement>(null);
   const mapRef = useRef<LeafletMap | null>(null);
   const leafletRef = useRef<typeof import("leaflet") | null>(null);
   const markersRef = useRef(new Map<string, Marker>());
   const [mapReady, setMapReady] = useState(false);
   const [mapError, setMapError] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [isMapExpanded, setIsMapExpanded] = useState(false);
 
   const firstListing = listings[0];
   const centerLatitude = university?.latitude ?? firstListing?.latitude ?? null;
@@ -241,18 +243,84 @@ export function InteractiveListingMap({
     }
   }, [mapReady, selectedId]);
 
+  useEffect(() => {
+    if (!isMapExpanded) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsMapExpanded(false);
+        return;
+      }
+      if (event.key !== "Tab") return;
+
+      const panel = mapPanelRef.current;
+      if (!panel) return;
+      const focusable = Array.from(panel.querySelectorAll<HTMLElement>(
+        'button:not(:disabled), a[href], [tabindex]:not([tabindex="-1"])',
+      )).filter((element) => element.offsetParent !== null);
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (!first || !last) return;
+
+      if (event.shiftKey && (document.activeElement === first || !panel.contains(document.activeElement))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && (document.activeElement === last || !panel.contains(document.activeElement))) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isMapExpanded]);
+
+  useEffect(() => {
+    if (!mapReady) return;
+    const frame = window.requestAnimationFrame(() => {
+      mapRef.current?.invalidateSize({ pan: false });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [isMapExpanded, mapReady]);
+
   const selectListing = (listing: MapListing) => {
     setSelectedId(listing.id);
   };
 
   return (
-    <div className="map-discovery-layout">
-      <section className="map-canvas-panel" aria-label="Map of available listings">
+    <div className={`map-discovery-layout${isMapExpanded ? " is-map-expanded" : ""}`}>
+      <section
+        aria-label={isMapExpanded ? "Full-screen interactive map" : "Map of available listings"}
+        aria-modal={isMapExpanded || undefined}
+        className={`map-canvas-panel${isMapExpanded ? " is-expanded" : ""}`}
+        ref={mapPanelRef}
+        role={isMapExpanded ? "dialog" : undefined}
+      >
         {centerLatitude !== null && centerLongitude !== null ? (
-          <div className="map-canvas-frame">
-            <div className="map-canvas" ref={containerRef} role="region" aria-label="Interactive RoomScouter map" aria-busy={!mapReady} />
-            {!mapReady ? <p className="map-canvas-status" role={mapError ? "alert" : undefined}>{mapError ? "The map could not load. You can still browse the matching listings." : "Loading map…"}</p> : null}
-          </div>
+          <>
+            <div className="map-canvas-toolbar">
+              <span id="map-fullscreen-title">Interactive map</span>
+              <button
+                aria-controls="roomscouter-listing-map"
+                aria-label={isMapExpanded ? "Exit full-screen map" : "Expand map to full screen"}
+                aria-pressed={isMapExpanded}
+                className="map-canvas-expand"
+                onClick={() => setIsMapExpanded((expanded) => !expanded)}
+                type="button"
+              >
+                {isMapExpanded ? "Close full-screen map" : "Expand map"}
+              </button>
+            </div>
+            <div className="map-canvas-frame">
+              <div id="roomscouter-listing-map" className="map-canvas" ref={containerRef} role="region" aria-label="Interactive RoomScouter map" aria-busy={!mapReady} />
+              {!mapReady ? <p className="map-canvas-status" role={mapError ? "alert" : undefined}>{mapError ? "The map could not load. You can still browse the matching listings." : "Loading map…"}</p> : null}
+            </div>
+          </>
         ) : (
           <div className="map-canvas-unavailable">
             <strong>Map location is not configured yet.</strong>
@@ -265,7 +333,7 @@ export function InteractiveListingMap({
         </p>
       </section>
 
-      <section className="map-results-panel" aria-labelledby="map-results-title">
+      <section className="map-results-panel" aria-hidden={isMapExpanded} aria-labelledby="map-results-title">
         <div className="map-results-heading">
           <div>
             <p className="eyebrow">Approved and available</p>
