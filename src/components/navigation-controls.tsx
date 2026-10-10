@@ -93,6 +93,15 @@ export function ResponsiveNavigation({
         ) : null}
         {children}
         <div className="mobile-navigation-account">{mobileAccount}</div>
+        <section className="mobile-navigation-project" aria-label="Help and project links">
+          <h2>Help &amp; project</h2>
+          <Link href="/about#help"><UiIcon className="ui-icon" name="help" /><span>Help</span></Link>
+          <a href="https://github.com/amherryyy/RoomScouter/issues"><UiIcon className="ui-icon" name="mail" /><span>Contact developers</span></a>
+          <a href="https://github.com/amherryyy/RoomScouter/issues/new"><UiIcon className="ui-icon" name="reports" /><span>Report a problem</span></a>
+          <a href="https://github.com/amherryyy/RoomScouter"><UiIcon className="ui-icon" name="github" /><span>View on GitHub</span></a>
+          <a href="https://github.com/amherryyy/RoomScouter/blob/main/LICENSE"><UiIcon className="ui-icon" name="license" /><span>MIT License</span></a>
+          <p>GitHub reports are public. Please leave out personal, account, or rental details.</p>
+        </section>
       </div>
     </div>
   );

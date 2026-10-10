@@ -3102,10 +3102,23 @@ fieldset {
 }
 
 /* Public policy pages and registration acknowledgments. */
-.site-footer { display: flex; align-items: center; justify-content: space-between; gap: 1rem 2rem; border-top: 1px solid var(--rs-border, #d8e0da); padding: 1.25rem max(2rem, calc((100% - 76rem) / 2)); color: var(--rs-muted, #526158); background: #fff; font-size: 0.9rem; }
+.site-footer { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem 2rem; border-top: 1px solid var(--rs-border, #d8e0da); padding: 1.5rem max(2rem, calc((100% - 76rem) / 2)); color: var(--rs-muted, #526158); background: rgb(255 255 255 / 74%); font-size: 0.9rem; }
 .site-footer p { margin: 0; }
-.site-footer nav { display: flex; flex-wrap: wrap; gap: 0.7rem 1.2rem; }
+.site-footer-brand { display: grid; gap: 0.55rem; max-width: 23rem; }
+.site-footer-copyright { display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; }
+.site-footer-copyright .ui-icon { width: 1rem; height: 1rem; }
+.site-footer-links { display: flex; flex-wrap: wrap; gap: 1rem 2rem; }
+.site-footer nav { display: grid; align-content: start; gap: 0.55rem; }
+.site-footer nav strong { color: var(--rs-ink, #173956); font-size: 0.85rem; }
 .site-footer a { color: var(--rs-ink, #173956); font-weight: 650; text-underline-offset: 0.2em; }
+.home-developer-note, .about-help { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; width: min(76rem, calc(100% - 4rem)); margin: 0 auto 3rem; border: 1px solid rgb(255 255 255 / 90%); border-radius: 1.1rem; padding: clamp(1.2rem, 3vw, 2rem); background: rgb(247 251 247 / 78%); box-shadow: 0 0.8rem 1.8rem rgb(24 58 43 / 8%), inset 0 1px 0 #fff; }
+.home-developer-note h2, .about-help h2 { margin: 0.25rem 0 0.55rem; color: var(--rs-ink, #173956); font-size: clamp(1.35rem, 2.5vw, 1.8rem); }
+.home-developer-note p:not(.eyebrow), .about-help p:not(.eyebrow) { max-width: 58ch; margin: 0; color: #526158; line-height: 1.6; }
+.home-developer-note .home-developer-privacy { margin-top: 0.35rem !important; font-size: 0.82rem; }
+.home-developer-actions { display: flex; flex-wrap: wrap; gap: 0.65rem; }
+.home-developer-actions .button { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; white-space: nowrap; }
+.about-help { display: block; scroll-margin-top: 6rem; }
+.about-help .home-developer-actions { margin-top: 1rem; }
 .policy-page { max-width: 82rem; padding-top: 2rem; padding-bottom: 4rem; }
 .policy-heading, .policy-content { width: min(100%, 70rem); margin-right: auto; margin-left: auto; }
 .policy-heading { margin-top: 3rem; margin-bottom: 2rem; }
@@ -3124,6 +3137,11 @@ fieldset {
 .policy-acceptance a { color: var(--rs-blue, #245f91); text-underline-offset: 0.18em; }
 @media (max-width: 42rem) {
   .site-footer { align-items: flex-start; flex-direction: column; padding: 1.2rem 1rem; }
+  .site-footer-links { width: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem 0.8rem; }
+  .site-footer nav { gap: 0.65rem; }
+  .home-developer-note, .about-help { align-items: flex-start; flex-direction: column; width: calc(100% - 2rem); margin-bottom: 2rem; }
+  .home-developer-actions { width: 100%; }
+  .home-developer-actions .button { flex: 1 1 10rem; }
   .policy-page { padding-top: 1rem; }
   .policy-heading { margin-top: 2rem; }
 }
@@ -3136,6 +3154,7 @@ fieldset {
 .profile-menu > summary { min-height: 3rem; }
 .profile-card-links a { display: flex; min-height: 3rem; align-items: center; }
 .mobile-navigation-profile, .mobile-navigation-account { display: none; }
+.mobile-navigation-project { display: none; }
 
 @media (max-width: 54rem) {
   .public-header, .workspace-topbar { position: relative; align-items: center; flex-wrap: wrap; }
@@ -3163,6 +3182,12 @@ fieldset {
   .mobile-navigation-account > a.button { justify-content: center; color: #fff; background: #246b48; }
   .mobile-navigation-account > a.button:hover { color: #246b48; background: #fff; }
   .mobile-navigation-account form { margin-top: 0.35rem; border-top: 1px solid #e5ebee; padding-top: 0.65rem; }
+  .mobile-navigation-project { display: grid; gap: 0.12rem; margin-top: 0.7rem; border-top: 1px solid #e5ebee; padding-top: 0.75rem; }
+  .mobile-navigation-project h2 { margin: 0 0 0.25rem; padding: 0 0.6rem; color: #60736a; font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  .mobile-navigation-project > a { display: flex; min-height: 2.7rem; align-items: center; gap: 0.65rem; border-radius: 0.45rem; padding: 0 0.6rem; color: #245f91; font-size: 0.9rem; font-weight: 700; text-decoration: none; }
+  .mobile-navigation-project > a:hover { background: #eef4f6; }
+  .mobile-navigation-project .ui-icon { width: 1.1rem; height: 1.1rem; }
+  .mobile-navigation-project p { margin: 0.35rem 0.6rem 0; color: #66776e; font-size: 0.75rem; line-height: 1.45; }
   .workspace-profile-menu[open] .profile-card { right: 0; left: auto; }
 }
 .public-header nav > a, .workspace-topbar nav > a { display: inline-flex; min-height: 3rem; align-items: center; }

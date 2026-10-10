@@ -1,6 +1,6 @@
 import type { ReactNode, SVGProps } from "react";
 
-export type UiIconName = "home" | "browse" | "map" | "info" | "account" | "dashboard" | "reviews" | "reports" | "menu" | "logout" | "search" | "clear" | "close" | "chevron-down" | "walk" | "bicycle" | "tricycle";
+export type UiIconName = "home" | "browse" | "map" | "info" | "account" | "dashboard" | "reviews" | "reports" | "menu" | "logout" | "search" | "clear" | "close" | "chevron-down" | "walk" | "bicycle" | "tricycle" | "copyright" | "help" | "mail" | "license" | "github";
 
 type UiIconProps = SVGProps<SVGSVGElement> & { name: UiIconName };
 
@@ -22,6 +22,11 @@ const paths: Record<UiIconName, ReactNode> = {
   walk: <><circle cx="13.5" cy="4.5" r="1.8" /><path d="m11.5 9 2.2-1.2 2.1 2.6 2.4 1M11.5 9l-2 4.2 3.2 2.1-1.4 4.2M12.7 15.3l3.5 1.8 1.8 3" /></>,
   bicycle: <><circle cx="6" cy="17" r="4" /><circle cx="18" cy="17" r="4" /><path d="m6 17 4-7 4 7H6Zm4-7h4m-1 0 3 7m-5-10h-2" /></>,
   tricycle: <><circle cx="6" cy="18" r="2.5" /><circle cx="18" cy="18" r="2.5" /><path d="M6 18h7l-2-7H8l-2 7Zm5-7h5l2 7m-9-7H7M15 8h4l1.5 3H15V8Z" /></>,
+  copyright: <><circle cx="12" cy="12" r="9" /><path d="M15 9.5a3.3 3.3 0 1 0 0 5" /></>,
+  help: <><circle cx="12" cy="12" r="9" /><path d="M9.7 9a2.4 2.4 0 1 1 4.2 1.6c-1.1 1.1-1.9 1.4-1.9 3M12 17h.01" /></>,
+  mail: <><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m4 7 8 6 8-6" /></>,
+  license: <><path d="M6 3h9l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" /><path d="M14 3v5h5M8 12h8M8 16h8" /></>,
+  github: <><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 6v-3.9a3.4 3.4 0 0 0-.9-2.6c3-.3 6.2-1.5 6.2-6.8a5.3 5.3 0 0 0-1.4-3.7 4.9 4.9 0 0 0-.1-3.7s-1.2-.4-3.8 1.4a13 13 0 0 0-6.9 0C5.5.9 4.3 1.3 4.3 1.3a4.9 4.9 0 0 0-.1 3.7 5.3 5.3 0 0 0-1.4 3.7c0 5.3 3.2 6.5 6.2 6.8a3.4 3.4 0 0 0-.9 2.6V22" /></>,
 };
 
 export function UiIcon({ name, ...props }: UiIconProps) {
