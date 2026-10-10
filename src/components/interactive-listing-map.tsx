@@ -94,7 +94,7 @@ export function InteractiveListingMap({
       const attribution = process.env.NEXT_PUBLIC_MAP_TILE_ATTRIBUTION
         || '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>';
       const satelliteTileUrl = process.env.NEXT_PUBLIC_MAP_SATELLITE_TILE_URL
-        || "https://wi.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
+        || "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
       const satelliteAttribution = process.env.NEXT_PUBLIC_MAP_SATELLITE_ATTRIBUTION
         || "Sources: Esri, Maxar, Earthstar Geographics, and the GIS User Community";
 
