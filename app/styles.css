@@ -3337,17 +3337,17 @@ fieldset {
 /* RoomScouter glass surfaces: translucent, green-tinted layers over the existing light canvas. */
 :root {
   --rs-glass-fallback: #fff;
-  --rs-glass-surface: rgb(250 253 251 / 86%);
-  --rs-glass-border: rgb(255 255 255 / 88%);
-  --rs-glass-shadow: 0 0.8rem 2rem rgb(24 58 43 / 8%), inset 0 1px 0 rgb(255 255 255 / 94%);
+  --rs-glass-surface: rgb(246 251 247 / 74%);
+  --rs-glass-border: rgb(255 255 255 / 94%);
+  --rs-glass-shadow: 0 0.9rem 2.2rem rgb(24 58 43 / 12%), inset 0 1px 0 rgb(255 255 255 / 98%);
 }
 
 body {
   background-color: #f2f6f2;
   background-image:
-    radial-gradient(ellipse at 8% 0%, rgb(218 237 225 / 58%), transparent 34rem),
-    radial-gradient(ellipse at 96% 16%, rgb(222 235 241 / 42%), transparent 30rem),
-    linear-gradient(180deg, #f7faf7 0%, #f0f5f1 100%);
+    radial-gradient(ellipse at 8% 0%, rgb(192 224 202 / 76%), transparent 38rem),
+    radial-gradient(ellipse at 96% 16%, rgb(197 221 233 / 64%), transparent 34rem),
+    linear-gradient(180deg, #f3f8f4 0%, #eaf2ec 100%);
 }
 
 .public-header,
@@ -3356,10 +3356,10 @@ body {
   top: 0;
   z-index: 100;
   border-bottom-color: rgb(205 220 211 / 78%);
-  background: rgb(248 251 249 / 86%);
-  box-shadow: 0 0.35rem 1.2rem rgb(23 57 40 / 4%);
-  -webkit-backdrop-filter: blur(16px) saturate(135%);
-  backdrop-filter: blur(16px) saturate(135%);
+  background: rgb(244 250 246 / 76%);
+  box-shadow: 0 0.4rem 1.3rem rgb(23 57 40 / 8%), inset 0 1px 0 rgb(255 255 255 / 82%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(20px) saturate(150%);
 }
 
 .public-navigation .responsive-navigation-panel > nav,
@@ -3368,8 +3368,8 @@ body {
   border: 1px solid rgb(255 255 255 / 92%);
   border-radius: 1rem;
   padding: 0.28rem;
-  background: rgb(255 255 255 / 66%);
-  box-shadow: 0 0.35rem 1rem rgb(28 68 47 / 7%), inset 0 1px 0 #fff;
+  background: rgb(238 247 241 / 52%);
+  box-shadow: 0 0.45rem 1.2rem rgb(28 68 47 / 12%), inset 0 1px 0 #fff;
 }
 
 .public-navigation .responsive-navigation-panel > nav > a,
@@ -3417,17 +3417,17 @@ body {
   min-height: 2.7rem;
   border-color: rgb(255 255 255 / 88%);
   padding: 0.25rem 0.6rem 0.25rem 0.35rem;
-  background: rgb(255 255 255 / 72%);
-  box-shadow: 0 0.3rem 0.9rem rgb(23 57 40 / 7%), inset 0 1px 0 #fff;
+  background: rgb(238 247 241 / 58%);
+  box-shadow: 0 0.35rem 1rem rgb(23 57 40 / 12%), inset 0 1px 0 #fff;
 }
 
 .profile-card,
 .responsive-navigation-panel[data-open="true"] {
   border-color: rgb(255 255 255 / 88%);
-  background: rgb(250 253 251 / 94%);
-  box-shadow: 0 1rem 2.5rem rgb(23 57 40 / 14%), inset 0 1px 0 #fff;
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
-  backdrop-filter: blur(20px) saturate(140%);
+  background: rgb(242 249 244 / 86%);
+  box-shadow: 0 1rem 2.5rem rgb(23 57 40 / 18%), inset 0 1px 0 #fff;
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  backdrop-filter: blur(22px) saturate(150%);
 }
 
 .featured-card,
@@ -3519,9 +3519,9 @@ body {
 
   .featured-card-body,
   .discovery-card-body {
-    background: rgb(250 253 251 / 90%);
-    -webkit-backdrop-filter: blur(12px) saturate(125%);
-    backdrop-filter: blur(12px) saturate(125%);
+    background: rgb(246 251 247 / 82%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    backdrop-filter: blur(16px) saturate(140%);
   }
 }
 
