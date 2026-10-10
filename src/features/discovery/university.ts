@@ -5,12 +5,13 @@ export type UniversityConfig = {
 };
 
 export const ESTIMATED_WALKING_SPEED_KMH = 4.2;
+export const ESTIMATED_BICYCLE_SPEED_KMH = 15;
 export const ESTIMATED_TRICYCLE_SPEED_KMH = 20;
 export const ESTIMATED_ROAD_DETOUR_FACTOR = 1.3;
 
 export function estimateTravelTimes(straightLineDistanceKm: number): {
-  estimatedRoadDistanceKm: number;
   walkingMinutes: number;
+  bicycleMinutes: number;
   tricycleMinutes: number;
 } {
   const estimatedRoadDistanceKm = Number.isFinite(straightLineDistanceKm) && straightLineDistanceKm > 0
@@ -23,8 +24,8 @@ export function estimateTravelTimes(straightLineDistanceKm: number): {
   };
 
   return {
-    estimatedRoadDistanceKm,
     walkingMinutes: estimateMinutes(ESTIMATED_WALKING_SPEED_KMH),
+    bicycleMinutes: estimateMinutes(ESTIMATED_BICYCLE_SPEED_KMH),
     tricycleMinutes: estimateMinutes(ESTIMATED_TRICYCLE_SPEED_KMH),
   };
 }
