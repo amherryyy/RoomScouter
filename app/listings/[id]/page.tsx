@@ -3,7 +3,15 @@ import { notFound } from "next/navigation";
 import { PublicHeader } from "../../../src/components/public-header";
 import { SubmitButton } from "../../../src/components/submit-button";
 import { ROOM_TYPE_LABELS } from "../../../src/features/discovery/model";
-import { approximateDistanceKm, getUniversityConfig } from "../../../src/features/discovery/university";
+import {
+  approximateDistanceKm,
+  ESTIMATED_ROAD_DETOUR_FACTOR,
+  estimateTravelTimes,
+  ESTIMATED_TRICYCLE_SPEED_KMH,
+  ESTIMATED_WALKING_SPEED_KMH,
+  formatEstimatedDuration,
+  getUniversityConfig,
+} from "../../../src/features/discovery/university";
 import { addFavorite, removeFavorite } from "../../../src/features/favorites/actions";
 import { isUuid } from "../../../src/features/listings/model";
 import { deleteReview, saveReview } from "../../../src/features/reviews/actions";
@@ -94,6 +102,7 @@ export default async function PublicListingPage({ params, searchParams }: Public
   const distance = university
     ? approximateDistanceKm(university.latitude, university.longitude, listing.latitude, listing.longitude)
     : null;
+  const travelTimes = distance !== null ? estimateTravelTimes(distance) : null;
   const mapUrl = `https://www.openstreetmap.org/?mlat=${listing.latitude}&mlon=${listing.longitude}#map=17/${listing.latitude}/${listing.longitude}`;
   const publicReviews = (publicReviewRows ?? []).flatMap((review) => (
     review.id && review.rating !== null && review.comment && review.created_at
@@ -173,6 +182,26 @@ export default async function PublicListingPage({ params, searchParams }: Public
               {listing.barangay ? <div><dt>Barangay</dt><dd>{listing.barangay}</dd></div> : null}
               {distance !== null && university ? <div><dt>Distance from {university.name}</dt><dd>About {distance.toFixed(2)} km straight-line</dd></div> : null}
             </dl>
+            {distance !== null && university && travelTimes ? (
+              <section className="travel-estimates" aria-labelledby="travel-estimates-title">
+                <p className="section-kicker">Approximate travel time</p>
+                <h3 id="travel-estimates-title">Getting to {university.name}</h3>
+                <p className="travel-estimate-distance">About {travelTimes.estimatedRoadDistanceKm.toFixed(2)} km by road</p>
+                <ul className="travel-estimate-grid" aria-label="Estimated travel times">
+                  <li>
+                    <span>Walking</span>
+                    <strong>About {formatEstimatedDuration(travelTimes.walkingMinutes)}</strong>
+                    <small>At {ESTIMATED_WALKING_SPEED_KMH} km/h</small>
+                  </li>
+                  <li>
+                    <span>By tricycle</span>
+                    <strong>About {formatEstimatedDuration(travelTimes.tricycleMinutes)}</strong>
+                    <small>At {ESTIMATED_TRICYCLE_SPEED_KMH} km/h</small>
+                  </li>
+                </ul>
+                <p className="travel-estimate-note">Road distance is estimated at {ESTIMATED_ROAD_DETOUR_FACTOR}× the straight-line distance. Times use average speeds; actual routes, traffic, and waiting can change them.</p>
+              </section>
+            ) : null}
           </section>
           <section className="detail-content-section"><p className="section-kicker">About the property</p><h2>About this boarding house</h2><p className="long-copy">{listing.description}</p></section>
           {facilityNames.length ? <section className="detail-content-section"><p className="section-kicker">Available features</p><h2>Facilities</h2><ul className="tag-list">{facilityNames.map((name) => <li key={name}>{name}</li>)}</ul></section> : null}

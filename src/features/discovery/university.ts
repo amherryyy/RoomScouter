@@ -4,6 +4,38 @@ export type UniversityConfig = {
   longitude: number;
 };
 
+export const ESTIMATED_WALKING_SPEED_KMH = 4.2;
+export const ESTIMATED_TRICYCLE_SPEED_KMH = 20;
+export const ESTIMATED_ROAD_DETOUR_FACTOR = 1.3;
+
+export function estimateTravelTimes(straightLineDistanceKm: number): {
+  estimatedRoadDistanceKm: number;
+  walkingMinutes: number;
+  tricycleMinutes: number;
+} {
+  const estimatedRoadDistanceKm = Number.isFinite(straightLineDistanceKm) && straightLineDistanceKm > 0
+    ? straightLineDistanceKm * ESTIMATED_ROAD_DETOUR_FACTOR
+    : 0;
+
+  const estimateMinutes = (speedKmPerHour: number) => {
+    if (estimatedRoadDistanceKm <= 0) return 0;
+    return Math.max(1, Math.round((estimatedRoadDistanceKm / speedKmPerHour) * 60));
+  };
+
+  return {
+    estimatedRoadDistanceKm,
+    walkingMinutes: estimateMinutes(ESTIMATED_WALKING_SPEED_KMH),
+    tricycleMinutes: estimateMinutes(ESTIMATED_TRICYCLE_SPEED_KMH),
+  };
+}
+
+export function formatEstimatedDuration(totalMinutes: number): string {
+  if (totalMinutes < 60) return `${totalMinutes} min`;
+  const hours = Math.floor(totalMinutes / 60);
+  const remainingMinutes = totalMinutes % 60;
+  return remainingMinutes ? `${hours} hr ${remainingMinutes} min` : `${hours} hr`;
+}
+
 export function getUniversityConfig(): UniversityConfig | null {
   const name = process.env.ROOMSCOUTER_UNIVERSITY_NAME?.trim();
   const latitudeText = process.env.ROOMSCOUTER_UNIVERSITY_LATITUDE?.trim();
