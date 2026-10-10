@@ -87,8 +87,8 @@ export async function register(formData: FormData): Promise<never> {
 
 export async function verifySignupEmail(formData: FormData): Promise<never> {
   const email = parseRequiredText(formData.get("email"), 254);
-  const token = parseRequiredText(formData.get("token"), 8);
-  if (!email || !email.includes("@") || !token || !/^\d{6,8}$/.test(token)) {
+  const token = parseRequiredText(formData.get("token"), 6);
+  if (!email || !email.includes("@") || !token || !/^\d{6}$/.test(token)) {
     authError("/verify-email", "Enter your email address and the verification code.");
   }
 
