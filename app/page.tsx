@@ -3,6 +3,7 @@ import nvsuCampusImage from "../logo&icon/nvsu.jpg";
 import Link from "next/link";
 import Form from "next/form";
 import { PublicHeader } from "../src/components/public-header";
+import { UiIcon } from "../src/components/ui-icon";
 import { DiscoveryFiltersForm } from "../src/components/discovery-filters";
 import { SubmitButton } from "../src/components/submit-button";
 import { loadDiscovery } from "../src/features/discovery/queries";
@@ -185,6 +186,21 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
       ) : null}
       </div>
       </section> : null}
+
+      {!browseMode ? (
+        <section className="home-developer-note" aria-labelledby="developers-title">
+          <div>
+            <p className="eyebrow">Built for the NVSU community</p>
+            <h2 id="developers-title">About the developers</h2>
+            <p>RoomScouter is a community-focused project. Need help or spotted an issue? Reach the developers through GitHub.</p>
+            <p className="home-developer-privacy">GitHub reports are public. Please leave out personal, account, or rental details.</p>
+          </div>
+          <div className="home-developer-actions">
+            <a className="button" href="https://github.com/amherryyy/RoomScouter/issues"><UiIcon className="ui-icon" name="mail" /> Contact developers</a>
+            <a className="button secondary" href="https://github.com/amherryyy/RoomScouter"><UiIcon className="ui-icon" name="github" /> View on GitHub</a>
+          </div>
+        </section>
+      ) : null}
     </main>
   );
 }

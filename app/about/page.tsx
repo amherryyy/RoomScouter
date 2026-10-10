@@ -46,6 +46,16 @@ export default function AboutPage() {
         </div>
         <Link className="button" href="/browse">Start browsing</Link>
       </section>
+
+      <section className="about-help" id="help" aria-labelledby="help-title">
+        <p className="eyebrow">Help &amp; feedback</p>
+        <h2 id="help-title">Need help or found a problem?</h2>
+        <p>Contact the developers or report an issue through GitHub. Reports are public, so do not include personal, account, or rental details.</p>
+        <div className="home-developer-actions">
+          <a className="button" href="https://github.com/amherryyy/RoomScouter/issues">Contact developers</a>
+          <a className="button secondary" href="https://github.com/amherryyy/RoomScouter/issues/new">Report a problem</a>
+        </div>
+      </section>
     </main>
   );
 }
