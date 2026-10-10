@@ -1,12 +1,25 @@
 import type { NextConfig } from "next";
 
+const configuredMapTileUrl = process.env.NEXT_PUBLIC_MAP_TILE_URL?.trim();
+const mapTileImageSource = (() => {
+  if (!configuredMapTileUrl) return "https://tile.openstreetmap.org";
+  const subdomainHost = configuredMapTileUrl.match(/^https:\/\/\{[^}]+\}\.([^/?#]+)/)?.[1];
+  if (subdomainHost) return `https://*.${subdomainHost}`;
+  try {
+    const url = new URL(configuredMapTileUrl.replace(/\{[^}]+\}/g, "0"));
+    return url.protocol === "https:" ? url.origin : "https://tile.openstreetmap.org";
+  } catch {
+    return "https://tile.openstreetmap.org";
+  }
+})();
+
 const contentSecurityPolicy = [
   "default-src 'self'",
   "base-uri 'self'",
   "frame-ancestors 'none'",
   "object-src 'none'",
   "form-action 'self'",
-  "img-src 'self' data: blob: https://*.supabase.co",
+  `img-src 'self' data: blob: https://*.supabase.co ${mapTileImageSource}`,
   "font-src 'self' data:",
   `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",

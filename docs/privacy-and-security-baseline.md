@@ -8,7 +8,7 @@
 - PostgreSQL row-level security and role checks scope private profiles, favorites, reports, drafts, and moderator workflows. Approved listings and published reviews are public by design.
 - Listing contact details and exact property address/coordinates can be public. Listing photos are stored in the private `listing-photos` bucket and served by short-lived signed URLs.
 - The application does not request visitor GPS, identity documents, payment data, or school records. No analytics or advertising integration is present in the package manifest or application source found during this review.
-- Listing pages link to OpenStreetMap on click; no embedded map script was found.
+- The interactive listing map requests visible-area tiles directly from the configured tile provider (OpenStreetMap by default); it does not request visitor GPS location.
 - There is no self-service account deletion flow and no declared retention schedule or DPO/operator contact in the repository.
 
 ## Legal reference points

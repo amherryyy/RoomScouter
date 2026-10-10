@@ -2,7 +2,11 @@ import { createServerSupabaseClient } from "../../lib/supabase/server";
 import { DISCOVERY_PAGE_SIZE, type DiscoveryFilters } from "./model";
 import type { UniversityConfig } from "./university";
 
-export async function loadDiscovery(filters: DiscoveryFilters, university: UniversityConfig | null) {
+export async function loadDiscovery(
+  filters: DiscoveryFilters,
+  university: UniversityConfig | null,
+  { pageSize = DISCOVERY_PAGE_SIZE, includeCovers = true }: { pageSize?: number; includeCovers?: boolean } = {},
+) {
   const supabase = await createServerSupabaseClient();
   const effectiveDistance = university ? filters.maximumDistanceKm : null;
   const [{ data: results, error }, { data: facilities }, { data: utilities }] = await Promise.all([
@@ -16,8 +20,8 @@ export async function loadDiscovery(filters: DiscoveryFilters, university: Unive
       university_latitude: university?.latitude,
       university_longitude: university?.longitude,
       maximum_distance_km: effectiveDistance ?? undefined,
-      page_size: DISCOVERY_PAGE_SIZE,
-      page_offset: (filters.page - 1) * DISCOVERY_PAGE_SIZE,
+      page_size: pageSize,
+      page_offset: (filters.page - 1) * pageSize,
     }),
     supabase.from("facilities").select("id, name").order("name"),
     supabase.from("utilities").select("id, name").order("name"),
@@ -25,7 +29,7 @@ export async function loadDiscovery(filters: DiscoveryFilters, university: Unive
   if (error) throw new Error("Public listings could not be loaded", { cause: error });
 
   const rows = results ?? [];
-  const listingIds = rows.map((listing) => listing.id);
+  const listingIds = includeCovers ? rows.map((listing) => listing.id) : [];
   const { data: coverPhotos } = listingIds.length
     ? await supabase
       .from("listing_photos")

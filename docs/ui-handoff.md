@@ -10,7 +10,7 @@ This document connects the team's initial RoomScouter wireframe to the working p
 | Login and account recovery | `/login`, `/forgot-password`, `/update-password` | Working with a shared responsive authentication layout. |
 | Registration | `/register` | Working for student and owner roles with the shared authentication layout. |
 | Property details | `/listings/[id]` | Working for approved, available listings. |
-| Map view | `/map` | Preview only; clearly marked under construction. |
+| Map view | `/map` | Interactive map and matching public listing results; search filters stay synchronized with Browse. |
 | Favorites | `/favorites` | Working for signed-in students. |
 | Signed-in account profile | `/account` | Working; users can update their display name, review read-only email and role details, access password recovery, and open role-specific destinations. |
 | Owner dashboard | `/owner` | Working with truthful listing lifecycle totals; views and inquiries remain a labeled future concept. |
@@ -33,7 +33,6 @@ The final interface may style working behavior freely, but it must preserve thes
 
 The following concepts require separate product and architecture decisions before interactive controls are added:
 
-- an interactive map with synchronized listing filters;
 - in-application messaging or owner inquiries;
 - Google or Facebook authentication;
 - listing views, inquiry totals, or other analytics;
