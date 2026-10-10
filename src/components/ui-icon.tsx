@@ -1,6 +1,6 @@
 import type { ReactNode, SVGProps } from "react";
 
-export type UiIconName = "home" | "browse" | "map" | "info" | "account" | "dashboard" | "reviews" | "reports" | "menu" | "logout" | "search" | "clear" | "close" | "chevron-down";
+export type UiIconName = "home" | "browse" | "map" | "info" | "account" | "dashboard" | "reviews" | "reports" | "menu" | "logout" | "search" | "clear" | "close" | "chevron-down" | "walk" | "bicycle" | "tricycle";
 
 type UiIconProps = SVGProps<SVGSVGElement> & { name: UiIconName };
 
@@ -19,6 +19,9 @@ const paths: Record<UiIconName, ReactNode> = {
   search: <><circle cx="10.8" cy="10.8" r="6.8" /><path d="m16 16 5 5" /></>,
   clear: <><path d="M3 12a9 9 0 1 0 2.6-6.4L3 8" /><path d="M3 3v5h5" /></>,
   "chevron-down": <path d="m6 9 6 6 6-6" />,
+  walk: <><circle cx="13.5" cy="4.5" r="1.8" /><path d="m11.5 9 2.2-1.2 2.1 2.6 2.4 1M11.5 9l-2 4.2 3.2 2.1-1.4 4.2M12.7 15.3l3.5 1.8 1.8 3" /></>,
+  bicycle: <><circle cx="6" cy="17" r="4" /><circle cx="18" cy="17" r="4" /><path d="m6 17 4-7 4 7H6Zm4-7h4m-1 0 3 7m-5-10h-2" /></>,
+  tricycle: <><circle cx="6" cy="18" r="2.5" /><circle cx="18" cy="18" r="2.5" /><path d="M6 18h7l-2-7H8l-2 7Zm5-7h5l2 7m-9-7H7M15 8h4l1.5 3H15V8Z" /></>,
 };
 
 export function UiIcon({ name, ...props }: UiIconProps) {

@@ -2,13 +2,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PublicHeader } from "../../../src/components/public-header";
 import { SubmitButton } from "../../../src/components/submit-button";
+import { UiIcon } from "../../../src/components/ui-icon";
 import { ROOM_TYPE_LABELS } from "../../../src/features/discovery/model";
 import {
   approximateDistanceKm,
-  ESTIMATED_ROAD_DETOUR_FACTOR,
+  ESTIMATED_BICYCLE_SPEED_KMH,
   estimateTravelTimes,
-  ESTIMATED_TRICYCLE_SPEED_KMH,
-  ESTIMATED_WALKING_SPEED_KMH,
   formatEstimatedDuration,
   getUniversityConfig,
 } from "../../../src/features/discovery/university";
@@ -184,22 +183,22 @@ export default async function PublicListingPage({ params, searchParams }: Public
             </dl>
             {distance !== null && university && travelTimes ? (
               <section className="travel-estimates" aria-labelledby="travel-estimates-title">
-                <p className="section-kicker">Approximate travel time</p>
-                <h3 id="travel-estimates-title">Getting to {university.name}</h3>
-                <p className="travel-estimate-distance">About {travelTimes.estimatedRoadDistanceKm.toFixed(2)} km by road</p>
+                <p className="section-kicker" id="travel-estimates-title">Approximate travel time</p>
                 <ul className="travel-estimate-grid" aria-label="Estimated travel times">
                   <li>
-                    <span>Walking</span>
-                    <strong>About {formatEstimatedDuration(travelTimes.walkingMinutes)}</strong>
-                    <small>At {ESTIMATED_WALKING_SPEED_KMH} km/h</small>
+                    <span><UiIcon name="walk" /> Walking</span>
+                    <strong>{formatEstimatedDuration(travelTimes.walkingMinutes)}</strong>
                   </li>
                   <li>
-                    <span>By tricycle</span>
-                    <strong>About {formatEstimatedDuration(travelTimes.tricycleMinutes)}</strong>
-                    <small>At {ESTIMATED_TRICYCLE_SPEED_KMH} km/h</small>
+                    <span><UiIcon name="bicycle" /> Bicycle</span>
+                    <strong>{formatEstimatedDuration(travelTimes.bicycleMinutes)}</strong>
+                  </li>
+                  <li>
+                    <span><UiIcon name="tricycle" /> Tricycle</span>
+                    <strong>{formatEstimatedDuration(travelTimes.tricycleMinutes)}</strong>
                   </li>
                 </ul>
-                <p className="travel-estimate-note">Road distance is estimated at {ESTIMATED_ROAD_DETOUR_FACTOR}× the straight-line distance. Times use average speeds; actual routes, traffic, and waiting can change them.</p>
+                <p className="travel-estimate-note">Approximate only; routes, traffic, and waiting can change times.</p>
               </section>
             ) : null}
           </section>
