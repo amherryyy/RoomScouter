@@ -1068,6 +1068,14 @@ fieldset {
   margin: 2rem 0;
 }
 
+.listing-form-intro { margin: 0; color: #526578; line-height: 1.55; }
+.listing-form-steps ol { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.65rem; margin: 0; padding: 0; list-style: none; }
+.listing-form-steps a { display: flex; min-height: 2.9rem; align-items: center; gap: 0.55rem; border: 1px solid #d8e0da; border-radius: 0.6rem; padding: 0.45rem 0.65rem; color: #245f48; background: #f7faf8; font-size: 0.88rem; font-weight: 750; text-decoration: none; }
+.listing-form-steps a:hover { border-color: #8caf9a; background: #edf5ef; }
+.listing-form-steps a span,
+.listing-step-number { display: inline-grid; flex: 0 0 auto; width: 1.55rem; height: 1.55rem; place-items: center; border-radius: 50%; color: #fff; background: #246b48; font-size: 0.82rem; font-weight: 800; }
+.listing-form legend { display: flex; align-items: center; gap: 0.5rem; }
+
 .listing-form fieldset {
   display: grid;
   gap: 0.65rem;
@@ -3292,6 +3300,8 @@ fieldset {
 }
 
 @media (max-width: 42rem) {
+  .listing-form-steps ol { grid-template-columns: 1fr; gap: 0.4rem; }
+  .listing-form-steps a { min-height: 2.75rem; }
   .discovery-advanced-grid,
   .map-filter-section .discovery-advanced-grid { grid-template-columns: 1fr; }
 }
