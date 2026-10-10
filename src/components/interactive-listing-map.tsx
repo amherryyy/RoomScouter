@@ -123,12 +123,6 @@ export function InteractiveListingMap({
           if (cancelled) return;
           barangayLayer = L.geoJSON(data, {
             style: boundaryStyles.street,
-            onEachFeature: (feature, layer) => {
-              const barangayName = feature.properties?.brgy_name;
-              if (typeof barangayName === "string" && barangayName.trim()) {
-                layer.bindTooltip(barangayName, { direction: "center" });
-              }
-            },
           });
           if (activeBasemapName === "Satellite") {
             barangayLayer.setStyle(boundaryStyles.satellite);
@@ -146,7 +140,6 @@ export function InteractiveListingMap({
           fillColor: "#246b48",
           fillOpacity: 1,
         })
-          .bindTooltip(`${university.name} campus`)
           .addTo(map);
       }
 
@@ -179,7 +172,6 @@ export function InteractiveListingMap({
     for (const listing of listings) {
       const priceLabel = currency.format(listing.monthly_rent);
       const marker = L.marker([listing.latitude, listing.longitude], {
-        title: `${listing.title}, ${priceLabel} per month`,
         alt: `${listing.title}, ${priceLabel} per month`,
         riseOnHover: true,
         icon: L.divIcon({
