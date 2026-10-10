@@ -10,6 +10,7 @@ export type MapListing = {
   id: string;
   title: string;
   address_line: string;
+  barangay: string | null;
   monthly_rent: number;
   room_type: RoomType;
   available_rooms: number;
@@ -35,6 +36,11 @@ function createPopupContent(listing: MapListing): HTMLElement {
   const address = document.createElement("span");
   address.textContent = listing.address_line;
   content.append(address);
+  if (listing.barangay) {
+    const barangay = document.createElement("span");
+    barangay.textContent = `Barangay ${listing.barangay}`;
+    content.append(barangay);
+  }
 
   const price = document.createElement("span");
   price.textContent = `${currency.format(listing.monthly_rent)} per month`;
@@ -223,7 +229,7 @@ export function InteractiveListingMap({
                     <h3><Link href={`/listings/${listing.id}`}>{listing.title}</Link></h3>
                     <strong>{currency.format(listing.monthly_rent)}<span> / month</span></strong>
                   </div>
-                  <p>{listing.address_line}</p>
+                  <p>{listing.barangay ? `${listing.barangay} · ` : ""}{listing.address_line}</p>
                   <div className="map-result-facts">
                     <span>{ROOM_TYPE_LABELS[listing.room_type]}</span>
                     <span>{listing.available_rooms} available</span>

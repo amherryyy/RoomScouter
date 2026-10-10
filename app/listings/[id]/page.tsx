@@ -134,6 +134,7 @@ export default async function PublicListingPage({ params, searchParams }: Public
           <h1>{listing.title}</h1>
           <p className="detail-address">{listing.address_line}</p>
           <ul className="detail-meta" aria-label="Listing summary">
+            {listing.barangay ? <li>Barangay {listing.barangay}</li> : null}
             <li>{ROOM_TYPE_LABELS[listing.room_type]}</li>
             <li>{listing.available_rooms} {listing.available_rooms === 1 ? "room" : "rooms"} available</li>
             {distance !== null && university ? <li>About {distance.toFixed(2)} km from {university.name}</li> : null}
@@ -169,6 +170,7 @@ export default async function PublicListingPage({ params, searchParams }: Public
             <dl className="fact-list">
               <div><dt>Room type</dt><dd>{ROOM_TYPE_LABELS[listing.room_type]}</dd></div>
               <div><dt>Available rooms</dt><dd>{listing.available_rooms}</dd></div>
+              {listing.barangay ? <div><dt>Barangay</dt><dd>{listing.barangay}</dd></div> : null}
               {distance !== null && university ? <div><dt>Distance from {university.name}</dt><dd>About {distance.toFixed(2)} km straight-line</dd></div> : null}
             </dl>
           </section>
@@ -202,7 +204,7 @@ export default async function PublicListingPage({ params, searchParams }: Public
           ) : !user ? <p><Link href="/login">Log in as a student to save this listing</Link></p> : null}
           <p className="section-kicker">Talk with the owner</p>
           <h2>Location and contact</h2>
-          <p className="contact-address">{listing.address_line}</p>
+          <p className="contact-address">{listing.barangay ? `${listing.barangay} · ` : ""}{listing.address_line}</p>
           <p><a className="map-link" href={mapUrl} target="_blank" rel="noreferrer">View exact pin on OpenStreetMap<span className="visually-hidden"> (opens in a new tab)</span></a></p>
           <hr />
           <p><strong>{listing.contact_name}</strong></p>

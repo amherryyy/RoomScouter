@@ -22,7 +22,7 @@ type MapPageProps = {
 export default async function MapPage({ searchParams }: MapPageProps) {
   const filters = parseDiscoveryFilters(await searchParams);
   const university = getUniversityConfig();
-  const { results, facilities, utilities, total } = await loadDiscovery(filters, university, {
+  const { results, facilities, utilities, barangays, total } = await loadDiscovery(filters, university, {
     pageSize: MAP_PAGE_SIZE,
     includeCovers: false,
   });
@@ -30,6 +30,7 @@ export default async function MapPage({ searchParams }: MapPageProps) {
     id: listing.id,
     title: listing.title,
     address_line: listing.address_line,
+    barangay: listing.barangay,
     monthly_rent: listing.monthly_rent,
     room_type: listing.room_type,
     available_rooms: listing.available_rooms,
@@ -69,6 +70,7 @@ export default async function MapPage({ searchParams }: MapPageProps) {
           className="map-filter-panel"
           facilities={facilities}
           filters={filters}
+          barangays={barangays}
           university={university}
           utilities={utilities}
         />

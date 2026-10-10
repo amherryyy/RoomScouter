@@ -11,6 +11,7 @@ type DiscoveryFiltersFormProps = {
   filters: DiscoveryFilters;
   facilities: DiscoveryOption[];
   utilities: DiscoveryOption[];
+  barangays: string[];
   university: UniversityConfig | null;
   className?: string;
 };
@@ -20,14 +21,22 @@ export function DiscoveryFiltersForm({
   filters,
   facilities,
   utilities,
+  barangays,
   university,
   className = "",
 }: DiscoveryFiltersFormProps) {
   return (
     <Form className={`discovery-filters ${className}`.trim()} action={action} aria-label="Filter boarding houses">
       <div className="search-field">
-        <label htmlFor={`${action.slice(1)}-q`}>Search by name, address, or description</label>
-        <input id={`${action.slice(1)}-q`} name="q" defaultValue={filters.query} maxLength={120} placeholder="Try a street or neighborhood" />
+        <label htmlFor={`${action.slice(1)}-q`}>Search by name, address, barangay, or description</label>
+        <input id={`${action.slice(1)}-q`} name="q" defaultValue={filters.query} maxLength={120} placeholder="Try a street or barangay" />
+      </div>
+      <div>
+        <label htmlFor={`${action.slice(1)}-barangay`}>Barangay</label>
+        <select id={`${action.slice(1)}-barangay`} name="barangay" defaultValue={filters.barangay}>
+          <option value="">Any barangay</option>
+          {barangays.map((barangay) => <option value={barangay} key={barangay}>{barangay}</option>)}
+        </select>
       </div>
       <div>
         <label htmlFor={`${action.slice(1)}-maximumRent`}>Maximum monthly rent</label>

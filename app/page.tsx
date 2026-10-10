@@ -24,7 +24,7 @@ type HomePageProps = {
 export default async function Home({ searchParams, browseMode = false }: HomePageProps) {
   const filters = parseDiscoveryFilters(await searchParams);
   const university = getUniversityConfig();
-  const { results, facilities, utilities, total } = await loadDiscovery(filters, university);
+  const { results, facilities, utilities, barangays, total } = await loadDiscovery(filters, university);
   const firstResult = total ? (filters.page - 1) * DISCOVERY_PAGE_SIZE + 1 : 0;
   const lastResult = Math.min(filters.page * DISCOVERY_PAGE_SIZE, total);
   const hasPrevious = filters.page > 1;
@@ -103,7 +103,7 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
                   {listing.cover ? <img className="featured-cover" src={listing.cover.signedUrl} alt={listing.cover.altText} /> : <span className="featured-cover featured-cover-empty"><img src="/roomscouter-icon.png" width="1141" height="1379" alt="" /><span>Photos coming soon</span></span>}
                 </Link>
                 <div className="featured-card-body">
-                  <p className="featured-location">{listing.address_line}</p>
+                  <p className="featured-location">{listing.barangay ? `${listing.barangay} · ` : ""}{listing.address_line}</p>
                   <h3><Link href={`/listings/${listing.id}`}>{listing.title}</Link></h3>
                   <p className="featured-location">{ROOM_TYPE_LABELS[listing.room_type]} · {listing.available_rooms} available</p>
                   <p className="listing-price"><strong>{currency.format(listing.monthly_rent)}</strong> <span>per month</span></p>
@@ -133,6 +133,7 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
           className={browseMode ? "browse-filter-panel" : ""}
           facilities={facilities}
           filters={filters}
+          barangays={barangays}
           university={university}
           utilities={utilities}
         />
@@ -158,7 +159,7 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
                   <h3><Link href={`/listings/${listing.id}`}>{listing.title}</Link></h3>
                   <span className="availability-badge">Available</span>
                 </div>
-                <p className="listing-address">{listing.address_line}</p>
+                <p className="listing-address">{listing.barangay ? `${listing.barangay} · ` : ""}{listing.address_line}</p>
                 <p className="listing-price"><strong>{currency.format(listing.monthly_rent)}</strong> <span>per month</span></p>
                 <div className="fact-row">
                   <span>{ROOM_TYPE_LABELS[listing.room_type]}</span>

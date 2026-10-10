@@ -19,4 +19,4 @@ The `/map` route was an explicitly labeled wireframe. The product now needs a wo
 
 - Tile requests go directly from the browser to the configured provider; the Privacy Notice describes the default provider and data shared with it.
 - The OpenStreetMap standard tile service is best-effort. Reassess the provider if usage grows or a service-level guarantee becomes necessary.
-- Barangay search and filtering remain a separate follow-up feature and can be composed with the same filters later.
+- Barangay search and filtering are implemented with the shared discovery query. See [ADR 0014](0014-barangay-discovery.md).

@@ -16,6 +16,7 @@ type RawSearchParams = Record<string, string | string[] | undefined>;
 
 export type DiscoveryFilters = {
   query: string;
+  barangay: string;
   maximumRent: number | null;
   minimumRooms: number;
   roomType: RoomType | null;
@@ -39,6 +40,7 @@ export function parseDiscoveryFilters(params: RawSearchParams): DiscoveryFilters
   const roomType = first(params.roomType);
   return {
     query: first(params.q).trim().slice(0, 120),
+    barangay: first(params.barangay).trim().slice(0, 80),
     maximumRent: boundedNumber(first(params.maximumRent), 0, 1_000_000),
     minimumRooms: boundedNumber(first(params.minimumRooms), 1, 1000) ?? 1,
     roomType: ROOM_TYPES.includes(roomType as RoomType) ? roomType as RoomType : null,
@@ -52,6 +54,7 @@ export function parseDiscoveryFilters(params: RawSearchParams): DiscoveryFilters
 export function discoveryQuery(filters: DiscoveryFilters, page: number): string {
   const query = new URLSearchParams();
   if (filters.query) query.set("q", filters.query);
+  if (filters.barangay) query.set("barangay", filters.barangay);
   if (filters.maximumRent !== null) query.set("maximumRent", String(filters.maximumRent));
   if (filters.minimumRooms !== 1) query.set("minimumRooms", String(filters.minimumRooms));
   if (filters.roomType) query.set("roomType", filters.roomType);

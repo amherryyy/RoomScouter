@@ -81,7 +81,7 @@ Every listing stores latitude and longitude. Version 0.1 stores one configured u
 
 ## Search
 
-Filtering is performed by database queries with pagination. The browser must not download the full listing table to filter locally. Initial indexes should support publication status, price, available rooms, room type, owner, and common join filters. Text search begins with PostgreSQL-supported matching and can evolve only after measured need.
+Filtering is performed by database queries with pagination. The browser must not download the full listing table to filter locally. Initial indexes should support publication status, price, available rooms, room type, barangay, owner, and common join filters. Text search covers listing name, address, barangay, and description using PostgreSQL-supported matching. Barangay options come only from approved, available listings.
 
 ## Uploads
 
