@@ -1,8 +1,9 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import type { Database } from "../../lib/supabase/database.types";
 import { SubmitButton } from "../../components/submit-button";
+import { LocationMapPicker } from "./location-map-picker";
 import { roomTypes } from "./model";
 import { initialListingFormState, type ListingFormState } from "./listing-form-state";
 
@@ -23,6 +24,14 @@ const roomTypeLabels = {
 
 export function ListingForm({ action, listing, submitLabel }: ListingFormProps) {
   const [state, formAction] = useActionState(action, initialListingFormState);
+  const [latitude, setLatitude] = useState(listing?.latitude.toString() ?? "");
+  const [longitude, setLongitude] = useState(listing?.longitude.toString() ?? "");
+  const numericLatitude = Number(latitude);
+  const numericLongitude = Number(longitude);
+  const validPosition = latitude.trim() !== "" && longitude.trim() !== ""
+    && Number.isFinite(numericLatitude) && Number.isFinite(numericLongitude)
+    && numericLatitude >= -90 && numericLatitude <= 90
+    && numericLongitude >= -180 && numericLongitude <= 180;
 
   return (
     <form action={formAction} className="listing-form">
@@ -81,21 +90,34 @@ export function ListingForm({ action, listing, submitLabel }: ListingFormProps) 
       </fieldset>
 
       <fieldset>
-        <legend>Map position</legend>
-        <div className="form-grid">
-          <div>
-            <label htmlFor="latitude">Latitude</label>
-            <input id="latitude" name="latitude" type="number" defaultValue={listing?.latitude} min="-90" max="90" step="0.000001" aria-describedby="map-help" required />
+        <legend>Property location</legend>
+        <p className="field-help" id="map-help">Find your property on the map, then tap its location. Drag the pin if it needs adjusting.</p>
+        <LocationMapPicker
+          initialLatitude={validPosition ? numericLatitude : null}
+          initialLongitude={validPosition ? numericLongitude : null}
+          onChange={(nextLatitude, nextLongitude) => {
+            setLatitude(nextLatitude.toFixed(6));
+            setLongitude(nextLongitude.toFixed(6));
+          }}
+        />
+        <input type="hidden" name="latitude" value={latitude} />
+        <input type="hidden" name="longitude" value={longitude} />
+        <details className="location-manual-entry">
+          <summary>Enter coordinates manually</summary>
+          <div className="form-grid">
+            <div>
+              <label htmlFor="latitude-manual">Latitude</label>
+              <input id="latitude-manual" type="number" value={latitude} min="-90" max="90" step="0.000001" onChange={(event) => setLatitude(event.currentTarget.value)} />
+            </div>
+            <div>
+              <label htmlFor="longitude-manual">Longitude</label>
+              <input id="longitude-manual" type="number" value={longitude} min="-180" max="180" step="0.000001" onChange={(event) => setLongitude(event.currentTarget.value)} />
+            </div>
           </div>
-          <div>
-            <label htmlFor="longitude">Longitude</label>
-            <input id="longitude" name="longitude" type="number" defaultValue={listing?.longitude} min="-180" max="180" step="0.000001" aria-describedby="map-help" required />
-          </div>
-        </div>
-        <p className="field-help" id="map-help">Use the boarding house location, not your personal home address.</p>
+        </details>
       </fieldset>
 
-      <SubmitButton pendingLabel="Saving listing…">{submitLabel}</SubmitButton>
+      <SubmitButton disabled={!validPosition} pendingLabel="Saving listing…">{submitLabel}</SubmitButton>
     </form>
   );
 }

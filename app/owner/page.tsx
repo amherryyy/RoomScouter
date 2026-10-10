@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { requireOwner } from "../../src/features/listings/access";
+import { AvailabilityControl } from "../../src/features/listings/availability-control";
 
 const currency = new Intl.NumberFormat("en-PH", { style: "currency", currency: "PHP" });
 const statusLabels = {
@@ -86,7 +87,12 @@ export default async function OwnerDashboardPage() {
                 <span className={`status status-${listing.status}`}>{statusLabels[listing.status]}</span>
               </div>
               <p>{listing.barangay || "Barangay not added yet"}</p>
-              <p>{currency.format(listing.monthly_rent)} monthly · {listing.available_rooms} available</p>
+              <p>{currency.format(listing.monthly_rent)} monthly</p>
+              <AvailabilityControl
+                initialAvailableRooms={listing.available_rooms}
+                listingId={listing.id}
+                title={listing.title}
+              />
               <Link href={`/owner/listings/${listing.id}/edit`}>Edit and review details</Link>
             </article>
           ))}

@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireOwner } from "./access";
 import { isUuid, parseListingInput } from "./model";
-import type { ListingFormState } from "./listing-form-state";
+import type { ListingAvailabilityState, ListingFormState } from "./listing-form-state";
 
 function actionError(path: string, message: string): never {
   redirect(`${path}?error=${encodeURIComponent(message)}`);
@@ -53,6 +53,51 @@ export async function updateListing(
   return { status: "success", message: "Listing saved." };
 }
 
+export async function updateListingAvailability(
+  listingId: string,
+  _previousState: ListingAvailabilityState,
+  formData: FormData,
+): Promise<ListingAvailabilityState> {
+  if (!isUuid(listingId)) {
+    return { status: "error", message: "The listing could not be found.", availableRooms: 0 };
+  }
+  const currentValue = formData.get("currentRooms");
+  const intent = formData.get("intent");
+  const currentRooms = typeof currentValue === "string" ? Number(currentValue) : Number.NaN;
+  if (!Number.isInteger(currentRooms) || currentRooms < 0 || currentRooms > 1000) {
+    return { status: "error", message: "Refresh the page and try again.", availableRooms: 0 };
+  }
+  let availableRooms = currentRooms;
+  if (intent === "increase") availableRooms = Math.min(currentRooms + 1, 1000);
+  else if (intent === "decrease") availableRooms = Math.max(currentRooms - 1, 0);
+  else if (intent === "full") availableRooms = 0;
+  else return { status: "error", message: "Choose an availability update.", availableRooms: currentRooms };
+  if (availableRooms === currentRooms) {
+    return { status: "success", message: "Availability is already at that number.", availableRooms };
+  }
+
+  const { supabase, user } = await requireOwner();
+  const { data, error } = await supabase
+    .from("boarding_houses")
+    .update({ available_rooms: availableRooms })
+    .eq("id", listingId)
+    .eq("owner_id", user.id)
+    .eq("available_rooms", currentRooms)
+    .select("id")
+    .maybeSingle();
+  if (error) {
+    return { status: "error", message: "Availability could not be saved. Please try again.", availableRooms: currentRooms };
+  }
+  if (!data) {
+    return { status: "error", message: "Availability changed elsewhere. Refresh and try again.", availableRooms: currentRooms };
+  }
+  revalidatePath("/owner");
+  revalidatePath("/");
+  revalidatePath("/map");
+  revalidatePath("/favorites");
+  revalidatePath("/listings/" + listingId);
+  return { status: "success", message: "Availability updated.", availableRooms };
+}
 export async function submitListing(listingId: string, _previousState: ListingFormState, _formData: FormData): Promise<ListingFormState> {
   if (!isUuid(listingId)) actionError("/owner", "The listing could not be found.");
   const path = `/owner/listings/${listingId}/edit`;

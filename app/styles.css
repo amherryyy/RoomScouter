@@ -1051,6 +1051,16 @@ fieldset {
 .status-archived { color: #7d251e; background: #fff0ee; }
 .status-pending { color: #72520c; background: #fff6d9; }
 
+.location-picker { position: relative; display: grid; gap: 0.45rem; }
+.location-picker-map { width: 100%; height: 18rem; min-height: 14rem; border: 1px solid #cbd8d1; border-radius: 0.65rem; background: #e7efea; }
+.location-picker-map.leaflet-container { color: #173956; font: inherit; }
+.location-picker-loading { position: absolute; top: 42%; left: 50%; margin: 0; transform: translate(-50%, -50%); border-radius: 0.45rem; padding: 0.5rem 0.75rem; color: #173956; background: #fff; box-shadow: 0 0.2rem 0.65rem rgb(23 57 86 / 12%); pointer-events: none; }
+.location-manual-entry { margin-top: 0.35rem; }
+.location-manual-entry summary { width: fit-content; color: #245f91; font-weight: 700; cursor: pointer; }
+.location-manual-entry[open] .form-grid { margin-top: 0.75rem; }
+.leaflet-div-icon.property-location-marker { border: 0; background: transparent; }
+.property-location-pin { display: block; width: 1.5rem; height: 1.5rem; border: 3px solid #fff; border-radius: 50% 50% 50% 0; background: #246b48; box-shadow: 0 2px 8px rgb(18 41 31 / 35%); transform: rotate(-45deg); }
+.location-picker-map .leaflet-control-zoom a { width: 2.25rem; height: 2.25rem; line-height: 2.15rem; }
 .listing-form {
   display: grid;
   gap: 1.25rem;
@@ -2955,6 +2965,20 @@ fieldset {
 .owner-workspace .workspace-listing-media { grid-column: 1; grid-row: 1 / span 4; min-height: 6rem; }
 .owner-workspace .listing-card-heading { grid-column: 2 / 4; }
 .owner-workspace .listing-card-heading h2 { font-size: clamp(1.05rem, 2vw, 1.3rem); }
+.owner-listing-availability { grid-column: 2; grid-row: 4; }
+.availability-control { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 0.3rem 0.8rem; }
+.availability-label { color: #526158; font-size: 0.82rem; font-weight: 700; }
+.availability-stepper { display: inline-flex; align-items: center; gap: 0.35rem; }
+.availability-stepper button { min-width: 2.3rem; min-height: 2.3rem; border: 1px solid #bfd2c6; border-radius: 0.4rem; color: #174b35; background: #f4f8f5; font: inherit; font-size: 1.2rem; font-weight: 800; cursor: pointer; }
+.availability-stepper button:hover:not(:disabled) { background: #e4f0e7; }
+.availability-stepper button:focus-visible { outline: 3px solid #173956; outline-offset: 2px; }
+.availability-stepper button:disabled { opacity: 0.45; cursor: not-allowed; }
+.availability-count { min-width: 1.5rem; color: #173956; font-variant-numeric: tabular-nums; font-weight: 850; text-align: center; }
+.availability-full { margin-left: 0.3rem; padding: 0.35rem 0.55rem; font-size: 0.75rem !important; }
+.availability-hint { grid-column: 1 / -1; color: #66766d; font-size: 0.74rem; }
+.availability-message { grid-column: 1 / -1; color: #286849; font-size: 0.76rem; }
+.availability-message.is-error { color: #a82f27; }
+
 .owner-workspace .listing-card > a { color: var(--rs-blue); text-underline-offset: 0.2em; }
 .owner-workspace .listing-card > a { grid-column: 3; grid-row: 2 / span 2; align-self: center; }
 .admin-dashboard .listing-card { display: grid; grid-template-columns: 6rem minmax(0, 1fr); align-items: center; gap: 0.45rem 1.1rem; }
@@ -3038,6 +3062,7 @@ fieldset {
   .owner-workspace .workspace-listing-media { grid-column: 1; grid-row: auto; width: 100%; min-height: 9rem; }
   .owner-workspace .listing-card-heading { grid-column: 1; }
   .owner-workspace .listing-card > a { grid-column: 1; grid-row: auto; justify-self: start; }
+  .owner-listing-availability { grid-column: 1; grid-row: auto; }
   .admin-dashboard .listing-card { grid-template-columns: 1fr; }
   .admin-dashboard .workspace-listing-media { grid-column: 1; grid-row: auto; width: 100%; min-height: 9rem; }
   .admin-dashboard .listing-card-heading, .admin-dashboard .listing-card > p, .admin-dashboard .listing-card > a { grid-column: 1; }
