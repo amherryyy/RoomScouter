@@ -42,14 +42,17 @@ export async function login(formData: FormData): Promise<never> {
   if (!email || !password) authError("/login", "Enter a valid email and password.");
 
   const supabase = await createServerSupabaseClient();
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  const { data: { user }, error } = await supabase.auth.signInWithPassword({ email, password });
   if (error?.code === "email_not_confirmed") {
     redirect(`/verify-email?email=${encodeURIComponent(email)}&message=${encodeURIComponent("Verify your email address to finish signing in.")}`);
   }
   if (error) authError("/login", "The email or password is incorrect.");
 
+  const { data: profile } = user
+    ? await supabase.from("profiles").select("role").eq("id", user.id).maybeSingle()
+    : { data: null };
   revalidatePath("/", "layout");
-  redirect("/account");
+  redirect(profile?.role === "owner" ? "/owner" : profile?.role === "admin" ? "/admin" : "/account");
 }
 
 export async function register(formData: FormData): Promise<never> {

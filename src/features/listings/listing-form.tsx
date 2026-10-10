@@ -35,13 +35,22 @@ export function ListingForm({ action, listing, submitLabel }: ListingFormProps) 
 
   return (
     <form action={formAction} className="listing-form">
+      <p className="listing-form-intro">{listing ? "Update each section, then save your changes." : "Complete these three sections to save a draft. Your listing stays private until it is reviewed and approved."}</p>
+      <nav className="listing-form-steps" aria-label="Listing form sections">
+        <ol>
+          <li><a href="#listing-details"><span>1</span> Listing details</a></li>
+          <li><a href="#listing-contact"><span>2</span> Contact</a></li>
+          <li><a href="#listing-location"><span>3</span> Location</a></li>
+        </ol>
+      </nav>
       {state.message ? (
         <p className={`notice ${state.status === "error" ? "error" : "success"}`} role={state.status === "error" ? "alert" : "status"}>
           {state.message}
         </p>
       ) : null}
-      <fieldset>
-        <legend>Listing details</legend>
+      <fieldset id="listing-details">
+        <legend><span className="listing-step-number" aria-hidden="true">1</span> Listing details</legend>
+        <p className="field-help">Start with the property information students use to compare rooms.</p>
         <label htmlFor="title">Listing title</label>
         <input id="title" name="title" defaultValue={listing?.title} minLength={3} maxLength={120} required />
 
@@ -72,8 +81,9 @@ export function ListingForm({ action, listing, submitLabel }: ListingFormProps) 
         </div>
       </fieldset>
 
-      <fieldset>
-        <legend>Contact details</legend>
+      <fieldset id="listing-contact">
+        <legend><span className="listing-step-number" aria-hidden="true">2</span> Contact details</legend>
+        <p className="field-help">Provide a phone number or email so interested students can reach you.</p>
         <label htmlFor="contactName">Contact name</label>
         <input id="contactName" name="contactName" defaultValue={listing?.contact_name} maxLength={80} required />
         <div className="form-grid">
@@ -89,9 +99,9 @@ export function ListingForm({ action, listing, submitLabel }: ListingFormProps) 
         <p className="field-help" id="contact-help">Provide at least one contact method. It becomes public only with an approved listing.</p>
       </fieldset>
 
-      <fieldset aria-describedby="map-help">
-        <legend>Property location</legend>
-        <p className="field-help" id="map-help">Find your property on the map, then tap its location. Drag the pin if it needs adjusting.</p>
+      <fieldset id="listing-location" aria-describedby="map-help">
+        <legend><span className="listing-step-number" aria-hidden="true">3</span> Property location</legend>
+        <p className="field-help" id="map-help">Search or zoom to the property, then tap the map to place the pin. You can drag it to adjust the position. You do not need to enter coordinates.</p>
         <LocationMapPicker
           initialLatitude={validPosition ? numericLatitude : null}
           initialLongitude={validPosition ? numericLongitude : null}
