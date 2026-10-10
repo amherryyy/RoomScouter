@@ -1672,6 +1672,8 @@ fieldset {
   border-radius: 0.9rem;
   background: white;
   box-shadow: 0 0.75rem 2.25rem rgb(32 65 46 / 7%);
+  color: inherit;
+  text-decoration: none;
   transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
 
@@ -1680,6 +1682,8 @@ fieldset {
   box-shadow: 0 1.25rem 3rem rgb(29 70 112 / 14%);
   transform: translateY(-3px);
 }
+
+.discovery-card:focus-visible { outline: 3px solid #3566c0; outline-offset: -3px; }
 
 .listing-cover {
   display: grid;
@@ -1708,10 +1712,8 @@ fieldset {
   font-size: 1.2rem;
 }
 
-.discovery-card h3 a {
+.discovery-card h3 {
   color: inherit;
-  text-decoration-thickness: 0.08em;
-  text-underline-offset: 0.2em;
 }
 
 .availability-badge {
@@ -2427,18 +2429,19 @@ fieldset {
 .featured-listings .discovery-section-heading h2 { font-size: clamp(1.9rem, 3.5vw, 2.65rem); letter-spacing: -0.035em; }
 .text-link { color: #245f91; font-weight: 800; text-underline-offset: 0.22em; }
 .featured-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; }
-.featured-card { display: grid; grid-template-rows: auto 1fr; overflow: hidden; border: 1px solid #d8e0da; border-radius: 0.85rem; background: #fff; box-shadow: 0 0.7rem 2rem rgb(23 57 86 / 7%); transition: transform 180ms ease, box-shadow 180ms ease; }
+.featured-card { display: grid; grid-template-rows: auto 1fr; overflow: hidden; border: 1px solid #d8e0da; border-radius: 0.85rem; color: inherit; background: #fff; box-shadow: 0 0.7rem 2rem rgb(23 57 86 / 7%); text-decoration: none; transition: transform 180ms ease, box-shadow 180ms ease; }
 .featured-card:hover { transform: translateY(-4px); box-shadow: 0 1rem 2.3rem rgb(23 57 86 / 13%); }
-.featured-cover-link { display: block; overflow: hidden; background: #e1e9ed; }
+.featured-card:focus-visible { outline: 3px solid #3566c0; outline-offset: -3px; }
 .featured-cover { display: block; width: 100%; height: 14rem; aspect-ratio: 1.55; object-fit: cover; transition: transform 180ms ease; }
-.featured-cover-link:hover .featured-cover { transform: scale(1.025); }
+.featured-card:hover .featured-cover { transform: scale(1.025); }
 .featured-cover-empty { display: grid; place-content: center; justify-items: center; gap: 0.55rem; color: #536c7b; font-size: 0.9rem; }
 .featured-cover-empty img { display: block; width: 4.5rem; height: 5rem; object-fit: contain; mix-blend-mode: multiply; }
 .featured-card-body { display: grid; align-content: start; gap: 0.38rem; min-height: 9.5rem; padding: 1.15rem 1.25rem 1.35rem; }
 .featured-location { overflow: hidden; margin: 0 0 0.35rem; color: #61737d; font-size: 0.83rem; text-overflow: ellipsis; white-space: nowrap; }
 .featured-card h3 { margin: 0; font-size: 1.35rem; font-weight: 650; line-height: 1.25; }
-.featured-card h3 a { color: #173956; text-decoration: none; }
-.featured-card h3 a:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+.featured-card h3 { color: #173956; }
+.featured-card:hover h3,
+.featured-card:focus-visible h3 { text-decoration: underline; text-underline-offset: 0.2em; }
 .featured-card .listing-price { margin: auto 0 0; padding-top: 0.7rem; }
 .featured-card .listing-price strong { font-size: 1.4rem; }
 .cover-placeholder { display: grid; align-content: center; justify-items: center; gap: 0.45rem; }
@@ -2588,7 +2591,7 @@ fieldset {
 
 @media (prefers-reduced-motion: reduce) {
   .featured-cover { transition: none; }
-  .featured-cover-link:hover .featured-cover { transform: none; }
+  .featured-card:hover .featured-cover { transform: none; }
 }
 
 /* Refined public property detail */
@@ -3017,7 +3020,7 @@ fieldset {
 .browse-results-section .discovery-card { min-height: 13rem; border-radius: 0.75rem; }
 .browse-results-section .listing-cover { min-height: 13rem; }
 .discovery-card-body { gap: 0.65rem; padding: 1.3rem 1.45rem; }
-.discovery-card h3 a { color: var(--rs-ink); }
+.discovery-card h3 { color: var(--rs-ink); }
 .listing-price strong { color: var(--rs-blue); }
 
 .preview-page > .preview-hero { margin-top: clamp(2.5rem, 5vw, 4rem); }
