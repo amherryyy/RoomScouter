@@ -52,8 +52,8 @@ export default function AboutPage() {
         <h2 id="help-title">Need help or found a problem?</h2>
         <p>Contact the developers or report an issue through GitHub. Reports are public, so do not include personal, account, or rental details.</p>
         <div className="home-developer-actions">
-          <a className="button" href="https://github.com/amherryyy/RoomScouter/issues">Contact developers</a>
-          <a className="button secondary" href="https://github.com/amherryyy/RoomScouter/issues/new">Report a problem</a>
+          <Link className="button" href="/contact?type=contact">Contact developers</Link>
+          <Link className="button secondary" href="/contact?type=problem">Report a problem</Link>
         </div>
       </section>
     </main>
