@@ -3333,3 +3333,271 @@ fieldset {
   .discovery-advanced-grid,
   .map-filter-section .discovery-advanced-grid { grid-template-columns: 1fr; }
 }
+
+/* RoomScouter glass surfaces: translucent, green-tinted layers over the existing light canvas. */
+:root {
+  --rs-glass-fallback: #fff;
+  --rs-glass-surface: rgb(250 253 251 / 86%);
+  --rs-glass-border: rgb(255 255 255 / 88%);
+  --rs-glass-shadow: 0 0.8rem 2rem rgb(24 58 43 / 8%), inset 0 1px 0 rgb(255 255 255 / 94%);
+}
+
+body {
+  background-color: #f2f6f2;
+  background-image:
+    radial-gradient(ellipse at 8% 0%, rgb(218 237 225 / 58%), transparent 34rem),
+    radial-gradient(ellipse at 96% 16%, rgb(222 235 241 / 42%), transparent 30rem),
+    linear-gradient(180deg, #f7faf7 0%, #f0f5f1 100%);
+}
+
+.public-header,
+.workspace-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom-color: rgb(205 220 211 / 78%);
+  background: rgb(248 251 249 / 86%);
+  box-shadow: 0 0.35rem 1.2rem rgb(23 57 40 / 4%);
+  -webkit-backdrop-filter: blur(16px) saturate(135%);
+  backdrop-filter: blur(16px) saturate(135%);
+}
+
+.public-navigation .responsive-navigation-panel > nav,
+.workspace-navigation .responsive-navigation-panel > nav {
+  gap: 0.2rem;
+  border: 1px solid rgb(255 255 255 / 92%);
+  border-radius: 1rem;
+  padding: 0.28rem;
+  background: rgb(255 255 255 / 66%);
+  box-shadow: 0 0.35rem 1rem rgb(28 68 47 / 7%), inset 0 1px 0 #fff;
+}
+
+.public-navigation .responsive-navigation-panel > nav > a,
+.workspace-navigation .responsive-navigation-panel > nav > a,
+.public-navigation .responsive-navigation-panel > nav .profile-menu > summary,
+.workspace-navigation .responsive-navigation-panel > nav .profile-menu > summary {
+  min-height: 2.55rem;
+  border-radius: 0.72rem;
+  padding: 0.4rem 0.65rem;
+  font-size: 0.88rem;
+  text-decoration: none;
+  transition: color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.public-navigation .responsive-navigation-panel > nav > a:hover,
+.workspace-navigation .responsive-navigation-panel > nav > a:hover,
+.public-navigation .responsive-navigation-panel > nav > a[aria-current="page"],
+.workspace-navigation .responsive-navigation-panel > nav > a[aria-current="page"] {
+  color: #174b35;
+  background: rgb(224 239 228 / 84%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 82%);
+  text-decoration: none;
+}
+
+.public-navigation .responsive-navigation-panel > nav > a:focus-visible,
+.workspace-navigation .responsive-navigation-panel > nav > a:focus-visible,
+.public-navigation .profile-menu > summary:focus-visible,
+.workspace-navigation .profile-menu > summary:focus-visible {
+  outline: 3px solid var(--rs-blue);
+  outline-offset: 2px;
+}
+
+.public-navigation .responsive-navigation-panel > nav .profile-menu > summary,
+.workspace-navigation .responsive-navigation-panel > nav .profile-menu > summary {
+  border-color: transparent;
+  background: transparent;
+}
+
+.public-navigation .responsive-navigation-panel > nav .profile-menu[open] > summary,
+.workspace-navigation .responsive-navigation-panel > nav .profile-menu[open] > summary {
+  background: rgb(224 239 228 / 84%);
+}
+
+.responsive-navigation-toggle {
+  min-height: 2.7rem;
+  border-color: rgb(255 255 255 / 88%);
+  padding: 0.25rem 0.6rem 0.25rem 0.35rem;
+  background: rgb(255 255 255 / 72%);
+  box-shadow: 0 0.3rem 0.9rem rgb(23 57 40 / 7%), inset 0 1px 0 #fff;
+}
+
+.profile-card,
+.responsive-navigation-panel[data-open="true"] {
+  border-color: rgb(255 255 255 / 88%);
+  background: rgb(250 253 251 / 94%);
+  box-shadow: 0 1rem 2.5rem rgb(23 57 40 / 14%), inset 0 1px 0 #fff;
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  backdrop-filter: blur(20px) saturate(140%);
+}
+
+.featured-card,
+.discovery-card,
+.dashboard-summary-card,
+.admin-summary-card,
+.admin-queue-card,
+.listing-card,
+.discovery-filters,
+.map-filter-section,
+.map-canvas-panel,
+.map-results-panel,
+.account-profile-card,
+.account-settings-panel,
+.auth-card,
+.map-error-card {
+  border-color: rgb(255 255 255 / 92%);
+  background-color: var(--rs-glass-fallback);
+  box-shadow: var(--rs-glass-shadow);
+}
+
+.featured-card,
+.discovery-card,
+.admin-queue-card {
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.featured-card:hover,
+.discovery-card:hover,
+.admin-queue-card:hover {
+  border-color: rgb(143 184 158 / 76%);
+  box-shadow: 0 1rem 2.2rem rgb(24 58 43 / 13%), inset 0 1px 0 rgb(255 255 255 / 94%);
+}
+
+.featured-card-body,
+.discovery-card-body {
+  background: var(--rs-glass-fallback);
+}
+
+.hero-search,
+.hero-location-card,
+.discovery-filters,
+.map-filter-section,
+.map-canvas-panel,
+.map-results-panel,
+.dashboard-summary-card,
+.admin-summary-card,
+.admin-queue-card,
+.listing-card,
+.account-profile-card,
+.account-settings-panel,
+.auth-card,
+.map-error-card {
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  backdrop-filter: blur(14px) saturate(130%);
+}
+
+.hero-search,
+.hero-location-card {
+  border-color: rgb(255 255 255 / 88%);
+  background-color: var(--rs-glass-fallback);
+  box-shadow: 0 0.7rem 1.8rem rgb(24 58 43 / 10%), inset 0 1px 0 rgb(255 255 255 / 94%);
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  .public-navigation .responsive-navigation-panel > nav,
+  .workspace-navigation .responsive-navigation-panel > nav,
+  .responsive-navigation-toggle,
+  .profile-card,
+  .responsive-navigation-panel[data-open="true"],
+  .featured-card,
+  .discovery-card,
+  .dashboard-summary-card,
+  .admin-summary-card,
+  .admin-queue-card,
+  .listing-card,
+  .discovery-filters,
+  .map-filter-section,
+  .map-canvas-panel,
+  .map-results-panel,
+  .account-profile-card,
+  .account-settings-panel,
+  .auth-card,
+  .map-error-card,
+  .hero-search,
+  .hero-location-card {
+    background-color: var(--rs-glass-surface);
+  }
+
+  .featured-card-body,
+  .discovery-card-body {
+    background: rgb(250 253 251 / 90%);
+    -webkit-backdrop-filter: blur(12px) saturate(125%);
+    backdrop-filter: blur(12px) saturate(125%);
+  }
+}
+
+@media (max-width: 54rem) {
+  .public-header,
+  .workspace-topbar {
+    padding-right: max(1rem, env(safe-area-inset-right));
+    padding-left: max(1rem, env(safe-area-inset-left));
+  }
+
+  .public-navigation .responsive-navigation-panel > nav,
+  .workspace-navigation .responsive-navigation-panel > nav {
+    gap: 0.15rem;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .public-header .responsive-navigation-panel[data-open="true"],
+  .workspace-topbar .responsive-navigation-panel[data-open="true"] {
+    max-width: calc(100vw - 2rem);
+    border-radius: 1rem;
+  }
+}
+
+@media (max-width: 42rem) {
+  .responsive-navigation-panel[data-open="true"] {
+    max-height: calc(100dvh - 5rem);
+    padding: 0.85rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .public-navigation .responsive-navigation-panel > nav > a,
+  .workspace-navigation .responsive-navigation-panel > nav > a,
+  .featured-card,
+  .discovery-card,
+  .admin-queue-card {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .public-header,
+  .workspace-topbar,
+  .hero-search,
+  .hero-location-card,
+  .public-navigation .responsive-navigation-panel > nav,
+  .workspace-navigation .responsive-navigation-panel > nav,
+  .responsive-navigation-toggle,
+  .profile-card,
+  .responsive-navigation-panel[data-open="true"],
+  .featured-card,
+  .featured-card-body,
+  .discovery-card,
+  .discovery-card-body,
+  .dashboard-summary-card,
+  .admin-summary-card,
+  .admin-queue-card,
+  .listing-card,
+  .discovery-filters,
+  .map-filter-section,
+  .map-canvas-panel,
+  .map-results-panel,
+  .account-profile-card,
+  .account-settings-panel,
+  .auth-card,
+  .map-error-card {
+    border: 1px solid CanvasText;
+    background: Canvas;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
