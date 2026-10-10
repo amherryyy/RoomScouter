@@ -240,6 +240,7 @@ button {
   border-radius: 0.75rem;
 }
 
+.auth-card form > button.auth-resend-button { margin-top: 0; border: 1px solid #b8c6cd; color: #246b61; background: #fff; box-shadow: none; }
 .auth-card form > button {
   min-height: 3.2rem;
   margin-top: 0.65rem;

@@ -12,7 +12,7 @@ function authError(path: string, message: string): never {
 
 function getRegistrationErrorMessage(code: string | undefined): string {
   if (code === "over_email_send_rate_limit") {
-    return "The confirmation email limit has been reached. Wait before trying again.";
+    return "The verification email limit has been reached. Wait before trying again.";
   }
   if (code === "email_address_not_authorized") {
     return "Development email delivery is limited to members of this Supabase organization.";
@@ -44,7 +44,7 @@ export async function login(formData: FormData): Promise<never> {
   const supabase = await createServerSupabaseClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error?.code === "email_not_confirmed") {
-    authError("/login", "Confirm your email address before logging in.");
+    redirect(`/verify-email?email=${encodeURIComponent(email)}&message=${encodeURIComponent("Verify your email address to finish signing in.")}`);
   }
   if (error) authError("/login", "The email or password is incorrect.");
 
@@ -63,10 +63,6 @@ export async function register(formData: FormData): Promise<never> {
     authError("/register", "Complete every field and use a password with at least eight characters.");
   }
 
-  const requestHeaders = await headers();
-  const emailRedirectTo = getAuthCallbackUrl(requestHeaders.get("origin"), "/account");
-  if (!emailRedirectTo) authError("/register", "Registration could not be completed.");
-
   const supabase = await createServerSupabaseClient();
   const { error } = await supabase.auth.signUp({
     email,
@@ -79,12 +75,44 @@ export async function register(formData: FormData): Promise<never> {
         accepted_privacy_notice_version: "2026-10-09",
         accepted_at: new Date().toISOString(),
       },
-      emailRedirectTo,
     },
   });
   if (error) authError("/register", getRegistrationErrorMessage(error.code));
 
-  redirect(`/login?message=${encodeURIComponent("Check your email to confirm your account, then log in.")}`);
+  redirect(`/verify-email?email=${encodeURIComponent(email)}&message=${encodeURIComponent("We sent a verification code to your email address.")}`);
+}
+
+export async function verifySignupEmail(formData: FormData): Promise<never> {
+  const email = parseRequiredText(formData.get("email"), 254);
+  const token = parseRequiredText(formData.get("token"), 8);
+  if (!email || !email.includes("@") || !token || !/^\d{6,8}$/.test(token)) {
+    authError("/verify-email", "Enter your email address and the verification code.");
+  }
+
+  const supabase = await createServerSupabaseClient();
+  const { error } = await supabase.auth.verifyOtp({ email, token, type: "email" });
+  if (error) {
+    redirect(`/verify-email?email=${encodeURIComponent(email)}&error=${encodeURIComponent("That code is invalid or expired. Request a new code and try again.")}`);
+  }
+
+  revalidatePath("/", "layout");
+  redirect("/account");
+}
+
+export async function resendSignupVerification(formData: FormData): Promise<never> {
+  const email = parseRequiredText(formData.get("email"), 254);
+  if (!email || !email.includes("@")) authError("/verify-email", "Enter a valid email address.");
+
+  const supabase = await createServerSupabaseClient();
+  const { error } = await supabase.auth.resend({ type: "signup", email });
+  if (error) {
+    const message = error.code === "over_email_send_rate_limit"
+      ? "Please wait before requesting another verification code."
+      : "A new verification code could not be sent. Check the email address or try again later.";
+    redirect(`/verify-email?email=${encodeURIComponent(email)}&error=${encodeURIComponent(message)}`);
+  }
+
+  redirect(`/verify-email?email=${encodeURIComponent(email)}&message=${encodeURIComponent("A new verification code has been sent.")}`);
 }
 
 export async function requestPasswordReset(formData: FormData): Promise<never> {
