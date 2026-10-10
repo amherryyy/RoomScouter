@@ -68,7 +68,9 @@ test("confirms signups with email OTP and keeps a guarded PKCE callback for reco
   assert.match(callback, /value === "\/update-password"/);
   assert.match(callback, /The authentication link is invalid or has expired\./);
   assert.match(config, /enable_confirmations = true/);
-  assert.match(config, /otp_length = 8/);
+  assert.match(config, /otp_length = 6/);
+  assert.match(actions, /!\/\^\\d\{6\}\$\/\.test\(token\)/);
+  assert.match(verifyPage, /pattern="\[0-9\]\{6\}" minLength=\{6\} maxLength=\{6\}/);
   assert.match(config, /\[auth\.email\.template\.confirmation\]/);
   assert.match(config, /\[auth\.email\.template\.recovery\]/);
   assert.match(confirmationTemplate, /\{\{ \.Token \}\}/);
