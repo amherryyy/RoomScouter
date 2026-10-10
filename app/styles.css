@@ -3278,3 +3278,20 @@ fieldset {
 .responsive-navigation-toggle { gap: 0.45rem; }
 .profile-menu-chevron { width: 0.9rem; height: 0.9rem; }
 .filter-actions .button, .filter-actions button { align-items: center; gap: 0.5rem; }
+.discovery-filters .discovery-advanced-filters { grid-column: 1 / -1; display: block; }
+.discovery-advanced-filters > summary { display: flex; min-height: 2.75rem; align-items: center; gap: 0.4rem; border: 1px solid #d8e0da; border-radius: 0.55rem; padding: 0.55rem 0.8rem; color: #245f48; background: #f7faf8; font-weight: 750; cursor: pointer; }
+.discovery-advanced-filters > summary:hover { background: #edf5ef; }
+.discovery-advanced-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: 0.9rem; }
+.discovery-advanced-grid > div { display: grid; align-content: end; gap: 0.5rem; }
+.discovery-filters .filter-actions { grid-column: 1 / -1; }
+.browse-filter-panel .discovery-advanced-grid { grid-template-columns: 1fr; }
+.map-filter-section .map-filter-panel .discovery-advanced-filters { grid-column: 1 / -1; }
+
+@media (max-width: 54rem) {
+  .map-filter-section .discovery-advanced-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 42rem) {
+  .discovery-advanced-grid,
+  .map-filter-section .discovery-advanced-grid { grid-template-columns: 1fr; }
+}
