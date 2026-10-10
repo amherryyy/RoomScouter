@@ -93,8 +93,21 @@ export function InteractiveListingMap({
         || "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
       const attribution = process.env.NEXT_PUBLIC_MAP_TILE_ATTRIBUTION
         || '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>';
+      const satelliteTileUrl = process.env.NEXT_PUBLIC_MAP_SATELLITE_TILE_URL
+        || "https://wi.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
+      const satelliteAttribution = process.env.NEXT_PUBLIC_MAP_SATELLITE_ATTRIBUTION
+        || "Sources: Esri, Maxar, Earthstar Geographics, and the GIS User Community";
 
-      L.tileLayer(tileUrl, { attribution, maxZoom: 19 }).addTo(map);
+      const streetLayer = L.tileLayer(tileUrl, { attribution, maxZoom: 19 }).addTo(map);
+      const satelliteLayer = L.tileLayer(satelliteTileUrl, {
+        attribution: satelliteAttribution,
+        maxZoom: 19,
+      });
+      L.control.layers(
+        { "Street map": streetLayer, Satellite: satelliteLayer },
+        undefined,
+        { collapsed: false },
+      ).addTo(map);
       void fetch("/data/bayombong-barangays.geojson")
         .then((response) => {
           if (!response.ok) throw new Error(`Barangay boundaries request failed (${response.status})`);
@@ -105,10 +118,11 @@ export function InteractiveListingMap({
           L.geoJSON(data, {
             style: {
               color: "#246b48",
-              weight: 2,
-              opacity: 0.7,
+              weight: 1.5,
+              opacity: 0.32,
+              dashArray: "5 7",
               fillColor: "#246b48",
-              fillOpacity: 0.04,
+              fillOpacity: 0.01,
             },
             onEachFeature: (feature, layer) => {
               const barangayName = feature.properties?.brgy_name;
@@ -230,9 +244,7 @@ export function InteractiveListingMap({
             <span>Listings will appear here after the university location is configured.</span>
           </div>
         )}
-        <p className="map-attribution-note">
-          Map data © OpenStreetMap contributors · <a href="https://www.openstreetmap.org/fixthemap" target="_blank" rel="noreferrer">Report a map issue</a>
-        </p>
+        <p className="map-attribution-note">Barangay boundaries: Philippine Statistics Authority (PSA), via GeoRisk.</p>
         <p className="visually-hidden" aria-live="polite">
           {selectedId ? `Selected ${listings.find((listing) => listing.id === selectedId)?.title ?? "listing"} on map.` : "Select a listing marker or result to see it on the map."}
         </p>

@@ -3153,6 +3153,9 @@ fieldset {
 .map-price-marker-active .map-price-pin, .map-price-marker-active .map-price-pin::after { color: #173956; background: #fff; }
 .map-price-marker:focus-visible .map-price-pin { outline: 3px solid #173956; outline-offset: 3px; }
 .map-canvas .leaflet-control-zoom a { width: 2.75rem; height: 2.75rem; line-height: 2.65rem; font-size: 1.35rem; }
+.map-canvas .leaflet-control-layers-expanded { padding: 0.25rem 0.6rem; }
+.map-canvas .leaflet-control-layers label { display: flex; min-height: 2.75rem; align-items: center; gap: 0.55rem; color: #173956; font-size: 0.84rem; font-weight: 650; }
+.map-canvas .leaflet-control-layers input { width: 1.125rem; height: 1.125rem; margin: 0; accent-color: #246b48; }
 .map-popup-content { display: grid; gap: 0.3rem; min-width: 10rem; max-width: 16rem; color: #526578; font-family: inherit; font-size: 0.86rem; }
 .map-popup-content strong { color: #173956; font-size: 1rem; }
 .map-popup-content a { margin-top: 0.2rem; color: #245f91; font-weight: 750; }
