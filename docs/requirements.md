@@ -59,3 +59,7 @@ draft -> pending -> approved
 8. **Pilot hardening:** responsive and accessibility review, realistic seed data, end-to-end tests, deployment rehearsal, and demonstration script.
 
 Each milestone must keep tests, type-checking, linting, the production build, and Flower validation passing.
+
+## Security and validation policy
+
+See [Errors and Restrictions Policy](error-and-restriction-policy.md) for the consolidated role permissions, input limits, error behavior, and open product decisions.
