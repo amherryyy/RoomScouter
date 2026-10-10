@@ -3880,6 +3880,16 @@ html[data-theme="dark"] .map-canvas.is-satellite-view .leaflet-tooltip.barangay-
 html[data-theme="dark"] :is(.status-approved, .status-resolved, .status-published) { color: #b6e4c6; background: #1d3829; }
 html[data-theme="dark"] :is(.status-archived, .status-hidden, .status-dismissed, .status-rejected) { color: #f0b9b2; background: #402824; }
 html[data-theme="dark"] :is(.status-pending, .status-open) { color: #f1d28a; background: #3b321b; }
+html[data-theme="dark"] .availability-badge {
+  border: 1px solid #41674e;
+  color: #c6e8cf;
+  background: #294536;
+}
+html[data-theme="dark"] :is(.fact-row span, .tag-list li) {
+  border: 1px solid #435e4b;
+  color: #d5e7da;
+  background: #2b4032;
+}
 html[data-theme="dark"] .notice.error { border-color: #75433d; color: #ffc2ba; background: #382320; }
 html[data-theme="dark"] .notice.success { border-color: #396448; color: #bce5c8; background: #203629; }
 html[data-theme="dark"] :is(.public-wordmark-logo, .workspace-topbar-logo, .auth-logo-image) { filter: brightness(0) invert(1); }
