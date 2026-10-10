@@ -28,8 +28,8 @@ export default async function VerifyEmailPage({ searchParams }: VerifyEmailPageP
         <label htmlFor="verification-email">Email address</label>
         <input id="verification-email" name="email" type="email" autoComplete="email" maxLength={254} defaultValue={defaultEmail} required />
         <label htmlFor="verification-token">Verification code</label>
-        <input id="verification-token" name="token" type="text" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6,8}" minLength={6} maxLength={8} aria-describedby="verification-help" required />
-        <p className="field-help" id="verification-help">The code expires after a limited time. You can request a new one below.</p>
+        <input id="verification-token" name="token" type="text" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" minLength={6} maxLength={6} aria-describedby="verification-help" required />
+        <p className="field-help" id="verification-help">Enter the 6-digit code. It expires after a limited time; you can request a new one below.</p>
         <SubmitButton pendingLabel="Verifying…">Verify email</SubmitButton>
         <SubmitButton formAction={resendSignupVerification} pendingLabel="Sending…" className="auth-resend-button">Resend code</SubmitButton>
       </form>
