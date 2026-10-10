@@ -1,17 +1,26 @@
 import type { NextConfig } from "next";
 
-const configuredMapTileUrl = process.env.NEXT_PUBLIC_MAP_TILE_URL?.trim();
-const mapTileImageSource = (() => {
-  if (!configuredMapTileUrl) return "https://tile.openstreetmap.org";
-  const subdomainHost = configuredMapTileUrl.match(/^https:\/\/\{[^}]+\}\.([^/?#]+)/)?.[1];
-  if (subdomainHost) return `https://*.${subdomainHost}`;
+function mapTileImageSource(configuredTileUrl: string | undefined, fallback: string) {
+  const tileUrl = configuredTileUrl?.trim();
+  if (!tileUrl) return fallback;
+  const subdomainHost = tileUrl.match(/^https:\/\/\{[^}]+\}\.([^/?#]+)/)?.[1];
+  if (subdomainHost) return "https://*." + subdomainHost;
   try {
-    const url = new URL(configuredMapTileUrl.replace(/\{[^}]+\}/g, "0"));
-    return url.protocol === "https:" ? url.origin : "https://tile.openstreetmap.org";
+    const url = new URL(tileUrl.replace(/\{[^}]+\}/g, "0"));
+    return url.protocol === "https:" ? url.origin : fallback;
   } catch {
-    return "https://tile.openstreetmap.org";
+    return fallback;
   }
-})();
+}
+
+const streetTileImageSource = mapTileImageSource(
+  process.env.NEXT_PUBLIC_MAP_TILE_URL,
+  "https://tile.openstreetmap.org",
+);
+const satelliteTileImageSource = mapTileImageSource(
+  process.env.NEXT_PUBLIC_MAP_SATELLITE_TILE_URL,
+  "https://server.arcgisonline.com",
+);
 
 const contentSecurityPolicy = [
   "default-src 'self'",
@@ -19,9 +28,11 @@ const contentSecurityPolicy = [
   "frame-ancestors 'none'",
   "object-src 'none'",
   "form-action 'self'",
-  `img-src 'self' data: blob: https://*.supabase.co ${mapTileImageSource}`,
+  "img-src 'self' data: blob: https://*.supabase.co " +
+    streetTileImageSource + " " +
+    satelliteTileImageSource,
   "font-src 'self' data:",
-  `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""}`,
+  "script-src 'self' 'unsafe-inline'" + (process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""),
   "style-src 'self' 'unsafe-inline'",
   "connect-src 'self' https://*.supabase.co wss://*.supabase.co"
 ].join("; ");
