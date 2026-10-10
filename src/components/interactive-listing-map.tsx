@@ -95,6 +95,32 @@ export function InteractiveListingMap({
         || '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>';
 
       L.tileLayer(tileUrl, { attribution, maxZoom: 19 }).addTo(map);
+      void fetch("/data/bayombong-barangays.geojson")
+        .then((response) => {
+          if (!response.ok) throw new Error(`Barangay boundaries request failed (${response.status})`);
+          return response.json();
+        })
+        .then((data) => {
+          if (cancelled) return;
+          L.geoJSON(data, {
+            style: {
+              color: "#246b48",
+              weight: 2,
+              opacity: 0.7,
+              fillColor: "#246b48",
+              fillOpacity: 0.04,
+            },
+            onEachFeature: (feature, layer) => {
+              const barangayName = feature.properties?.brgy_name;
+              if (typeof barangayName === "string" && barangayName.trim()) {
+                layer.bindTooltip(barangayName, { direction: "center" });
+              }
+            },
+          }).addTo(map);
+        })
+        .catch((error: unknown) => {
+          if (!cancelled) console.error("Failed to load Bayombong barangay boundaries.", error);
+        });
       if (university) {
         L.circleMarker([university.latitude, university.longitude], {
           radius: 8,
