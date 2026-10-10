@@ -98,17 +98,15 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
           </div>
           {results.length ? <div className="featured-grid">
             {results.slice(0, 3).map((listing) => (
-              <article className="featured-card" key={listing.id}>
-                <Link className="featured-cover-link" href={`/listings/${listing.id}`} aria-label={`View ${listing.title}`}>
-                  {listing.cover ? <img className="featured-cover" src={listing.cover.signedUrl} alt={listing.cover.altText} /> : <span className="featured-cover featured-cover-empty"><img src="/roomscouter-icon.png" width="1141" height="1379" alt="" /><span>Photos coming soon</span></span>}
-                </Link>
+              <Link className="featured-card" href={`/listings/${listing.id}`} aria-label={`View property details for ${listing.title}`} key={listing.id}>
+                {listing.cover ? <img className="featured-cover" src={listing.cover.signedUrl} alt={listing.cover.altText} /> : <span className="featured-cover featured-cover-empty"><img src="/roomscouter-icon.png" width="1141" height="1379" alt="" /><span>Photos coming soon</span></span>}
                 <div className="featured-card-body">
                   <p className="featured-location">{listing.barangay ? `${listing.barangay} · ` : ""}{listing.address_line}</p>
-                  <h3><Link href={`/listings/${listing.id}`}>{listing.title}</Link></h3>
+                  <h3>{listing.title}</h3>
                   <p className="featured-location">{ROOM_TYPE_LABELS[listing.room_type]} · {listing.available_rooms} available</p>
                   <p className="listing-price"><strong>{currency.format(listing.monthly_rent)}</strong> <span>per month</span></p>
                 </div>
-              </article>
+              </Link>
             ))}
           </div> : <div className="empty-state"><h3>No available homes yet</h3><p>Check back soon, or browse again when more local listings are approved.</p></div>}
         </section>
@@ -150,13 +148,13 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
       {results.length ? (
         <div className="discovery-grid">
           {results.map((listing) => (
-            <article className="discovery-card" key={listing.id}>
+            <Link className="discovery-card" href={`/listings/${listing.id}`} aria-label={`View property details for ${listing.title}`} key={listing.id}>
               {listing.cover ? (
                 <img className="listing-cover" src={listing.cover.signedUrl} alt={listing.cover.altText} />
               ) : <div className="listing-cover cover-placeholder"><img src="/roomscouter-icon.png" width="1141" height="1379" alt="" /><span>Photo coming soon</span></div>}
               <div className="discovery-card-body">
                 <div className="listing-card-heading">
-                  <h3><Link href={`/listings/${listing.id}`}>{listing.title}</Link></h3>
+                  <h3>{listing.title}</h3>
                   <span className="availability-badge">Available</span>
                 </div>
                 <p className="listing-address">{listing.barangay ? `${listing.barangay} · ` : ""}{listing.address_line}</p>
@@ -166,9 +164,9 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
                   <span>{listing.available_rooms} available</span>
                   {listing.approximate_distance_km !== null ? <span>About {listing.approximate_distance_km} km</span> : null}
                 </div>
-                <Link className="card-detail-link" href={`/listings/${listing.id}`}>View listing details <span aria-hidden="true">→</span></Link>
+                <span className="card-detail-link" aria-hidden="true">View listing details <span aria-hidden="true">→</span></span>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       ) : (
