@@ -54,7 +54,7 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
           <p className="eyebrow">Student housing near NVSU</p>
           <h1>Find your perfect boarding house.</h1>
           <p className="lede">Explore approved rooms around NVSU with clear details on rent, availability, amenities, and distance.</p>
-          <Link className="button home-get-started" href="/register"><UiIcon className="ui-icon" name="user-round-plus" /><span>Get started</span></Link>
+          <Link className="button home-get-started" href="/register"><span>Get started</span><UiIcon className="ui-icon" name="arrow-right" /></Link>
           <Form className="hero-search" action={searchPath}>
             <label className="visually-hidden" htmlFor="hero-query">Search listings near the university</label>
             <input
