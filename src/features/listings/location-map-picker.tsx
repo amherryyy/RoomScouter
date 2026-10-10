@@ -96,6 +96,7 @@ export function LocationMapPicker({
     <div className="location-picker">
       <div
         aria-label="Map. Tap or click to place the property pin, then drag it to adjust."
+        aria-describedby="map-help"
         aria-busy={!mapReady && !mapError ? "true" : undefined}
         className="location-picker-map"
         ref={containerRef}
