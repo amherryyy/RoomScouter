@@ -3853,7 +3853,10 @@ html[data-theme="dark"] :is(.profile-menu > summary:hover, .profile-menu[open] >
 }
 html[data-theme="dark"] :is(.profile-card-links a:hover, .mobile-navigation-account > a:hover, .mobile-navigation-project > a:hover, .map-canvas-expand:hover, .account-profile-card .account-action-card:hover) { background-color: var(--rs-surface-3); }
 html[data-theme="dark"] :is(.profile-card-email, .mobile-navigation-profile, .mobile-navigation-account, .mobile-navigation-project, .account-summary, .account-action-grid, .account-action-card) { border-color: var(--rs-border); }
-html[data-theme="dark"] :is(.skeleton-media, .skeleton-avatar) { background: linear-gradient(90deg, #26352d 25%, #304138 50%, #26352d 75%); }
+html[data-theme="dark"] :is(.skeleton-line, .skeleton-input, .skeleton-panel, .skeleton-media, .skeleton-avatar) {
+  border-color: #4a6251;
+  background-image: linear-gradient(90deg, #293b30 25%, #3a5142 50%, #293b30 75%);
+}
 html[data-theme="dark"] .danger-button { border-color: #9a5b55; color: #f1b5af; background: #2c1c1a; }
 html[data-theme="dark"] .policy-draft-notice { border-left-color: #d8a94f; color: #f0d89e; background: #342c1b; }
 html[data-theme="dark"] .mobile-navigation-project p { color: #aebbb4; }
