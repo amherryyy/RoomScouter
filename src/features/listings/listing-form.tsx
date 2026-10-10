@@ -89,7 +89,7 @@ export function ListingForm({ action, listing, submitLabel }: ListingFormProps) 
         <p className="field-help" id="contact-help">Provide at least one contact method. It becomes public only with an approved listing.</p>
       </fieldset>
 
-      <fieldset>
+      <fieldset aria-describedby="map-help">
         <legend>Property location</legend>
         <p className="field-help" id="map-help">Find your property on the map, then tap its location. Drag the pin if it needs adjusting.</p>
         <LocationMapPicker
