@@ -123,7 +123,7 @@ export default async function PublicListingPage({ params, searchParams }: Public
       <PublicHeader current="browse" />
 
       <nav className="detail-breadcrumb" aria-label="Breadcrumb">
-        <Link href="/#browse">Browse listings</Link>
+        <Link href="/browse">Browse listings</Link>
         <span aria-hidden="true">/</span>
         <span aria-current="page">Property details</span>
       </nav>
