@@ -53,7 +53,7 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
           <p className="eyebrow">Student housing near NVSU</p>
           <h1>Find your perfect boarding house.</h1>
           <p className="lede">Explore approved rooms around NVSU with clear details on rent, availability, amenities, and distance.</p>
-          <Form className="hero-search home-hero-search" action={searchPath}>
+          <Form className="hero-search" action={searchPath}>
             <label className="visually-hidden" htmlFor="hero-query">Search listings near the university</label>
             <input
               id="hero-query"
@@ -63,8 +63,8 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
               placeholder="Search a property, street, or area"
             />
             <SubmitButton pendingLabel="Searching…">Find a room</SubmitButton>
-            <Link className="button secondary home-get-started" href="/register"><UiIcon className="ui-icon" name="user-plus" /><span>Get started</span></Link>
           </Form>
+          <Link className="button secondary home-get-started" href="/register"><UiIcon className="ui-icon" name="user-plus" /><span>Get started</span></Link>
           <div className="quick-searches" aria-label="Quick searches">
             <span>Popular:</span>
             <Link href="/browse?maximumRent=5000">Up to ₱5,000</Link>
@@ -193,11 +193,12 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
           <div>
             <p className="eyebrow">Built for the NVSU community</p>
             <h2 id="developers-title">About the developers</h2>
-            <p>RoomScouter is a community-focused project. Need help or spotted an issue? Send a message to the developers.</p>
-            <p className="home-developer-privacy">Messages open as public GitHub issues. Leave out passwords, account details, and private rental information.</p>
+            <p>Find the developer contact channels on our About page, or send a problem report through the website.</p>
+            <p className="home-developer-privacy">Problem reports become public GitHub issues. Leave out passwords, account details, and private rental information.</p>
           </div>
           <div className="home-developer-actions">
-            <Link className="button" href="/contact?type=contact"><UiIcon className="ui-icon" name="mail" /> Contact developers</Link>
+            <Link className="button" href="/about#contact"><UiIcon className="ui-icon" name="mail" /> Contact developers</Link>
+            <Link className="button secondary" href="/report-problem"><UiIcon className="ui-icon" name="reports" /> Report a problem</Link>
             <a className="button secondary" href="https://github.com/amherryyy/RoomScouter"><UiIcon className="ui-icon" name="github" /> View on GitHub</a>
           </div>
         </section>

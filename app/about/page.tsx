@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PublicHeader } from "../../src/components/public-header";
+import { UiIcon } from "../../src/components/ui-icon";
 
 export const metadata: Metadata = {
   title: "About | RoomScouter",
@@ -47,15 +48,38 @@ export default function AboutPage() {
         <Link className="button" href="/browse">Start browsing</Link>
       </section>
 
-      <section className="about-help" id="help" aria-labelledby="help-title">
-        <p className="eyebrow">Help &amp; feedback</p>
-        <h2 id="help-title">Need help or found a problem?</h2>
-        <p>Contact the developers or report an issue through GitHub. Reports are public, so do not include personal, account, or rental details.</p>
-        <div className="home-developer-actions">
-          <Link className="button" href="/contact?type=contact">Contact developers</Link>
-          <Link className="button secondary" href="/contact?type=problem">Report a problem</Link>
-        </div>
-      </section>
+      <div className="about-resource-grid">
+        <section className="about-resource-card" id="contact" aria-labelledby="contact-title">
+          <UiIcon className="ui-icon about-resource-icon" name="mail" />
+          <p className="eyebrow">Contact</p>
+          <h2 id="contact-title">Contact the developers</h2>
+          <p>GitHub is the project’s published contact channel. An official developer email or other social account has not been published yet.</p>
+          <div className="about-resource-links">
+            <a href="https://github.com/amherryyy"><UiIcon className="ui-icon" name="github" /> Developer profile</a>
+            <a href="https://github.com/amherryyy/RoomScouter"><UiIcon className="ui-icon" name="github" /> Project on GitHub</a>
+          </div>
+        </section>
+
+        <section className="about-resource-card" id="help" aria-labelledby="help-title">
+          <UiIcon className="ui-icon about-resource-icon" name="help" />
+          <p className="eyebrow">Help</p>
+          <h2 id="help-title">Guides and FAQs are coming</h2>
+          <p>This is where RoomScouter tutorials and answers to common questions will live. For now, report a problem and review your message before submitting it to GitHub.</p>
+          <div className="about-resource-links">
+            <Link href="/report-problem"><UiIcon className="ui-icon" name="reports" /> Report a problem</Link>
+          </div>
+        </section>
+
+        <section className="about-resource-card" id="license" aria-labelledby="license-title">
+          <UiIcon className="ui-icon about-resource-icon" name="license" />
+          <p className="eyebrow">Open source</p>
+          <h2 id="license-title">MIT License</h2>
+          <p>The MIT License permits use, copying, modification, distribution, sublicensing, and sale, subject to its terms and copyright notice.</p>
+          <div className="about-resource-links">
+            <a href="https://github.com/amherryyy/RoomScouter/blob/main/LICENSE"><UiIcon className="ui-icon" name="license" /> Read the full license</a>
+          </div>
+        </section>
+      </div>
     </main>
   );
 }
