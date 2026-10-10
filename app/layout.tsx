@@ -25,8 +25,8 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
             <nav aria-label="Help and feedback">
               <strong>Help &amp; feedback</strong>
               <Link href="/about#help">Help</Link>
-              <a href="https://github.com/amherryyy/RoomScouter/issues">Contact developers</a>
-              <a href="https://github.com/amherryyy/RoomScouter/issues/new">Report a problem</a>
+              <Link href="/contact?type=contact">Contact developers</Link>
+              <Link href="/contact?type=problem">Report a problem</Link>
             </nav>
             <nav aria-label="Project">
               <strong>Project</strong>

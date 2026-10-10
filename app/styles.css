@@ -2288,6 +2288,45 @@ fieldset {
   }
 }
 
+/* Final overrides for the homepage search and public feedback flow. */
+.discovery-shell .discovery-hero-copy { text-align: center; }
+.discovery-shell .discovery-hero-copy > .eyebrow,
+.discovery-shell .discovery-hero-copy > h1,
+.discovery-shell .discovery-hero-copy > .lede { margin-right: auto; margin-left: auto; }
+.discovery-shell .discovery-hero-copy > h1 { text-wrap: balance; }
+.discovery-shell .discovery-hero-copy > .lede { max-width: 38rem; }
+.discovery-shell .discovery-hero-copy > .quick-searches { justify-content: center; }
+.discovery-shell .discovery-hero .home-hero-search { grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; }
+.discovery-shell .discovery-hero .home-hero-search > input { grid-column: 1; }
+.discovery-shell .discovery-hero .home-hero-search > button,
+.discovery-shell .discovery-hero .home-hero-search > .home-get-started { min-width: 7.7rem; min-height: 2.8rem; margin: 0; }
+.discovery-shell .discovery-hero .home-hero-search > .home-get-started { display: inline-flex; align-items: center; gap: 0.4rem; border-radius: 0.55rem; padding: 0.65rem 0.85rem; color: #246b48; background: #edf5ef; font-weight: 750; text-decoration: none; }
+.discovery-shell .discovery-hero .home-hero-search > .home-get-started:hover { background: #dcebe0; }
+.home-get-started .ui-icon { width: 1.1rem; height: 1.1rem; }
+.discovery-shell .browse-page-hero { text-align: center; }
+.discovery-shell .browse-page-hero h1,
+.discovery-shell .browse-page-hero > p:not(.eyebrow) { margin-right: auto; margin-left: auto; }
+.discovery-shell .browse-page-hero > p:not(.eyebrow) { max-width: 48rem; }
+.discovery-shell .browse-page-hero .hero-search { margin-right: auto; margin-left: auto; text-align: left; }
+.preview-page > .preview-hero { text-align: center; }
+.preview-page > .preview-hero h1,
+.preview-page > .preview-hero .lede { margin-right: auto; margin-left: auto; }
+.preview-page > .preview-hero .lede { max-width: 52rem; }
+.responsive-navigation .responsive-navigation-panel[data-open="true"] { background: rgb(242 249 244 / 97%); }
+
+@media (max-width: 54rem) {
+  .discovery-shell .discovery-hero .home-hero-search { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .discovery-shell .discovery-hero .home-hero-search > input { grid-column: 1 / -1; }
+  .discovery-shell .discovery-hero .home-hero-search > button,
+  .discovery-shell .discovery-hero .home-hero-search > .home-get-started { width: 100%; min-width: 0; }
+}
+
+@media (max-width: 42rem) {
+  .contact-page-hero, .developer-feedback-form, .contact-back-link { width: calc(100% - 2rem); }
+  .contact-page-hero { margin-top: 2rem; }
+  .developer-feedback-submit { width: 100%; }
+}
+
 /* Teammate UI handoff: RoomScouter layout, existing blue and green identity. */
 .discovery-shell {
   width: 100%;
@@ -3112,6 +3151,7 @@ fieldset {
 .site-footer nav strong { color: var(--rs-ink, #173956); font-size: 0.85rem; }
 .site-footer a { color: var(--rs-ink, #173956); font-weight: 650; text-underline-offset: 0.2em; }
 .home-developer-note, .about-help { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; width: min(76rem, calc(100% - 4rem)); margin: 0 auto 3rem; border: 1px solid rgb(255 255 255 / 90%); border-radius: 1.1rem; padding: clamp(1.2rem, 3vw, 2rem); background: rgb(247 251 247 / 78%); box-shadow: 0 0.8rem 1.8rem rgb(24 58 43 / 8%), inset 0 1px 0 #fff; }
+.home-developer-note { position: relative; clear: both; margin-top: clamp(3rem, 6vw, 5rem); }
 .home-developer-note h2, .about-help h2 { margin: 0.25rem 0 0.55rem; color: var(--rs-ink, #173956); font-size: clamp(1.35rem, 2.5vw, 1.8rem); }
 .home-developer-note p:not(.eyebrow), .about-help p:not(.eyebrow) { max-width: 58ch; margin: 0; color: #526158; line-height: 1.6; }
 .home-developer-note .home-developer-privacy { margin-top: 0.35rem !important; font-size: 0.82rem; }
@@ -3119,6 +3159,19 @@ fieldset {
 .home-developer-actions .button { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; white-space: nowrap; }
 .about-help { display: block; scroll-margin-top: 6rem; }
 .about-help .home-developer-actions { margin-top: 1rem; }
+.contact-page-hero { width: min(100% - 3rem, 52rem); margin: clamp(2.5rem, 6vw, 4rem) auto 1.5rem; text-align: center; }
+.contact-page-hero h1 { max-width: 18ch; margin: 0.65rem auto 0.8rem; color: var(--rs-ink, #173956); font-size: clamp(2.25rem, 5vw, 3.4rem); line-height: 1.05; text-wrap: balance; }
+.contact-page-hero .lede { max-width: 44rem; margin: 0 auto; }
+.developer-feedback-form { display: grid; gap: 0.65rem; width: min(100% - 3rem, 46rem); margin: 0 auto; border: 1px solid rgb(255 255 255 / 92%); border-radius: 1rem; padding: clamp(1.2rem, 4vw, 2rem); background: rgb(247 251 247 / 90%); box-shadow: 0 0.8rem 2rem rgb(24 58 43 / 9%), inset 0 1px 0 #fff; }
+.developer-feedback-form label { margin-top: 0.3rem; color: var(--rs-ink, #173956); font-size: 0.92rem; font-weight: 750; }
+.developer-feedback-form select, .developer-feedback-form input, .developer-feedback-form textarea { width: 100%; border-color: #c8d5cc; border-radius: 0.6rem; background: rgb(255 255 255 / 94%); }
+.developer-feedback-form textarea { min-height: 10rem; resize: vertical; }
+.developer-feedback-submit { display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem; justify-self: start; min-height: 3rem; margin-top: 0.4rem; }
+.developer-feedback-submit .ui-icon { width: 1.15rem; height: 1.15rem; }
+.developer-feedback-note { margin: 0; color: #526158; font-size: 0.84rem; line-height: 1.55; }
+.developer-feedback-error { margin: 0; color: #8b2f27; font-size: 0.9rem; font-weight: 700; }
+.contact-back-link { width: min(100% - 3rem, 46rem); margin: 1rem auto 3rem; }
+.contact-back-link a { color: var(--rs-blue, #245f91); font-weight: 700; }
 .policy-page { max-width: 82rem; padding-top: 2rem; padding-bottom: 4rem; }
 .policy-heading, .policy-content { width: min(100%, 70rem); margin-right: auto; margin-left: auto; }
 .policy-heading { margin-top: 3rem; margin-bottom: 2rem; }
@@ -3140,6 +3193,7 @@ fieldset {
   .site-footer-links { width: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem 0.8rem; }
   .site-footer nav { gap: 0.65rem; }
   .home-developer-note, .about-help { align-items: flex-start; flex-direction: column; width: calc(100% - 2rem); margin-bottom: 2rem; }
+  .home-developer-note { margin-top: 3rem; }
   .home-developer-actions { width: 100%; }
   .home-developer-actions .button { flex: 1 1 10rem; }
   .policy-page { padding-top: 1rem; }
