@@ -25,13 +25,13 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
             <nav aria-label="Help and feedback">
               <strong>Help &amp; feedback</strong>
               <Link href="/about#help">Help</Link>
-              <Link href="/contact?type=contact">Contact developers</Link>
-              <Link href="/contact?type=problem">Report a problem</Link>
+              <Link href="/about#contact">Contact developers</Link>
+              <Link href="/report-problem">Report a problem</Link>
             </nav>
             <nav aria-label="Project">
               <strong>Project</strong>
               <a href="https://github.com/amherryyy/RoomScouter">View on GitHub</a>
-              <a href="https://github.com/amherryyy/RoomScouter/blob/main/LICENSE">MIT License</a>
+              <Link href="/about#license">MIT License</Link>
             </nav>
             <nav aria-label="Policies">
               <strong>Policies</strong>

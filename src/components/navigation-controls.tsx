@@ -96,11 +96,11 @@ export function ResponsiveNavigation({
         <section className="mobile-navigation-project" aria-label="Help and project links">
           <h2>Help &amp; project</h2>
           <Link href="/about#help"><UiIcon className="ui-icon" name="help" /><span>Help</span></Link>
-          <Link href="/contact?type=contact"><UiIcon className="ui-icon" name="mail" /><span>Contact developers</span></Link>
-          <Link href="/contact?type=problem"><UiIcon className="ui-icon" name="reports" /><span>Report a problem</span></Link>
+          <Link href="/about#contact"><UiIcon className="ui-icon" name="mail" /><span>Contact developers</span></Link>
+          <Link href="/report-problem"><UiIcon className="ui-icon" name="reports" /><span>Report a problem</span></Link>
           <a href="https://github.com/amherryyy/RoomScouter"><UiIcon className="ui-icon" name="github" /><span>View on GitHub</span></a>
-          <a href="https://github.com/amherryyy/RoomScouter/blob/main/LICENSE"><UiIcon className="ui-icon" name="license" /><span>MIT License</span></a>
-          <p>Messages become public when submitted on GitHub. Leave out personal, account, or rental details.</p>
+          <Link href="/about#license"><UiIcon className="ui-icon" name="license" /><span>MIT License</span></Link>
+          <p>Problem reports become public when submitted on GitHub. Leave out personal, account, or rental details.</p>
         </section>
       </div>
     </div>
