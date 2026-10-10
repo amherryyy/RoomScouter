@@ -33,6 +33,10 @@ export async function PublicHeader({ current }: PublicHeaderProps) {
   const mobileAccount = user ? (
     <>
       <Link href="/account">My account</Link>
+      {profile?.role === "student" ? <>
+        <Link href="/favorites">My favorites</Link>
+        <Link href="/reports">My reports</Link>
+      </> : null}
       {profile?.role && profile.role !== "student" ? (
         <Link href={dashboardPaths[profile.role]}>Open dashboard</Link>
       ) : null}
@@ -83,6 +87,10 @@ export async function PublicHeader({ current }: PublicHeaderProps) {
                 {user.email ? <p className="profile-card-email">{user.email}</p> : null}
                 <div className="profile-card-links">
                   <Link href="/account">My account</Link>
+                  {profile?.role === "student" ? <>
+                    <Link href="/favorites">My favorites</Link>
+                    <Link href="/reports">My reports</Link>
+                  </> : null}
                   {profile?.role && profile.role !== "student" ? (
                     <Link href={dashboardPaths[profile.role]}>Open dashboard</Link>
                   ) : null}
