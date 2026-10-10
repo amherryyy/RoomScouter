@@ -3176,6 +3176,10 @@ fieldset {
 .map-canvas-unavailable strong { color: #173956; }
 .map-attribution-note { margin: 0.6rem 0 0; color: #5b6e78; font-size: 0.8rem; }
 .map-attribution-note a { color: #245f91; }
+.leaflet-div-icon.university-map-marker-icon { border: 0; background: transparent; }
+.university-map-marker { display: inline-flex; width: max-content; align-items: center; gap: 0.42rem; transform: translateY(-50%); pointer-events: none; }
+.university-map-dot { position: relative; flex: 0 0 auto; width: 1.15rem; height: 1.15rem; border: 3px solid #fff; border-radius: 50%; background: #d28a18; box-shadow: 0 0 0 4px rgb(210 138 24 / 24%), 0 2px 8px rgb(18 41 31 / 35%); }
+.university-map-label { border: 1px solid rgb(23 57 86 / 12%); border-radius: 999px; padding: 0.36rem 0.62rem; color: #173956; background: rgb(255 255 255 / 97%); box-shadow: 0 0.2rem 0.65rem rgb(18 41 31 / 24%); font-family: inherit; font-size: 0.78rem; font-weight: 850; line-height: 1; white-space: nowrap; }
 .leaflet-div-icon.map-price-marker { border: 0; background: transparent; }
 .map-price-pin { position: relative; display: inline-flex; min-width: 4.3rem; height: 2rem; align-items: center; justify-content: center; border: 2px solid #fff; border-radius: 999px; padding: 0 0.6rem; color: #fff; background: #246b48; box-shadow: 0 0.2rem 0.65rem rgb(18 41 31 / 28%); font-family: inherit; font-size: 0.76rem; font-weight: 800; white-space: nowrap; transition: background-color 150ms ease, color 150ms ease, transform 150ms ease; }
 .map-price-pin::after { position: absolute; bottom: -0.36rem; left: calc(50% - 0.33rem); width: 0.55rem; height: 0.55rem; border-right: 2px solid #fff; border-bottom: 2px solid #fff; background: #246b48; content: ""; transform: rotate(45deg); }

@@ -146,14 +146,24 @@ export function InteractiveListingMap({
           if (!cancelled) console.error("Failed to load Bayombong barangay boundaries.", error);
         });
       if (university) {
-        L.circleMarker([university.latitude, university.longitude], {
-          radius: 8,
-          color: "#fff",
-          weight: 3,
-          fillColor: "#246b48",
-          fillOpacity: 1,
-        })
-          .addTo(map);
+        const campusMarker = document.createElement("span");
+        campusMarker.className = "university-map-marker";
+        campusMarker.setAttribute("aria-hidden", "true");
+        const campusDot = document.createElement("span");
+        campusDot.className = "university-map-dot";
+        const campusLabel = document.createElement("span");
+        campusLabel.className = "university-map-label";
+        campusLabel.textContent = university.name;
+        campusMarker.append(campusDot, campusLabel);
+        L.marker([university.latitude, university.longitude], {
+          alt: `${university.name} campus`,
+          title: `${university.name} campus`,
+          icon: L.divIcon({
+            className: "university-map-marker-icon",
+            html: campusMarker,
+            iconAnchor: [10, 16],
+          }),
+        }).addTo(map);
       }
 
       mapRef.current = map;
