@@ -84,6 +84,7 @@ export type Database = {
         Row: {
           address_line: string
           available_rooms: number
+          barangay: string | null
           contact_email: string | null
           contact_name: string
           contact_phone: string | null
@@ -106,6 +107,7 @@ export type Database = {
         Insert: {
           address_line: string
           available_rooms: number
+          barangay?: string | null
           contact_email?: string | null
           contact_name: string
           contact_phone?: string | null
@@ -128,6 +130,7 @@ export type Database = {
         Update: {
           address_line?: string
           available_rooms?: number
+          barangay?: string | null
           contact_email?: string | null
           contact_name?: string
           contact_phone?: string | null
@@ -652,6 +655,7 @@ export type Database = {
         Returns: {
           address_line: string
           available_rooms: number
+          barangay: string | null
           contact_email: string | null
           contact_name: string
           contact_phone: string | null
@@ -764,6 +768,7 @@ export type Database = {
           page_offset?: number
           page_size?: number
           search_text?: string
+          selected_barangay?: string
           selected_facility_id?: number
           selected_room_type?: Database["public"]["Enums"]["room_type"]
           selected_utility_id?: number
@@ -774,6 +779,7 @@ export type Database = {
           address_line: string
           approximate_distance_km: number
           available_rooms: number
+          barangay: string | null
           description: string
           id: string
           latitude: number
@@ -784,11 +790,16 @@ export type Database = {
           total_count: number
         }[]
       }
+      list_public_barangays: {
+        Args: never
+        Returns: { barangay: string }[]
+      }
       submit_boarding_house: {
         Args: { target_id: string }
         Returns: {
           address_line: string
           available_rooms: number
+          barangay: string | null
           contact_email: string | null
           contact_name: string
           contact_phone: string | null

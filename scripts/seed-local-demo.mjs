@@ -137,7 +137,7 @@ async function insertDemoRows(client, users) {
     {
       id: demoListingIds[0], owner_id: users.owner.id, title: "Campus Gate Residences",
       description: "A quiet demo residence near the NVSU Bayombong campus with shared study space, secure entry, and furnished bedspaces for students.",
-      address_line: "Quezon Street demo location, Bayombong, Nueva Vizcaya", monthly_rent: 3500,
+      address_line: "Quezon Street demo location, Bayombong, Nueva Vizcaya", barangay: "Sample North", monthly_rent: 3500,
       room_type: "bedspace", available_rooms: 4, contact_name: "Lina Santos",
       contact_phone: "+63 917 555 0101", contact_email: "owner@roomscouter.example.test",
       latitude: 16.480520, longitude: 121.144080, status: "approved", submitted_at: submittedAt,
@@ -146,7 +146,7 @@ async function insertDemoRows(client, users) {
     {
       id: demoListingIds[1], owner_id: users.owner.id, title: "Magat View Student Homes",
       description: "A fictional pilot listing with private rooms, a shared kitchen, reliable internet, and a calm study-friendly environment.",
-      address_line: "National Road demo location, Bayombong, Nueva Vizcaya", monthly_rent: 5200,
+      address_line: "National Road demo location, Bayombong, Nueva Vizcaya", barangay: "Sample East", monthly_rent: 5200,
       room_type: "private_room", available_rooms: 2, contact_name: "Lina Santos",
       contact_phone: "+63 917 555 0101", contact_email: "owner@roomscouter.example.test",
       latitude: 16.475900, longitude: 121.141100, status: "approved", submitted_at: submittedAt,
@@ -155,7 +155,7 @@ async function insertDemoRows(client, users) {
     {
       id: demoListingIds[2], owner_id: users.owner.id, title: "Bayombong Study Suites",
       description: "A fictional studio option for the RoomScouter pilot with air conditioning, a private bathroom, and space for independent study.",
-      address_line: "Magsaysay Avenue demo location, Bayombong, Nueva Vizcaya", monthly_rent: 7000,
+      address_line: "Magsaysay Avenue demo location, Bayombong, Nueva Vizcaya", barangay: "Sample Central", monthly_rent: 7000,
       room_type: "studio", available_rooms: 1, contact_name: "Lina Santos",
       contact_phone: "+63 917 555 0101", contact_email: "owner@roomscouter.example.test",
       latitude: 16.484050, longitude: 121.146180, status: "approved", submitted_at: submittedAt,
@@ -164,7 +164,7 @@ async function insertDemoRows(client, users) {
     {
       id: demoListingIds[3], owner_id: users.owner.id, title: "Quezon Corner Boarding House",
       description: "A fictional shared-room listing awaiting administrator review, included to demonstrate the moderation queue.",
-      address_line: "Quezon Street demo location, Bayombong, Nueva Vizcaya", monthly_rent: 4200,
+      address_line: "Quezon Street demo location, Bayombong, Nueva Vizcaya", barangay: "Sample North", monthly_rent: 4200,
       room_type: "shared_room", available_rooms: 3, contact_name: "Lina Santos",
       contact_phone: "+63 917 555 0101", contact_email: "owner@roomscouter.example.test",
       latitude: 16.478300, longitude: 121.141900, status: "pending", submitted_at: "2026-09-20T02:00:00.000Z",

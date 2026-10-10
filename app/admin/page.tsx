@@ -22,7 +22,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const [listingResult, accountResult, propertyResult, pendingResult, reportResult] = await Promise.all([
     supabase
       .from("boarding_houses")
-      .select("id, owner_id, title, address_line, monthly_rent, available_rooms, status, submitted_at, updated_at, owner:profiles!boarding_houses_owner_id_fkey(display_name)", { count: "exact" })
+      .select("id, owner_id, title, address_line, barangay, monthly_rent, available_rooms, status, submitted_at, updated_at, owner:profiles!boarding_houses_owner_id_fkey(display_name)", { count: "exact" })
       .eq("status", state)
       .order(state === "pending" ? "submitted_at" : "moderated_at", { ascending: true })
       .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1),
@@ -124,6 +124,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                 <span className={`status status-${listing.status}`}>{listing.status}</span>
               </div>
               <p>{listing.address_line}</p>
+              <p className="field-help">Barangay: {listing.barangay || "Not provided"}</p>
               <p>{currency.format(listing.monthly_rent)} monthly · {listing.available_rooms} available</p>
               <p className="field-help">Owner: {listing.owner?.display_name ?? "Unknown owner"}</p>
               <p className="field-help">

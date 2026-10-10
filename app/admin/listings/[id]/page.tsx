@@ -47,6 +47,7 @@ export default async function AdminListingPage({ params, searchParams }: AdminLi
           <p className="eyebrow">Administrator review</p>
           <h1>{listing.title}</h1>
           <p>{listing.address_line}</p>
+          <p>Barangay: {listing.barangay || "Not provided"}</p>
         </div>
         <span className={`status status-${listing.status}`}>{listing.status}</span>
       </header>

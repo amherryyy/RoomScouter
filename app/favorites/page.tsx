@@ -20,7 +20,7 @@ export default async function FavoritesPage({ searchParams }: FavoritesPageProps
     .select(`
       created_at,
       boarding_houses!inner (
-        id, title, address_line, monthly_rent, room_type, available_rooms
+        id, title, address_line, barangay, monthly_rent, room_type, available_rooms
       )
     `, { count: "exact" })
     .order("created_at", { ascending: false })
@@ -50,7 +50,7 @@ export default async function FavoritesPage({ searchParams }: FavoritesPageProps
                   <img src="/roomscouter-icon.png" width="1141" height="1379" alt="" />
                 </div>
                 <h2><Link href={`/listings/${listing.id}`}>{listing.title}</Link></h2>
-                <p>{listing.address_line}</p>
+                <p>{listing.barangay ? `${listing.barangay} · ` : ""}{listing.address_line}</p>
                 <p>{currency.format(listing.monthly_rent)} monthly</p>
                 <div className="fact-row">
                   <span>{ROOM_TYPE_LABELS[listing.room_type]}</span>

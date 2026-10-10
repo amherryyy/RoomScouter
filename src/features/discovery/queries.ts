@@ -9,9 +9,10 @@ export async function loadDiscovery(
 ) {
   const supabase = await createServerSupabaseClient();
   const effectiveDistance = university ? filters.maximumDistanceKm : null;
-  const [{ data: results, error }, { data: facilities }, { data: utilities }] = await Promise.all([
+  const [{ data: results, error }, { data: facilities }, { data: utilities }, { data: barangayRows }] = await Promise.all([
     supabase.rpc("search_public_boarding_houses", {
       search_text: filters.query || undefined,
+      selected_barangay: filters.barangay || undefined,
       maximum_monthly_rent: filters.maximumRent ?? undefined,
       minimum_available_rooms: filters.minimumRooms,
       selected_room_type: filters.roomType ?? undefined,
@@ -25,6 +26,7 @@ export async function loadDiscovery(
     }),
     supabase.from("facilities").select("id, name").order("name"),
     supabase.from("utilities").select("id, name").order("name"),
+    supabase.rpc("list_public_barangays"),
   ]);
   if (error) throw new Error("Public listings could not be loaded", { cause: error });
 
@@ -56,6 +58,7 @@ export async function loadDiscovery(
     results: rows.map((listing) => ({ ...listing, cover: covers.get(listing.id) ?? null })),
     facilities: facilities ?? [],
     utilities: utilities ?? [],
+    barangays: (barangayRows ?? []).map((row) => row.barangay),
     total: Number(rows[0]?.total_count ?? 0),
   };
 }

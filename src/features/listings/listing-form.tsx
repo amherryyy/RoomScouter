@@ -42,6 +42,9 @@ export function ListingForm({ action, listing, submitLabel }: ListingFormProps) 
         <label htmlFor="addressLine">Address</label>
         <input id="addressLine" name="addressLine" defaultValue={listing?.address_line} minLength={5} maxLength={240} required />
 
+        <label htmlFor="barangay">Barangay</label>
+        <input id="barangay" name="barangay" defaultValue={listing?.barangay ?? ""} minLength={2} maxLength={80} autoComplete="address-level3" required />
+
         <div className="form-grid">
           <div>
             <label htmlFor="monthlyRent">Monthly rent (PHP)</label>

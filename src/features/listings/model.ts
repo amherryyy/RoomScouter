@@ -6,6 +6,7 @@ export type ListingInput = {
   title: string;
   description: string;
   address_line: string;
+  barangay: string;
   monthly_rent: number;
   room_type: RoomType;
   available_rooms: number;
@@ -51,6 +52,7 @@ export function parseListingInput(formData: FormData): ParseResult {
   const title = text(formData.get("title"), 3, 120);
   const description = text(formData.get("description"), 20, 5000);
   const addressLine = text(formData.get("addressLine"), 5, 240);
+  const barangay = text(formData.get("barangay"), 2, 80);
   const monthlyRent = numberInRange(formData.get("monthlyRent"), 0, 99_999_999.99);
   const roomTypeValue = formData.get("roomType");
   const roomType =
@@ -73,6 +75,7 @@ export function parseListingInput(formData: FormData): ParseResult {
     !title ||
     !description ||
     !addressLine ||
+    !barangay ||
     monthlyRent === null ||
     !roomType ||
     availableRooms === null ||
@@ -92,6 +95,7 @@ export function parseListingInput(formData: FormData): ParseResult {
       title,
       description,
       address_line: addressLine,
+      barangay,
       monthly_rent: monthlyRent,
       room_type: roomType,
       available_rooms: availableRooms,

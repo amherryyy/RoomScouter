@@ -19,7 +19,7 @@ export default async function OwnerDashboardPage() {
   const { supabase } = await requireOwner();
   const { data: listings } = await supabase
     .from("boarding_houses")
-    .select("id, title, status, monthly_rent, available_rooms, updated_at")
+    .select("id, title, barangay, status, monthly_rent, available_rooms, updated_at")
     .order("updated_at", { ascending: false });
   const ownerListings = listings ?? [];
   const summary = {
@@ -85,6 +85,7 @@ export default async function OwnerDashboardPage() {
                 <h2>{listing.title}</h2>
                 <span className={`status status-${listing.status}`}>{statusLabels[listing.status]}</span>
               </div>
+              <p>{listing.barangay || "Barangay not added yet"}</p>
               <p>{currency.format(listing.monthly_rent)} monthly · {listing.available_rooms} available</p>
               <Link href={`/owner/listings/${listing.id}/edit`}>Edit and review details</Link>
             </article>
