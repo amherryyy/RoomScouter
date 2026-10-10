@@ -5,6 +5,7 @@ import { logout } from "../features/auth/actions";
 import { createServerSupabaseClient } from "../lib/supabase/server";
 import { ResponsiveNavigation } from "./navigation-controls";
 import { UiIcon } from "./ui-icon";
+import { ThemeToggle } from "./theme-toggle";
 
 type PublicHeaderProps = {
   current?: "home" | "browse" | "map" | "about";
@@ -56,15 +57,17 @@ export async function PublicHeader({ current }: PublicHeaderProps) {
       <Link className="wordmark" href="/" aria-label="RoomScouter home">
         <BrandLogo className="public-wordmark-logo" />
       </Link>
-      <ResponsiveNavigation
-        className="public-navigation"
-        displayName={user ? displayName : undefined}
-        email={user?.email}
-        initial={initial}
-        mobileAccount={mobileAccount}
-        roleLabel={profile?.role ? roleLabels[profile.role] : undefined}
-      >
-        <nav aria-label="Primary navigation">
+      <div className="public-header-actions">
+        <ThemeToggle />
+        <ResponsiveNavigation
+          className="public-navigation"
+          displayName={user ? displayName : undefined}
+          email={user?.email}
+          initial={initial}
+          mobileAccount={mobileAccount}
+          roleLabel={profile?.role ? roleLabels[profile.role] : undefined}
+        >
+          <nav aria-label="Primary navigation">
           <Link aria-current={current === "home" ? "page" : undefined} href="/"><UiIcon className="ui-icon" name="home" /><span>Home</span></Link>
           <Link aria-current={current === "browse" ? "page" : undefined} href="/browse"><UiIcon className="ui-icon" name="browse" /><span>Browse</span></Link>
           <Link aria-current={current === "map" ? "page" : undefined} href="/map"><UiIcon className="ui-icon" name="map" /><span>Map</span></Link>
@@ -106,8 +109,9 @@ export async function PublicHeader({ current }: PublicHeaderProps) {
               <Link className="button" href="/register">Create account</Link>
             </div>
           )}
-        </nav>
-      </ResponsiveNavigation>
+          </nav>
+        </ResponsiveNavigation>
+      </div>
     </header>
   );
 }

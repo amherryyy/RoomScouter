@@ -52,9 +52,10 @@ export default function AboutPage() {
         <section className="about-resource-card" id="contact" aria-labelledby="contact-title">
           <UiIcon className="ui-icon about-resource-icon" name="mail" />
           <p className="eyebrow">Contact</p>
-          <h2 id="contact-title">Contact the developers</h2>
-          <p>GitHub is the project’s published contact channel. An official developer email or other social account has not been published yet.</p>
+          <h2 id="contact-title">Contact us</h2>
+          <p>Questions or feedback? Email the RoomScouter team or reach us through GitHub.</p>
           <div className="about-resource-links">
+            <a href="mailto:mhracads@gmail.com"><UiIcon className="ui-icon" name="mail" /> mhracads@gmail.com</a>
             <a href="https://github.com/amherryyy"><UiIcon className="ui-icon" name="github" /> Developer profile</a>
             <a href="https://github.com/amherryyy/RoomScouter"><UiIcon className="ui-icon" name="github" /> Project on GitHub</a>
           </div>

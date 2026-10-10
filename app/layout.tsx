@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { UiIcon } from "../src/components/ui-icon";
+import { ThemeInitializer } from "../src/components/theme-initializer";
 import "leaflet/dist/leaflet.css";
 import "./styles.css";
 
@@ -14,6 +15,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
   return (
     <html lang="en">
       <body>
+        <ThemeInitializer />
         <a className="skip-link" href="#main-content">Skip to main content</a>
         {children}
         <footer className="site-footer">
@@ -25,7 +27,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
             <nav aria-label="Help and feedback">
               <strong>Help &amp; feedback</strong>
               <Link href="/about#help">Help</Link>
-              <Link href="/about#contact">Contact developers</Link>
+              <Link href="/about#contact">Contact us</Link>
               <Link href="/report-problem">Report a problem</Link>
             </nav>
             <nav aria-label="Project">

@@ -5,6 +5,7 @@ import { logout } from "../features/auth/actions";
 import { createServerSupabaseClient } from "../lib/supabase/server";
 import { ResponsiveNavigation, WorkspaceNavigationLink } from "./navigation-controls";
 import { UiIcon } from "./ui-icon";
+import { ThemeToggle } from "./theme-toggle";
 
 type WorkspaceHeaderProps = { links: Array<{ label: string; href: string }> };
 const roleLabels = { student: "Student", owner: "Property owner", admin: "Administrator" } as const;
@@ -34,15 +35,17 @@ export async function WorkspaceHeader({ links }: WorkspaceHeaderProps) {
       <Link className="workspace-topbar-brand" href="/" aria-label="RoomScouter home">
         <BrandLogo className="workspace-topbar-logo" />
       </Link>
-      <ResponsiveNavigation
-        className="workspace-navigation"
-        displayName={displayName}
-        email={user?.email}
-        initial={initial}
-        mobileAccount={mobileAccount}
-        roleLabel={profile?.role ? roleLabels[profile.role] : undefined}
-      >
-        <nav aria-label="Workspace navigation">
+      <div className="workspace-topbar-actions">
+        <ThemeToggle />
+        <ResponsiveNavigation
+          className="workspace-navigation"
+          displayName={displayName}
+          email={user?.email}
+          initial={initial}
+          mobileAccount={mobileAccount}
+          roleLabel={profile?.role ? roleLabels[profile.role] : undefined}
+        >
+          <nav aria-label="Workspace navigation">
           {links.map((link) => <WorkspaceNavigationLink href={link.href} key={link.href} label={link.label} />)}
           <details className="profile-menu workspace-profile-menu">
             <summary aria-label={"Open profile menu for " + displayName}>
@@ -65,8 +68,9 @@ export async function WorkspaceHeader({ links }: WorkspaceHeaderProps) {
               </form>
             </section>
           </details>
-        </nav>
-      </ResponsiveNavigation>
+          </nav>
+        </ResponsiveNavigation>
+      </div>
     </header>
   );
 }
