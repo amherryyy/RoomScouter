@@ -1,6 +1,6 @@
 type PageSkeletonProps = {
   label: string;
-  variant?: "grid" | "detail" | "form" | "admin" | "discovery" | "browse" | "owner" | "account" | "editor" | "queue" | "reports" | "moderation-detail" | "favorites" | "report-history";
+  variant?: "grid" | "detail" | "form" | "admin" | "discovery" | "browse" | "map" | "owner" | "account" | "editor" | "queue" | "reports" | "moderation-detail" | "favorites" | "report-history";
 };
 
 export function PageSkeleton({ label, variant = "grid" }: PageSkeletonProps) {
@@ -9,6 +9,7 @@ export function PageSkeleton({ label, variant = "grid" }: PageSkeletonProps) {
       <p className="visually-hidden" role="status" aria-live="polite">{label}</p>
       {variant === "discovery" ? <><SkeletonPublicHeader /><SkeletonDiscovery /></>
         : variant === "browse" ? <><SkeletonPublicHeader /><SkeletonBrowse /></>
+          : variant === "map" ? <><SkeletonPublicHeader /><SkeletonMap /></>
           : variant === "owner" ? <SkeletonOwner />
             : variant === "account" ? <><SkeletonAccountHeader /><SkeletonAccount /></>
               : variant === "editor" ? <SkeletonEditor />
@@ -161,6 +162,25 @@ function SkeletonBrowse() {
             {Array.from({ length: 6 }, (_, index) => <SkeletonCard key={index} />)}
           </div>
         </section>
+      </div>
+    </div>
+  );
+}
+
+function SkeletonMap() {
+  return (
+    <div className="skeleton-map-page" aria-hidden="true">
+      <div className="skeleton-map-heading">
+        <div className="skeleton-line skeleton-eyebrow" />
+        <div className="skeleton-line skeleton-title" />
+        <div className="skeleton-line skeleton-copy" />
+      </div>
+      <div className="skeleton-panel skeleton-map-filters" />
+      <div className="skeleton-map-layout">
+        <div className="skeleton-panel skeleton-map-canvas" />
+        <div className="skeleton-map-results">
+          {Array.from({ length: 4 }, (_, index) => <div className="skeleton-panel" key={index} />)}
+        </div>
       </div>
     </div>
   );

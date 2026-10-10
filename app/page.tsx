@@ -3,6 +3,7 @@ import nvsuCampusImage from "../logo&icon/nvsu.jpg";
 import Link from "next/link";
 import Form from "next/form";
 import { PublicHeader } from "../src/components/public-header";
+import { DiscoveryFiltersForm } from "../src/components/discovery-filters";
 import { SubmitButton } from "../src/components/submit-button";
 import { loadDiscovery } from "../src/features/discovery/queries";
 import {
@@ -10,7 +11,6 @@ import {
   discoveryQuery,
   parseDiscoveryFilters,
   ROOM_TYPE_LABELS,
-  ROOM_TYPES,
 } from "../src/features/discovery/model";
 import { getUniversityConfig } from "../src/features/discovery/university";
 
@@ -121,56 +121,21 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
             <h2 id="browse-title">{browseMode ? "Available boarding houses" : "Refine your search"}</h2>
           </div>
           <p>{browseMode ? `${total} approved ${total === 1 ? "listing" : "listings"} available to explore` : "Every public result has passed administrator review."}</p>
+          {browseMode ? (
+            <Link className="button secondary" href={`/map${discoveryQuery(filters, 1) ? `?${discoveryQuery(filters, 1)}` : ""}`}>
+              View map
+            </Link>
+          ) : null}
         </div>
       <div className={browseMode ? "browse-results-layout" : undefined}>
-      <Form className={`discovery-filters${browseMode ? " browse-filter-panel" : ""}`} action={searchPath} aria-label="Filter boarding houses">
-        <div className="search-field">
-          <label htmlFor="q">Search by name, address, or description</label>
-          <input id="q" name="q" defaultValue={filters.query} maxLength={120} placeholder="Try a street or neighborhood" />
-        </div>
-        <div>
-          <label htmlFor="maximumRent">Maximum monthly rent</label>
-          <input id="maximumRent" name="maximumRent" type="number" min="0" max="1000000" step="100" defaultValue={filters.maximumRent ?? ""} />
-        </div>
-        <div>
-          <label htmlFor="minimumRooms">Rooms needed</label>
-          <input id="minimumRooms" name="minimumRooms" type="number" min="1" max="1000" defaultValue={filters.minimumRooms} />
-        </div>
-        <div>
-          <label htmlFor="roomType">Room type</label>
-          <select id="roomType" name="roomType" defaultValue={filters.roomType ?? ""}>
-            <option value="">Any room type</option>
-            {ROOM_TYPES.map((type) => <option value={type} key={type}>{ROOM_TYPE_LABELS[type]}</option>)}
-          </select>
-        </div>
-        <div>
-          <label htmlFor="facility">Facility</label>
-          <select id="facility" name="facility" defaultValue={filters.facilityId ?? ""}>
-            <option value="">Any facility</option>
-            {facilities.map((facility) => <option value={facility.id} key={facility.id}>{facility.name}</option>)}
-          </select>
-        </div>
-        <div>
-          <label htmlFor="utility">Utility</label>
-          <select id="utility" name="utility" defaultValue={filters.utilityId ?? ""}>
-            <option value="">Any utility</option>
-            {utilities.map((utility) => <option value={utility.id} key={utility.id}>{utility.name}</option>)}
-          </select>
-        </div>
-        {university ? (
-          <div>
-            <label htmlFor="maximumDistance">Maximum distance from {university.name}</label>
-            <select id="maximumDistance" name="maximumDistance" defaultValue={filters.maximumDistanceKm ?? ""}>
-              <option value="">Any distance</option>
-              {[1, 2, 5, 10, 20].map((distance) => <option value={distance} key={distance}>{distance} km</option>)}
-            </select>
-          </div>
-        ) : null}
-        <div className="filter-actions">
-          <SubmitButton pendingLabel="Searching…">Show listings</SubmitButton>
-          <Link className="button secondary" href={searchPath}>Clear</Link>
-        </div>
-      </Form>
+        <DiscoveryFiltersForm
+          action={searchPath}
+          className={browseMode ? "browse-filter-panel" : ""}
+          facilities={facilities}
+          filters={filters}
+          university={university}
+          utilities={utilities}
+        />
 
 
       <div className="results-heading" aria-live="polite">

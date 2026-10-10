@@ -1,59 +1,95 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { DiscoveryFiltersForm } from "../../src/components/discovery-filters";
+import { InteractiveListingMap, type MapListing } from "../../src/components/interactive-listing-map";
 import { PublicHeader } from "../../src/components/public-header";
+import { discoveryQuery, parseDiscoveryFilters } from "../../src/features/discovery/model";
+import { loadDiscovery } from "../../src/features/discovery/queries";
 import { getUniversityConfig } from "../../src/features/discovery/university";
 
 export const metadata: Metadata = {
-  title: "Map preview | RoomScouter",
-  description: "Preview the planned RoomScouter map experience.",
+  title: "Room map | RoomScouter",
+  description: "Explore approved, available RoomScouter listings on an interactive map.",
   robots: { index: false, follow: true },
 };
 
-export default function MapPreviewPage() {
+const MAP_PAGE_SIZE = 50;
+
+type MapPageProps = {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+};
+
+export default async function MapPage({ searchParams }: MapPageProps) {
+  const filters = parseDiscoveryFilters(await searchParams);
   const university = getUniversityConfig();
-  const campusMapUrl = university
-    ? `https://www.openstreetmap.org/?mlat=${university.latitude}&mlon=${university.longitude}#map=16/${university.latitude}/${university.longitude}`
-    : null;
+  const { results, facilities, utilities, total } = await loadDiscovery(filters, university, {
+    pageSize: MAP_PAGE_SIZE,
+    includeCovers: false,
+  });
+  const listings: MapListing[] = results.map((listing) => ({
+    id: listing.id,
+    title: listing.title,
+    address_line: listing.address_line,
+    monthly_rent: listing.monthly_rent,
+    room_type: listing.room_type,
+    available_rooms: listing.available_rooms,
+    latitude: listing.latitude,
+    longitude: listing.longitude,
+    approximate_distance_km: listing.approximate_distance_km,
+  }));
+  const firstResult = total ? (filters.page - 1) * MAP_PAGE_SIZE + 1 : 0;
+  const lastResult = Math.min(filters.page * MAP_PAGE_SIZE, total);
+  const hasPrevious = filters.page > 1;
+  const hasNext = lastResult < total;
+  const browseQuery = discoveryQuery(filters, 1);
+  const browseHref = browseQuery ? `/browse?${browseQuery}` : "/browse";
 
   return (
-    <main className="discovery-shell preview-page map-page" id="main-content" tabIndex={-1}>
+    <main className="discovery-shell map-discovery-page" id="main-content" tabIndex={-1}>
       <PublicHeader current="map" />
-      <section className="preview-hero">
-        <p className="preview-badge">Under construction</p>
-        <p className="eyebrow">Map preview</p>
-        <h1>Explore nearby rooms visually.</h1>
-        <p className="lede">
-          The dedicated map is part of the approved RoomScouter wireframe. It will eventually show approved,
-          available listings around the university without exposing unpublished owner information.
-        </p>
-        <div className="actions">
-          <Link className="button" href="/browse">Browse available listings</Link>
-          {campusMapUrl ? (
-            <a className="button secondary" href={campusMapUrl} target="_blank" rel="noreferrer">
-              View {university?.name} on OpenStreetMap
-              <span className="visually-hidden"> (opens in a new tab)</span>
-            </a>
-          ) : null}
+      <section className="map-page-heading" aria-labelledby="map-page-title">
+        <div>
+          <p className="eyebrow">RoomScouter map</p>
+          <h1 id="map-page-title">Explore available rooms nearby.</h1>
+          <p>Move around the map, choose a price marker, or filter the approved listings below.</p>
         </div>
+        <Link className="button secondary" href={browseHref}>Browse as a list</Link>
       </section>
 
-      <section className="map-preview-panel" aria-labelledby="map-preview-heading">
-        <div className="map-preview-canvas" aria-hidden="true">
-          <span className="map-campus-pin">University</span>
-          <span className="map-property-pin map-property-one">Room</span>
-          <span className="map-property-pin map-property-two">Room</span>
-          <span className="map-property-pin map-property-three">Room</span>
+      <section className="map-filter-section" aria-labelledby="map-filter-title">
+        <div className="map-section-heading">
+          <div>
+            <p className="eyebrow">Find a closer match</p>
+            <h2 id="map-filter-title">Search and filters</h2>
+          </div>
+          <p>These filters use the same public listing search as Browse.</p>
         </div>
-        <div className="preview-copy">
-          <h2 id="map-preview-heading">What this page will support</h2>
-          <ul className="preview-checklist">
-            <li>Show only administrator-approved listings with available rooms.</li>
-            <li>Keep search filters consistent with the main browse page.</li>
-            <li>Compare approximate distance from the configured university.</li>
-            <li>Remain usable with a keyboard and on smaller screens.</li>
-          </ul>
-          <p className="field-help">The map illustration is a wireframe preview, not an interactive map.</p>
+        <DiscoveryFiltersForm
+          action="/map"
+          className="map-filter-panel"
+          facilities={facilities}
+          filters={filters}
+          university={university}
+          utilities={utilities}
+        />
+      </section>
+
+      <section className="map-results-section" aria-labelledby="map-listings-heading">
+        <div className="map-section-heading map-listings-heading">
+          <div>
+            <p className="eyebrow">Approved and available</p>
+            <h2 id="map-listings-heading">{total ? `${firstResult}–${lastResult} of ${total} listings` : "No matching listings"}</h2>
+          </div>
+          <span>{total} {total === 1 ? "place" : "places"} found</span>
         </div>
+        <InteractiveListingMap listings={listings} total={total} university={university} />
+        {(hasPrevious || hasNext) ? (
+          <nav className="pagination map-pagination" aria-label="Map results pages">
+            {hasPrevious ? <Link className="button secondary" href={`/map?${discoveryQuery(filters, filters.page - 1)}`}>Previous</Link> : <span />}
+            <span>Page {filters.page}</span>
+            {hasNext ? <Link className="button secondary" href={`/map?${discoveryQuery(filters, filters.page + 1)}`}>Next</Link> : <span />}
+          </nav>
+        ) : null}
       </section>
     </main>
   );

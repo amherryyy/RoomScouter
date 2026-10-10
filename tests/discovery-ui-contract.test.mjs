@@ -8,15 +8,18 @@ test("public discovery remains database-filtered and paginated", async () => {
   const page = await readProjectFile("app/page.tsx");
   const queries = await readProjectFile("src/features/discovery/queries.ts");
   const model = await readProjectFile("src/features/discovery/model.ts");
+  const filterForm = await readProjectFile("src/components/discovery-filters.tsx");
 
   assert.match(queries, /rpc\("search_public_boarding_houses"/);
-  assert.match(queries, /page_size: DISCOVERY_PAGE_SIZE/);
+  assert.match(queries, /page_size: pageSize/);
+  assert.match(queries, /pageSize = DISCOVERY_PAGE_SIZE/);
   assert.match(queries, /page_offset:/);
   assert.match(model, /DISCOVERY_PAGE_SIZE = 12/);
+  assert.match(page, /<DiscoveryFiltersForm/);
   for (const field of ["q", "maximumRent", "minimumRooms", "roomType", "facility", "utility"]) {
-    assert.match(page, new RegExp(`name="${field}"`));
+    assert.match(filterForm, new RegExp(`name="${field}"`));
   }
-  assert.match(page, /maximumDistance/);
+  assert.match(filterForm, /name="maximumDistance"/);
   assert.match(page, /discoveryQuery\(filters, filters\.page \+ 1\)/);
 });
 

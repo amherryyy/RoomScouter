@@ -30,20 +30,24 @@ test("public navigation shows an authenticated profile card with account actions
   assert.match(header, /href="\/register">Create account/);
 });
 
-test("unfinished map behavior is presented honestly and without fake controls", async () => {
+test("interactive map uses public discovery data without promising unsupported actions", async () => {
   const map = await readProjectFile("app/map/page.tsx");
+  const mapClient = await readProjectFile("src/components/interactive-listing-map.tsx");
 
-  assert.match(map, /Under construction/);
-  assert.match(map, /wireframe preview, not an interactive map/);
-  assert.match(map, /approved,\s+available listings/);
-  assert.doesNotMatch(map, /<button/);
+  assert.match(map, /loadDiscovery/);
+  assert.match(map, /pageSize: MAP_PAGE_SIZE/);
+  assert.match(mapClient, /L\.tileLayer/);
+  assert.match(mapClient, /OpenStreetMap contributors/);
+  assert.match(mapClient, /Show on map/);
+  assert.match(mapClient, /aria-pressed/);
   assert.doesNotMatch(map, /Message owner|Reserve now|Book now/);
+  assert.doesNotMatch(mapClient, /Message owner|Reserve now|Book now|navigator\.geolocation/);
 });
 
 test("the handoff distinguishes working routes from future product decisions", async () => {
   const handoff = await readProjectFile("docs/ui-handoff.md");
 
-  assert.match(handoff, /\| Map view \| `\/map` \| Preview only/);
+  assert.match(handoff, /\| Map view \| `\/map` \| Interactive map and matching public listing results/);
   assert.match(handoff, /in-application messaging/);
   assert.match(handoff, /Google or Facebook authentication/);
   assert.match(handoff, /does not process reservations, leases, or payments/);
