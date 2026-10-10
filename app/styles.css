@@ -3271,3 +3271,10 @@ fieldset {
 @media (prefers-reduced-motion: reduce) {
   .map-price-pin, .map-result-card { transition: none; }
 }
+
+.ui-icon { width: 1.1rem; height: 1.1rem; flex: 0 0 auto; }
+.public-header nav > a, .workspace-topbar nav > a { gap: 0.42rem; }
+.public-header nav > a .ui-icon, .workspace-topbar nav > a .ui-icon { color: #246b61; }
+.responsive-navigation-toggle { gap: 0.45rem; }
+.profile-menu-chevron { width: 0.9rem; height: 0.9rem; }
+.filter-actions .button, .filter-actions button { align-items: center; gap: 0.5rem; }

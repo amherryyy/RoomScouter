@@ -4,6 +4,7 @@ import { SubmitButton } from "./submit-button";
 import { logout } from "../features/auth/actions";
 import { createServerSupabaseClient } from "../lib/supabase/server";
 import { ResponsiveNavigation, WorkspaceNavigationLink } from "./navigation-controls";
+import { UiIcon } from "./ui-icon";
 
 type WorkspaceHeaderProps = { links: Array<{ label: string; href: string }> };
 const roleLabels = { student: "Student", owner: "Property owner", admin: "Administrator" } as const;
@@ -23,7 +24,7 @@ export async function WorkspaceHeader({ links }: WorkspaceHeaderProps) {
       <Link href="/account">My account</Link>
       <Link href={dashboard}>Open dashboard</Link>
       <form action={logout}>
-        <SubmitButton className="profile-card-logout" pendingLabel="Logging out...">Log out</SubmitButton>
+        <SubmitButton className="profile-card-logout" pendingLabel="Logging out…"><UiIcon className="ui-icon" name="logout" /><span>Log out</span></SubmitButton>
       </form>
     </>
   );
@@ -60,7 +61,7 @@ export async function WorkspaceHeader({ links }: WorkspaceHeaderProps) {
                 <Link href={dashboard}>Open dashboard</Link>
               </div>
               <form action={logout}>
-                <SubmitButton className="profile-card-logout" pendingLabel="Logging out...">Log out</SubmitButton>
+                <SubmitButton className="profile-card-logout" pendingLabel="Logging out…"><UiIcon className="ui-icon" name="logout" /><span>Log out</span></SubmitButton>
               </form>
             </section>
           </details>

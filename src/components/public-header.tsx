@@ -4,6 +4,7 @@ import { SubmitButton } from "./submit-button";
 import { logout } from "../features/auth/actions";
 import { createServerSupabaseClient } from "../lib/supabase/server";
 import { ResponsiveNavigation } from "./navigation-controls";
+import { UiIcon } from "./ui-icon";
 
 type PublicHeaderProps = {
   current?: "home" | "browse" | "map" | "about";
@@ -36,7 +37,7 @@ export async function PublicHeader({ current }: PublicHeaderProps) {
         <Link href={dashboardPaths[profile.role]}>Open dashboard</Link>
       ) : null}
       <form action={logout}>
-        <SubmitButton className="profile-card-logout" pendingLabel="Logging out...">Log out</SubmitButton>
+        <SubmitButton className="profile-card-logout" pendingLabel="Logging out…"><UiIcon className="ui-icon" name="logout" /><span>Log out</span></SubmitButton>
       </form>
     </>
   ) : (
@@ -60,16 +61,16 @@ export async function PublicHeader({ current }: PublicHeaderProps) {
         roleLabel={profile?.role ? roleLabels[profile.role] : undefined}
       >
         <nav aria-label="Primary navigation">
-          <Link aria-current={current === "home" ? "page" : undefined} href="/">Home</Link>
-          <Link aria-current={current === "browse" ? "page" : undefined} href="/browse">Browse</Link>
-          <Link aria-current={current === "map" ? "page" : undefined} href="/map">Map</Link>
-          <Link aria-current={current === "about" ? "page" : undefined} href="/about">About</Link>
+          <Link aria-current={current === "home" ? "page" : undefined} href="/"><UiIcon className="ui-icon" name="home" /><span>Home</span></Link>
+          <Link aria-current={current === "browse" ? "page" : undefined} href="/browse"><UiIcon className="ui-icon" name="browse" /><span>Browse</span></Link>
+          <Link aria-current={current === "map" ? "page" : undefined} href="/map"><UiIcon className="ui-icon" name="map" /><span>Map</span></Link>
+          <Link aria-current={current === "about" ? "page" : undefined} href="/about"><UiIcon className="ui-icon" name="info" /><span>About</span></Link>
           {user ? (
             <details className="profile-menu">
               <summary aria-label={"Open profile menu for " + displayName}>
                 <span className="profile-menu-avatar" aria-hidden="true">{initial}</span>
                 <span className="profile-menu-name">{displayName}</span>
-                <span className="profile-menu-chevron" aria-hidden="true">v</span>
+                <UiIcon className="ui-icon profile-menu-chevron" name="chevron-down" />
               </summary>
               <section className="profile-card" aria-label="Your profile">
                 <div className="profile-card-identity">
@@ -87,7 +88,7 @@ export async function PublicHeader({ current }: PublicHeaderProps) {
                   ) : null}
                 </div>
                 <form action={logout}>
-                  <SubmitButton className="profile-card-logout" pendingLabel="Logging out...">Log out</SubmitButton>
+                  <SubmitButton className="profile-card-logout" pendingLabel="Logging out…"><UiIcon className="ui-icon" name="logout" /><span>Log out</span></SubmitButton>
                 </form>
               </section>
             </details>

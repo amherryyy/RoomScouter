@@ -1,6 +1,7 @@
 import Form from "next/form";
 import Link from "next/link";
 import { SubmitButton } from "./submit-button";
+import { UiIcon } from "./ui-icon";
 import { ROOM_TYPE_LABELS, ROOM_TYPES, type DiscoveryFilters } from "../features/discovery/model";
 import type { UniversityConfig } from "../features/discovery/university";
 
@@ -77,8 +78,8 @@ export function DiscoveryFiltersForm({
         </div>
       ) : null}
       <div className="filter-actions">
-        <SubmitButton pendingLabel="Searching…">Show listings</SubmitButton>
-        <Link className="button secondary" href={action}>Clear</Link>
+        <SubmitButton pendingLabel="Searching…"><UiIcon className="ui-icon" name="search" /><span>Show listings</span></SubmitButton>
+        <Link className="button secondary" href={action}><UiIcon className="ui-icon" name="clear" /><span>Clear</span></Link>
       </div>
     </Form>
   );

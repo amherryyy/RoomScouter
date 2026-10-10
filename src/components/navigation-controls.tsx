@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { UiIcon, type UiIconName } from "./ui-icon";
 
 type ResponsiveNavigationProps = {
   children: ReactNode;
@@ -68,9 +69,9 @@ export function ResponsiveNavigation({
           <>
             <span className="profile-menu-avatar" aria-hidden="true">{initial}</span>
             <span className="profile-menu-name">{displayName}</span>
-            <span className="profile-menu-chevron" aria-hidden="true">{open ? "^" : "v"}</span>
+            <UiIcon className="ui-icon profile-menu-chevron" name="chevron-down" />
           </>
-        ) : <span>Menu</span>}
+        ) : <><UiIcon className="ui-icon" name={open ? "close" : "menu"} /><span>Menu</span></>}
       </button>
       <div
         className="responsive-navigation-panel"
@@ -97,8 +98,17 @@ export function ResponsiveNavigation({
   );
 }
 
+const workspaceIcons: Record<string, UiIconName> = {
+  "/": "home",
+  "/browse": "browse",
+  "/owner": "dashboard",
+  "/admin": "dashboard",
+  "/admin/reviews": "reviews",
+  "/admin/reports": "reports",
+};
+
 export function WorkspaceNavigationLink({ href, label }: { href: string; label: string }) {
   const pathname = usePathname();
   const active = pathname === href || (href === "/owner" && pathname.startsWith("/owner/")) || (href === "/admin" && pathname.startsWith("/admin/listings/")) || (href !== "/" && href !== "/owner" && href !== "/admin" && pathname.startsWith(href + "/"));
-  return <Link aria-current={active ? "page" : undefined} href={href}>{label}</Link>;
+  return <Link aria-current={active ? "page" : undefined} href={href}><UiIcon className="ui-icon" name={workspaceIcons[href] ?? "account"} /><span>{label}</span></Link>;
 }
