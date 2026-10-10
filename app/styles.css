@@ -2164,7 +2164,7 @@ fieldset {
   padding-bottom: 0.65rem;
 }
 
-@media (max-width: 42rem) {
+@media (max-width: 40rem) {
   main { padding: 3rem 1rem; }
   .workspace-heading,
   .listing-card-heading,
@@ -2231,7 +2231,7 @@ fieldset {
   .auth-mobile-brand { display: inline-flex; }
 }
 
-@media (min-width: 42.01rem) and (max-width: 68rem) {
+@media (min-width: 40.01rem) and (max-width: 68rem) {
   .admin-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .admin-queue-grid { grid-template-columns: 1fr; }
   .auth-shell { padding: 1.5rem; }
@@ -2859,7 +2859,7 @@ fieldset {
   }
 }
 
-@media (max-width: 42rem) {
+@media (max-width: 40rem) {
   .public-detail-shell .public-header {
     margin-bottom: 2rem;
   }
