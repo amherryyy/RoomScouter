@@ -105,6 +105,7 @@ export function InteractiveListingMap({
       let barangayLayer: LeafletGeoJSON | null = null;
       map.on("baselayerchange", (event: LayersControlEvent) => {
         activeBasemapName = event.name;
+        map.getContainer().classList.toggle("is-satellite-view", event.name === "Satellite");
         barangayLayer?.setStyle(
           event.name === "Satellite" ? boundaryStyles.satellite : boundaryStyles.street,
         );
@@ -123,6 +124,18 @@ export function InteractiveListingMap({
           if (cancelled) return;
           barangayLayer = L.geoJSON(data, {
             style: boundaryStyles.street,
+            onEachFeature: (feature, layer) => {
+              const barangayName = feature.properties?.brgy_name;
+              if (typeof barangayName === "string" && barangayName.trim()) {
+                layer.bindTooltip(barangayName, {
+                  direction: "center",
+                  permanent: true,
+                  className: "barangay-map-label",
+                  interactive: false,
+                  opacity: 1,
+                });
+              }
+            },
           });
           if (activeBasemapName === "Satellite") {
             barangayLayer.setStyle(boundaryStyles.satellite);

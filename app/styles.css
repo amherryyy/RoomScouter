@@ -3157,6 +3157,9 @@ fieldset {
 .map-price-marker-active .map-price-pin, .map-price-marker-active .map-price-pin::after { color: #173956; background: #fff; }
 .map-price-marker:focus-visible .map-price-pin { outline: 3px solid #173956; outline-offset: 3px; }
 .map-canvas .leaflet-control-zoom a { width: 2.75rem; height: 2.75rem; line-height: 2.65rem; font-size: 1.35rem; }
+.map-canvas .leaflet-tooltip.barangay-map-label { border: 0; border-radius: 0; padding: 0; color: #174b35; background: transparent; box-shadow: none; font-family: inherit; font-size: 0.68rem; font-weight: 750; line-height: 1.1; text-shadow: 0 1px 2px #fff, 1px 0 2px #fff, -1px 0 2px #fff, 0 -1px 2px #fff; pointer-events: none; }
+.map-canvas .leaflet-tooltip.barangay-map-label::before { display: none; }
+.map-canvas.is-satellite-view .leaflet-tooltip.barangay-map-label { color: #fff; text-shadow: 0 1px 2px rgb(0 0 0 / 95%), 1px 0 2px rgb(0 0 0 / 95%), -1px 0 2px rgb(0 0 0 / 95%), 0 -1px 2px rgb(0 0 0 / 95%); }
 .map-canvas .leaflet-control-layers { width: max-content; border: 1px solid rgb(23 57 86 / 12%); border-radius: 0.55rem; background: rgb(255 255 255 / 96%); box-shadow: 0 0.25rem 0.75rem rgb(23 57 86 / 12%); }
 .map-canvas .leaflet-control-layers-expanded { padding: 0.1rem 0.35rem; }
 .map-canvas .leaflet-control-layers-base { display: flex; align-items: center; gap: 0.15rem; }
