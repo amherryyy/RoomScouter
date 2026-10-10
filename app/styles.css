@@ -3419,6 +3419,10 @@ fieldset {
 
 /* RoomScouter glass surfaces: translucent, green-tinted layers over the existing light canvas. */
 :root {
+  --rs-page: #f2f6f2;
+  --rs-surface-1: #fff;
+  --rs-surface-2: #f7faf8;
+  --rs-surface-3: #eef2ef;
   --rs-glass-fallback: #fff;
   --rs-glass-surface: rgb(246 251 247 / 74%);
   --rs-glass-border: rgb(255 255 255 / 94%);
@@ -3654,6 +3658,10 @@ body {
 /* Persistent dark theme, applied through the root data-theme attribute. */
 html[data-theme="dark"] {
   color-scheme: dark;
+  --rs-page: #101815;
+  --rs-surface-1: #19251f;
+  --rs-surface-2: #202f28;
+  --rs-surface-3: #293c32;
   --rs-ink: #e5eee9;
   --rs-blue: #9bc5ee;
   --rs-green: #91cba7;
@@ -3667,7 +3675,7 @@ html[data-theme="dark"] {
   background: #101815;
 }
 
-html[data-theme="dark"] body { color: #e3ece6; background: #101815; }
+html[data-theme="dark"] body { color: #e3ece6; background: var(--rs-page); }
 html[data-theme="dark"] :is(.discovery-shell, .policy-page, .auth-shell) { color: #e3ece6; background-color: transparent; }
 html[data-theme="dark"] :is(h1, h2, h3, h4, h5, h6) { color: var(--rs-ink); }
 html[data-theme="dark"] :is(p, li, dt, dd, label, small) { color: #c0ccc5; }
@@ -3679,6 +3687,7 @@ html[data-theme="dark"] :is(
   .public-header,
   .workspace-topbar,
   .site-footer,
+  .auth-layout,
   .auth-card,
   .auth-card form > button.auth-resend-button,
   .skeleton-search-control,
@@ -3687,21 +3696,29 @@ html[data-theme="dark"] :is(
   .account-settings-panel,
   .account-profile-card,
   .account-action-card,
+  .account-future,
   .dashboard-summary-card,
   .admin-summary-card,
   .admin-queue-card,
+  .owner-future-note,
+  .listing-form fieldset,
+  .attribute-card fieldset,
+  .photo-card,
+  .report-card,
+  .reported-review,
+  .report-outcome,
   .empty-state,
   .moderation-note,
   .submission-panel,
-  .listing-form fieldset,
   .attribute-card,
-  .photo-card,
   .moderation-review-content > section,
   .moderation-controls,
   .listing-card,
   .discovery-filters,
   .featured-card,
+  .featured-card-body,
   .discovery-card,
+  .discovery-card-body,
   .preview-hero,
   .about-grid section,
   .about-resource-card,
@@ -3720,7 +3737,6 @@ html[data-theme="dark"] :is(
   .location-picker-loading,
   .listing-form-steps a,
   .review-card,
-  .report-card,
   .detail-overview,
   .price-panel,
   .listing-gallery-empty,
@@ -3730,14 +3746,20 @@ html[data-theme="dark"] :is(
   .review-editor,
   .detail-meta li,
   .tag-list li,
-  .travel-estimate-grid li,
-  .reported-review,
-  .report-outcome
+  .travel-estimate-grid li
 ) {
   border-color: var(--rs-border);
   color: #e3ece6;
-  background-color: #19251f;
+  background-color: var(--rs-surface-1);
   box-shadow: 0 0.65rem 1.7rem rgb(0 0 0 / 20%);
+}
+
+html[data-theme="dark"] :is(.account-future, .owner-future-note, .listing-form-steps a, .attribute-card fieldset, .discovery-card-body, .featured-card-body, .detail-meta li, .tag-list li, .travel-estimate-grid li) {
+  background-color: var(--rs-surface-2);
+}
+
+html[data-theme="dark"] :is(.account-future, .owner-future-note) {
+  border-color: #52685b;
 }
 
 html[data-theme="dark"] :is(.discovery-hero, .browse-page-hero) { color: #e3ece6; background: #1b2a24; }
@@ -3754,6 +3776,16 @@ html[data-theme="dark"] :is(input, select, textarea) {
   background-color: #101a15;
 }
 html[data-theme="dark"] :is(input, select, textarea)::placeholder { color: #9caaa2; opacity: 1; }
+html[data-theme="dark"] :is(.availability-stepper button, .discovery-advanced-filters > summary) {
+  border-color: #465a50;
+  color: #c4ddce;
+  background-color: var(--rs-surface-2);
+}
+html[data-theme="dark"] :is(.availability-stepper button:hover, .discovery-advanced-filters > summary:hover, .listing-form-steps a:hover, .quick-searches a:hover) {
+  border-color: #688477;
+  color: #e8f4ed;
+  background-color: var(--rs-surface-3);
+}
 html[data-theme="dark"] :is(button.secondary, .button.secondary) { border-color: #688477; color: #b7ddc5; background-color: #19251f; }
 html[data-theme="dark"] :is(button.secondary, .button.secondary):hover { color: #e8f4ed; background-color: #263a30; }
 html[data-theme="dark"] :is(.profile-menu > summary, .responsive-navigation-toggle, .map-canvas-expand, .map-canvas-status, .leaflet-control-layers) {
@@ -3761,13 +3793,14 @@ html[data-theme="dark"] :is(.profile-menu > summary, .responsive-navigation-togg
   color: #e3ece6;
   background-color: #1b2922;
 }
-html[data-theme="dark"] :is(.profile-card-links a:hover, .mobile-navigation-account > a:hover, .mobile-navigation-project > a:hover, .map-canvas-expand:hover) { background-color: #293c32; }
+html[data-theme="dark"] :is(.profile-card-links a:hover, .mobile-navigation-account > a:hover, .mobile-navigation-project > a:hover, .map-canvas-expand:hover, .account-profile-card .account-action-card:hover) { background-color: var(--rs-surface-3); }
 html[data-theme="dark"] :is(.profile-card-email, .mobile-navigation-profile, .mobile-navigation-account, .mobile-navigation-project, .account-summary, .account-action-grid, .account-action-card) { border-color: var(--rs-border); }
 html[data-theme="dark"] :is(.skeleton-media, .skeleton-avatar) { background: linear-gradient(90deg, #26352d 25%, #304138 50%, #26352d 75%); }
 html[data-theme="dark"] .danger-button { border-color: #9a5b55; color: #f1b5af; background: #2c1c1a; }
 html[data-theme="dark"] .policy-draft-notice { border-left-color: #d8a94f; color: #f0d89e; background: #342c1b; }
 html[data-theme="dark"] .mobile-navigation-project p { color: #aebbb4; }
 html[data-theme="dark"] .mobile-navigation-project h2 { color: #b9c9c0; }
+html[data-theme="dark"] :is(.account-action-card > span:last-child, .account-settings-panel .section-heading > p:last-child, .dashboard-summary-card span, .admin-summary-card span, .admin-summary-card small, .admin-queue-card > span:last-child, .owner-workspace .listing-card > p, .favorites-workspace .listing-card > p, .photo-metadata, .location-picker-loading) { color: #bdcbc3; }
 html[data-theme="dark"] .hero-search button { background: #2e7952; }
 html[data-theme="dark"] .hero-search button:hover { background: #3b8a60; }
 html[data-theme="dark"] .map-canvas,
