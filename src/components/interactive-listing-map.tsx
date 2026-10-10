@@ -25,34 +25,6 @@ const currency = new Intl.NumberFormat("en-PH", {
   maximumFractionDigits: 0,
 });
 
-function createPopupContent(listing: MapListing): HTMLElement {
-  const content = document.createElement("div");
-  content.className = "map-popup-content";
-
-  const title = document.createElement("strong");
-  title.textContent = listing.title;
-  content.append(title);
-
-  const address = document.createElement("span");
-  address.textContent = listing.address_line;
-  content.append(address);
-  if (listing.barangay) {
-    const barangay = document.createElement("span");
-    barangay.textContent = `Barangay ${listing.barangay}`;
-    content.append(barangay);
-  }
-
-  const price = document.createElement("span");
-  price.textContent = `${currency.format(listing.monthly_rent)} per month`;
-  content.append(price);
-
-  const details = document.createElement("a");
-  details.href = `/listings/${encodeURIComponent(listing.id)}`;
-  details.textContent = "View listing details";
-  content.append(details);
-  return content;
-}
-
 export function InteractiveListingMap({
   listings,
   university,
@@ -117,12 +89,13 @@ export function InteractiveListingMap({
           if (cancelled) return;
           L.geoJSON(data, {
             style: {
-              color: "#246b48",
-              weight: 1.5,
-              opacity: 0.32,
-              dashArray: "5 7",
-              fillColor: "#246b48",
-              fillOpacity: 0.01,
+              color: "#f4fff7",
+              weight: 2,
+              opacity: 0.92,
+              lineCap: "round",
+              lineJoin: "round",
+              fillColor: "#43a86f",
+              fillOpacity: 0.22,
             },
             onEachFeature: (feature, layer) => {
               const barangayName = feature.properties?.brgy_name;
@@ -184,10 +157,8 @@ export function InteractiveListingMap({
           html: `<span class="map-price-pin">${priceLabel}</span>`,
           iconSize: [96, 38],
           iconAnchor: [48, 38],
-          popupAnchor: [0, -38],
         }),
       });
-      marker.bindPopup(createPopupContent(listing), { closeButton: true, autoPanPadding: [28, 28] });
       marker.on("click", () => setSelectedId(listing.id));
       marker.addTo(markerLayer);
       markers.set(listing.id, marker);
@@ -223,7 +194,6 @@ export function InteractiveListingMap({
     } else {
       map.flyTo(selectedMarker.getLatLng(), selectedZoom, { duration: 0.45 });
     }
-    selectedMarker.openPopup();
   }, [mapReady, selectedId]);
 
   const selectListing = (listing: MapListing) => {
