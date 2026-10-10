@@ -96,7 +96,7 @@ export function ResponsiveNavigation({
         <section className="mobile-navigation-project" aria-label="Help and project links">
           <h2>Help &amp; project</h2>
           <Link href="/about#help"><UiIcon className="ui-icon" name="help" /><span>Help</span></Link>
-          <Link href="/about#contact"><UiIcon className="ui-icon" name="mail" /><span>Contact developers</span></Link>
+          <Link href="/about#contact"><UiIcon className="ui-icon" name="mail" /><span>Contact us</span></Link>
           <Link href="/report-problem"><UiIcon className="ui-icon" name="reports" /><span>Report a problem</span></Link>
           <a href="https://github.com/amherryyy/RoomScouter"><UiIcon className="ui-icon" name="github" /><span>View on GitHub</span></a>
           <Link href="/about#license"><UiIcon className="ui-icon" name="license" /><span>MIT License</span></Link>

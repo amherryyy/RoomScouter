@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Link from "next/link";
+import Script from "next/script";
 import { UiIcon } from "../src/components/ui-icon";
 import "leaflet/dist/leaflet.css";
 import "./styles.css";
@@ -12,7 +13,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <Script id="roomscouter-theme-init" strategy="beforeInteractive">
+          {`try{const saved=localStorage.getItem("roomscouter-theme");const dark=saved?saved==="dark":matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.dataset.theme=dark?"dark":"light"}catch{document.documentElement.dataset.theme="light"}`}
+        </Script>
+      </head>
       <body>
         <a className="skip-link" href="#main-content">Skip to main content</a>
         {children}
@@ -25,7 +31,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
             <nav aria-label="Help and feedback">
               <strong>Help &amp; feedback</strong>
               <Link href="/about#help">Help</Link>
-              <Link href="/about#contact">Contact developers</Link>
+              <Link href="/about#contact">Contact us</Link>
               <Link href="/report-problem">Report a problem</Link>
             </nav>
             <nav aria-label="Project">

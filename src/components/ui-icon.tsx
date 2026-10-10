@@ -1,6 +1,6 @@
 import type { ReactNode, SVGProps } from "react";
 
-export type UiIconName = "home" | "browse" | "map" | "info" | "account" | "dashboard" | "reviews" | "reports" | "menu" | "logout" | "search" | "clear" | "close" | "chevron-down" | "walk" | "bicycle" | "tricycle" | "copyright" | "help" | "mail" | "license" | "github" | "user-plus" | "arrow-right";
+export type UiIconName = "home" | "browse" | "map" | "info" | "account" | "dashboard" | "reviews" | "reports" | "menu" | "logout" | "search" | "clear" | "close" | "chevron-down" | "walk" | "bicycle" | "tricycle" | "copyright" | "help" | "mail" | "license" | "github" | "user-plus" | "arrow-right" | "moon" | "sun";
 
 type UiIconProps = SVGProps<SVGSVGElement> & { name: UiIconName };
 
@@ -29,6 +29,8 @@ const paths: Record<UiIconName, ReactNode> = {
   github: <><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 6v-3.9a3.4 3.4 0 0 0-.9-2.6c3-.3 6.2-1.5 6.2-6.8a5.3 5.3 0 0 0-1.4-3.7 4.9 4.9 0 0 0-.1-3.7s-1.2-.4-3.8 1.4a13 13 0 0 0-6.9 0C5.5.9 4.3 1.3 4.3 1.3a4.9 4.9 0 0 0-.1 3.7 5.3 5.3 0 0 0-1.4 3.7c0 5.3 3.2 6.5 6.2 6.8a3.4 3.4 0 0 0-.9 2.6V22" /></>,
   "user-plus": <><circle cx="9" cy="8" r="3.5" /><path d="M3 20a6 6 0 0 1 12 0M19 8v6m-3-3h6" /></>,
   "arrow-right": <path d="M5 12h14m-6-6 6 6-6 6" />,
+  moon: <path d="M20.4 15.2A8.6 8.6 0 0 1 8.8 3.6 8.7 8.7 0 1 0 20.4 15.2Z" />,
+  sun: <><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" /></>,
 };
 
 export function UiIcon({ name, ...props }: UiIconProps) {

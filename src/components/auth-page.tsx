@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { BrandLogo } from "./brand-logo";
+import { ThemeToggle } from "./theme-toggle";
 
 type AuthPageProps = {
   titleId: string;
@@ -14,6 +15,7 @@ type AuthPageProps = {
 export function AuthPage({ titleId, eyebrow, title, description, children, footer }: AuthPageProps) {
   return (
     <main className="auth-shell" id="main-content" tabIndex={-1}>
+      <ThemeToggle className="auth-theme-toggle" />
       <div className="auth-layout">
         <Link className="auth-brand" href="/" aria-label="RoomScouter home">
           <BrandLogo className="auth-logo-image" />

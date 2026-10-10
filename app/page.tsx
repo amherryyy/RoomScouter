@@ -199,7 +199,7 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
           <p className="home-developer-privacy">Problem reports become public GitHub issues. Leave out passwords, account details, and private rental information.</p>
         </div>
         <div className="home-developer-actions">
-          <Link className="button" href="/about#contact"><UiIcon className="ui-icon" name="mail" /> Contact developers</Link>
+          <Link className="button" href="/about#contact"><UiIcon className="ui-icon" name="mail" /> Contact us</Link>
           <Link className="button secondary" href="/report-problem"><UiIcon className="ui-icon" name="reports" /> Report a problem</Link>
           <a className="button secondary" href="https://github.com/amherryyy/RoomScouter"><UiIcon className="ui-icon" name="github" /> View on GitHub</a>
         </div>
