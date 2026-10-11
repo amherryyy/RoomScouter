@@ -73,11 +73,13 @@ The core listing lifecycle is now established by the listing-foundation migratio
 
 Policies follow deny-by-default rules. The browser never receives a service-role credential. Role checks based only on client state are insufficient. Admin assignment cannot be self-selected during registration; a restricted, idempotent database function is executable only by a privileged PostgreSQL operator.
 
-Signup confirmation and password recovery use Supabase's PKCE email flow and the allow-listed application callback. Recovery requests return the same response whether an account exists or not. Only an authenticated recovery session may reach the password-update form, and a successful change revokes refresh-token sessions before requiring a new login. Local development requires confirmation and captures messages in the local email inbox; hosted delivery uses a configured SMTP provider. See [ADR 0020](decisions/0020-password-recovery.md).
+Registration uses a six digit Supabase email OTP entered on `/verify-email`; the confirmation template uses `{{ .Token }}`. Password recovery is a separate PKCE email-link flow through the allow-listed application callback. Recovery requests return the same response whether an account exists or not. Only an authenticated recovery session may reach the password-update form, and a successful change revokes refresh-token sessions before requiring a new login. Local development captures emails in the local inbox; hosted email delivery uses configured SMTP. See [ADR 0020](decisions/0020-password-recovery.md).
 
 ## Location and distance
 
-Every listing stores latitude and longitude. Version 0.1 stores one configured university coordinate and computes approximate straight-line distance using the Haversine formula. This supports consistent filtering without GPS tracking or route-provider dependence. Display text must label the value as approximate; travel time and road distance are out of scope.
+Every listing stores latitude and longitude. The pilot uses one configured university coordinate and computes approximate straight-line distance using the Haversine formula. Listing details also estimate walking, bicycle, and tricycle time by applying a fixed 1.3 detour factor to straight-line distance and fixed average speeds (4.2, 15, and 20 km/h respectively). These are indicative estimates, not road-network routes, live traffic, or guaranteed times. The feature does not use GPS tracking or a routing provider. Display text must include an approximation disclaimer.
+
+The public map and Browse share the bounded public discovery query. The map provides street/satellite layers, listing markers, barangay boundaries and labels, and a labeled NVSU location, with a full-screen option for mobile use. Satellite imagery uses a compatible translucent polygon fill; street-map boundaries use dashed outlines. Keep tile-provider attribution visible and do not request visitor GPS location.
 
 ## Search
 
@@ -104,6 +106,6 @@ Hosted rehearsal additionally requires the canonical RoomScouter site origin. A 
 
 Local demonstrations use an explicit guarded seed command rather than migration or automatic reset data. It accepts credentials only from the loopback Supabase stack, recreates fixed fictional scenarios, and cannot target the linked hosted project.
 
-## Implementation sequence
+## Current implementation and readiness
 
-Identity, administrator provisioning, listing data, owner workflows, public discovery, community actions, and the core administration workflows are complete. Listing moderation, review moderation, and report resolution use admin-only workspaces backed by transactional database commands. Accessibility contracts, deterministic demo data, local browser acceptance coverage, deployment checks, and a repeatable demonstration script now form the Version 0.1 pilot-hardening baseline.
+Identity, administrator provisioning, listing data, owner workflows, public discovery, community actions, map, and the core administration workflows are implemented. Listing moderation, review moderation, and report resolution use admin-only workspaces backed by transactional database commands. Accessibility contracts, deterministic demo data, local browser acceptance coverage, deployment checks, and a repeatable demonstration script form the Version 0.1 pilot-hardening baseline. Hosted OTP and recovery checks are reported successful by the team. Flower's security check still has the known license diagnostics recorded in [pilot findings](pilot-findings.md), and the project operator/PIC and privacy contact remain unresolved as described in the [privacy baseline](privacy-and-security-baseline.md).

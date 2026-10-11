@@ -4,7 +4,7 @@
 
 RoomScouter centralizes reliable information about boarding houses near a single university. It replaces scattered social-media posts, private messages, word of mouth, and physical advertisements with searchable, moderated listings.
 
-The initial deployment serves one university and its nearby area. The university's name, latitude, and longitude are deployment configuration and must be supplied before the map milestone is considered complete.
+The pilot serves Nueva Vizcaya State University (NVSU) Bayombong Campus and its nearby area. The university's name, latitude, and longitude are deployment configuration. Map and university-relative distance features rely on these configured values.
 
 ## Users
 
@@ -28,27 +28,29 @@ An administrator may review and approve or reject listings, archive inappropriat
 
 The pilot includes:
 
-- email-based registration, login, and logout;
+- email-based registration with six digit email verification, login, password recovery, and logout;
 - explicit student, owner, and admin roles;
 - owner-managed boarding-house listings and photos;
 - monthly rent, room type, available-room count, contact details, and availability;
 - facilities, utilities, house rules, and inclusion details;
 - an approval workflow before public publication;
 - browsing, text search, price, distance, availability, room-type, facility, and utility filters;
-- a map position and approximate distance from the configured university;
+- a public interactive map with street and satellite layers, barangay boundaries and labels, NVSU marker and label, listing markers, and a mobile full-screen option;
+- approximate straight-line distance and estimated walking, bicycle, and tricycle travel times on listing details, with a road-detour adjustment and a clear approximation disclaimer;
 - student favorites, simple one-to-five-star reviews, and reports;
 - admin queues for listings, reports, and reviews;
-- responsive behavior suitable for common mobile browsers.
+- responsive behavior suitable for mobile, tablet, and desktop, including dark mode and compact navigation;
+- full-card listing links, project contact/help information, and a website report form that opens a GitHub issue draft.
 
 ## Explicit non-goals
 
 Version 0.1 does not include payments, reservations, contracts, identity-document verification, real-time chat, AI recommendations, roommate matching, recommendation algorithms, advanced analytics, GPS tracking, or support for multiple universities.
 
-Owner contact information is displayed according to the listing's publication rules. “Respond to inquiries” means responding through the published contact channel; the pilot does not implement an internal messaging system.
+Owner contact information is displayed according to the listing's publication rules. “Respond to inquiries” means responding through the published contact channel; the pilot does not implement an internal messaging system. Travel times use a simple estimate, not route planning, live traffic, or GPS tracking.
 
 ## Success criteria
 
-The pilot succeeds when a demonstration can show an owner submitting a listing, an administrator approving it, and a student finding, comparing, mapping, favoriting, reviewing, and reporting that listing without any user gaining access to another user's protected data.
+The pilot succeeds when a demonstration can show an owner submitting a listing, an administrator approving it, and a student finding, comparing, mapping, favoriting, reviewing, and reporting that listing without any user gaining access to another user's protected data. Production readiness also depends on confirming the project operator/PIC and privacy contact and completing the actions in the privacy baseline.
 
 ## Product principles
 

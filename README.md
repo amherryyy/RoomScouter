@@ -16,7 +16,7 @@ Version 0.1 must prove five things:
 
 The complete scope is defined in [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md), functional requirements in [docs/requirements.md](docs/requirements.md), and technical boundaries in [docs/architecture.md](docs/architecture.md). Findings discovered while using Flower are recorded in [docs/pilot-findings.md](docs/pilot-findings.md).
 
-The team's initial visual direction is mapped to working routes and product boundaries in the [UI design handoff](docs/ui-handoff.md). Preview pages are explicitly labeled when their supporting feature has not been implemented.
+The current routes and responsive interface are documented in the [UI handoff](docs/ui-handoff.md). The product includes a dark theme, compact responsive navigation, listing cards that link to their detail pages, and a map with street/satellite layers and a full-screen option.
 
 ## Local development
 
@@ -43,7 +43,7 @@ For a repeatable local demonstration with fictional student, owner, administrato
 
 The browser-level pilot suite proves the connected student, owner, and administrator journeys against that same local stack. Follow [the end-to-end testing guide](docs/end-to-end-testing.md). Its runner refreshes the demo data and supplies only credentials reported by the loopback Supabase service; it does not use the linked hosted project or `.env.local` Supabase values.
 
-Before a hosted rehearsal, follow [the deployment guide](docs/deployment-rehearsal.md) and run `npm.cmd run release:check` with the intended production values. The readiness guard rejects missing or non-HTTPS origins, local Supabase endpoints, secret/service-role browser keys, and invalid university coordinates. The team presentation is organized in the [pilot demonstration script](docs/pilot-demonstration.md).
+Vercel and the hosted Supabase project are already configured for the pilot. For a future deployment or configuration change, follow [the deployment guide](docs/deployment-rehearsal.md) and run `npm.cmd run release:check` with the intended production values. The readiness guard rejects missing or non-HTTPS origins, local Supabase endpoints, secret/service-role browser keys, and invalid university coordinates. The team presentation is organized in the [pilot demonstration script](docs/pilot-demonstration.md).
 
 ## Supabase identity setup
 
@@ -51,7 +51,7 @@ The identity foundation requires a Supabase project before registration can run:
 
 1. Copy `.env.example` to `.env.local` and provide the project's URL and publishable key.
 2. Apply `supabase/migrations/20260926010000_identity_foundation.sql` through the reviewed database-migration workflow.
-3. Configure the local and deployed site URLs and redirect allow-list in Supabase Auth before testing email confirmation. The registration flow uses the default confirmation template and exchanges its PKCE code at `/auth/callback`; custom SMTP is not required for development.
+3. Configure the local and deployed site URLs and redirect allow-list in Supabase Auth. Registration sends a six digit email verification code, entered on `/verify-email`; the confirmation email template uses Supabase's `{{ .Token }}` value. Password recovery remains a separate PKCE link flow through `/auth/callback`. Local development captures email in Supabase's local inbox. Hosted email delivery depends on the SMTP configuration already set up for the project.
 4. Regenerate `src/lib/supabase/database.types.ts` from the linked project after every migration with `npm run types:database`. The project command writes UTF-8 consistently, including from Windows PowerShell.
 
 Registration permits only student and owner accounts. Public registration cannot create an administrator.
@@ -78,7 +78,9 @@ Owners use `/owner` to create and maintain core listing drafts, review moderatio
 
 Public discovery uses a bounded PostgreSQL query for text, price, availability, room type, facility, utility, and approximate distance filters. It returns only approved listings with available rooms and remains subject to row-level security. See [ADR 0009](docs/decisions/0009-database-backed-public-discovery.md).
 
-The public home page renders paginated result cards and `/listings/[id]` presents approved listing facts, short-lived private photo previews, an OpenStreetMap pin, and direct owner contact channels. Distance filtering and university-relative labels activate when `ROOMSCOUTER_UNIVERSITY_NAME`, `ROOMSCOUTER_UNIVERSITY_LATITUDE`, and `ROOMSCOUTER_UNIVERSITY_LONGITUDE` are configured.
+The home and browse pages render paginated result cards; the full card opens `/listings/[id]`. Details show approved listing facts, short-lived private photo previews, an OpenStreetMap location, and direct owner contact channels. Distance filtering and university-relative labels use `ROOMSCOUTER_UNIVERSITY_NAME`, `ROOMSCOUTER_UNIVERSITY_LATITUDE`, and `ROOMSCOUTER_UNIVERSITY_LONGITUDE`. Listing details also show approximate walking, bicycle, and tricycle travel times. These estimates adjust straight-line distance by a simple detour factor; they are not route calculations or guaranteed travel times.
+
+The interactive `/map` page uses the same public search boundary and filters as Browse. It identifies NVSU on the map, labels barangays, offers street and satellite layers, and can expand to full screen on small devices. Map tiles are requested from the configured provider with required attribution; the application does not request visitor GPS location. See [ADR 0010](docs/decisions/0010-interactive-public-map.md).
 
 Student favorites are private, student-owned relations. Students may save each approved, available listing once; owners, visitors, other students, and normal administrator sessions cannot inspect another student's shortlist. See [ADR 0010](docs/decisions/0010-student-owned-favorites.md).
 
@@ -88,8 +90,15 @@ Each student may publish one one-to-five-star review per approved, available lis
 
 Listing pages display the published review count, average rating, and a paginated anonymous review list. Signed-in students can create, update, or delete their own review and see moderation feedback when it is hidden.
 
-Students may privately report an approved listing or published review with a bounded reason. Reports are append-only for students, prevent duplicate open cases per target, and are visible only to the reporter and administrators. Resolution fields are reserved for the administration milestone. See [ADR 0012](docs/decisions/0012-private-student-reports.md).
+Students may privately report an approved listing or published review with a bounded reason. Students can view their own submitted reports but cannot edit or delete them. Duplicate open reports for the same target are prevented. Administrators can review, resolve, or dismiss reports through the audited moderation workflow. See [ADR 0012](docs/decisions/0012-private-student-reports.md).
 
-Student-only report forms appear on public listings and on other students' published reviews. `/reports` provides the reporter with a private, paginated history and later displays administrator resolution notes without exposing other users' cases.
+Student-only report forms appear on public listings and on other students' published reviews. `/reports` provides the reporter with a private, paginated history and displays administrator outcome notes without exposing other users' cases. The public **Report a problem** form sends a prepared issue to the project's GitHub issue tracker; see the About page for contact and help information.
 
 The listing editor also saves facilities, utilities, and ordered house rules as complete transactional collections. Invalid or cross-owner requests fail without partial changes, and saving an unchanged section does not disturb an approved listing's status.
+
+## Current readiness notes
+
+- The team reports successful live checks of email verification and password recovery. The local automated browser suite uses pre-confirmed demo accounts.
+- Vercel and Supabase are configured for the current pilot deployment. Review [the deployment guide](docs/deployment-rehearsal.md) before changing production settings or deploying a future release.
+- The project operator/PIC identity and accountable privacy contact have not yet been confirmed. Do not infer that the developer or NVSU is responsible. See [the privacy and security baseline](docs/privacy-and-security-baseline.md).
+- Flower's `flower security check` remains blocked by known dependency-license diagnostics pending the documented migration/reinitialization path. See [pilot findings](docs/pilot-findings.md).

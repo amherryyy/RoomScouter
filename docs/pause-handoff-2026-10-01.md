@@ -1,5 +1,7 @@
 # RoomScouter pause handoff — October 1, 2026
 
+> **Historical snapshot:** This handoff records the project state on October 1, 2026. It has been superseded by later implementation work and is retained for historical context. In particular, the map is now interactive, profile editing is implemented, and the property-detail work is complete. Use the current [README](../README.md), [UI handoff](ui-handoff.md), and [requirements](requirements.md) for present behavior.
+
 RoomScouter is intentionally pausing for up to five days while work shifts to the JuanProperty business pitch and a small Flower pilot-feedback iteration. This is a planned pause, not a project blocker.
 
 ## Verified baseline
