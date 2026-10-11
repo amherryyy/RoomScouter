@@ -3916,21 +3916,23 @@ html[data-theme="dark"] .theme-toggle:hover { border-color: #6f9c82; background:
 
 .theme-toggle-label { display: none; }
 
+/* Keep the same visible RoomScouter logo size across public, workspace, and auth pages. */
+.public-header .wordmark, .workspace-topbar-brand, .auth-brand { width: 15rem; min-width: 0; height: 3.25rem; flex: 0 0 auto; }
+.public-wordmark-logo, .workspace-topbar-logo, .auth-logo-image { display: block; width: 100%; height: 100%; object-fit: cover; }
 @media (max-width: 54rem) {
   .theme-toggle { width: 2.75rem; padding: 0.45rem; }
   .theme-toggle-label { display: none; }
   .public-header-actions, .workspace-topbar-actions { gap: 0.45rem; flex: 0 0 auto; }
   .public-header, .workspace-topbar { flex-wrap: nowrap; gap: 0.45rem; }
   .public-header .wordmark, .workspace-topbar-brand { min-width: 0; flex: 0 1 auto; }
-  .public-header .wordmark { width: 14rem; height: 3rem; }
-  .workspace-topbar-logo { width: 14rem; min-width: 0; height: 3rem; }
+  .public-header .wordmark, .workspace-topbar-brand, .auth-brand { width: 14rem; height: 3rem; }
   .public-navigation .responsive-navigation-toggle, .workspace-navigation .responsive-navigation-toggle { max-width: min(12rem, calc(100vw - 13rem)); min-width: 0; }
   .public-navigation .profile-menu-name, .workspace-navigation .profile-menu-name { min-width: 0; }
 }
 
 @media (max-width: 42rem) {
   .auth-theme-toggle { top: 0.5rem; right: 0.5rem; }
-  .public-header .wordmark, .workspace-topbar-logo { width: min(13rem, calc(100vw - 9rem)); height: 3rem; }
+  .public-header .wordmark, .workspace-topbar-brand, .auth-brand { width: min(13rem, calc(100vw - 9rem)); height: 3rem; }
   .public-header-actions, .workspace-topbar-actions { gap: 0.3rem; }
   .public-header .theme-toggle, .workspace-topbar .theme-toggle { width: 2.5rem; min-width: 2.5rem; min-height: 2.5rem; }
   .public-navigation .responsive-navigation-toggle, .workspace-navigation .responsive-navigation-toggle { max-width: min(11rem, calc(100vw - 14.5rem)); min-height: 2.5rem; }
