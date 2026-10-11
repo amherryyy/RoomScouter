@@ -4,7 +4,7 @@
 
 RoomScouter centralizes reliable information about boarding houses near a single university. It replaces scattered social-media posts, private messages, word of mouth, and physical advertisements with searchable, moderated listings.
 
-The pilot serves Nueva Vizcaya State University (NVSU) Bayombong Campus and its nearby area. The university's name, latitude, and longitude are deployment configuration. Map and university-relative distance features rely on these configured values.
+The pilot serves one university: Nueva Vizcaya State University (NVSU) Bayombong Campus and its nearby area. The university's name, latitude, and longitude are deployment configuration. Map and university-relative distance features rely on these configured values.
 
 ## Users
 
