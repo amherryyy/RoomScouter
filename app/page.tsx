@@ -3,6 +3,7 @@ import nvsuCampusImage from "../logo&icon/nvsu.jpg";
 import Link from "next/link";
 import Form from "next/form";
 import { PublicHeader } from "../src/components/public-header";
+import { createServerSupabaseClient } from "../src/lib/supabase/server";
 import { UiIcon } from "../src/components/ui-icon";
 import { DiscoveryFiltersForm } from "../src/components/discovery-filters";
 import { SubmitButton } from "../src/components/submit-button";
@@ -24,6 +25,8 @@ type HomePageProps = {
 
 export default async function Home({ searchParams, browseMode = false }: HomePageProps) {
   const filters = parseDiscoveryFilters(await searchParams);
+  const supabase = await createServerSupabaseClient();
+  const { data: { user } } = await supabase.auth.getUser();
   const university = getUniversityConfig();
   const { results, facilities, utilities, barangays, total } = await loadDiscovery(filters, university);
   const firstResult = total ? (filters.page - 1) * DISCOVERY_PAGE_SIZE + 1 : 0;
@@ -35,7 +38,7 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
   return (
     <>
     <main className={`discovery-shell${browseMode ? " browse-page-shell" : ""}`} id="main-content" tabIndex={-1}>
-      <PublicHeader current={browseMode ? "browse" : "home"} />
+      <PublicHeader current={browseMode ? "browse" : "home"} knownUser={user} />
 
       {browseMode ? (
         <section className="browse-page-hero">
@@ -54,7 +57,7 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
           <p className="eyebrow">Student housing near NVSU</p>
           <h1>Find your perfect boarding house.</h1>
           <p className="lede">Explore approved rooms around NVSU with clear details on rent, availability, amenities, and distance.</p>
-          <Link className="button home-get-started" href="/register"><span>Get started</span><UiIcon className="ui-icon" name="arrow-right" /></Link>
+          {!user ? <Link className="button home-get-started" href="/register"><span>Get started</span><UiIcon className="ui-icon" name="arrow-right" /></Link> : null}
           <Form className="hero-search" action={searchPath}>
             <label className="visually-hidden" htmlFor="hero-query">Search listings near the university</label>
             <input
