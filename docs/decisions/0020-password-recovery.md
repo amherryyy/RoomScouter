@@ -6,7 +6,7 @@ Accepted
 
 ## Context
 
-The deployed pilot supported registration and password login but offered no safe path when a user forgot a password. Manually editing authentication records or replacing an administrator account would bypass the product's normal identity lifecycle and create operational risk.
+The deployed pilot supported registration and password login but offered no safe path when a user forgot a password. Manually editing authentication records or replacing an administrator account would bypass the product's normal identity lifecycle and create operational risk. Registration email confirmation is a separate six digit OTP flow; this decision covers password recovery only.
 
 ## Decision
 
@@ -23,3 +23,4 @@ Production callback construction prefers `ROOMSCOUTER_SITE_URL`; local developme
 - Email delivery and rate limits remain operational dependencies of hosted Supabase Auth.
 - Recovery links must be opened in the browser that requested them when PKCE verifier state is stored there.
 - Supabase Site URL and redirect allow-list configuration remain part of deployment rehearsal.
+- The registration OTP template and `/verify-email` flow do not change the PKCE password-recovery callback.

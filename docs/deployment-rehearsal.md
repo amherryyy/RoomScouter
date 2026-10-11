@@ -1,10 +1,10 @@
 # Deployment rehearsal
 
-This rehearsal prepares RoomScouter for Vercel while keeping database changes in the reviewed Supabase migration workflow. Complete it first with a Vercel preview, then repeat the same checks for production.
+Vercel and the hosted Supabase project are already configured for the current RoomScouter pilot. Use this guide to verify existing settings or prepare a future preview/production deployment. Do not re-import or recreate the configured projects as routine setup. Keep database changes in the reviewed Supabase migration workflow.
 
 ## 1. Confirm the database
 
-From a clean `main` branch, verify that the linked Supabase project has every reviewed migration:
+From the intended release branch and with the correct Supabase project linked, verify that the hosted project has every reviewed migration:
 
 ```powershell
 npx.cmd supabase migration list
@@ -15,13 +15,13 @@ The local and remote migration columns should match. A production rehearsal shou
 
 ## 2. Configure Vercel
 
-Import the GitHub repository into Vercel as a Next.js project. Keep the normal install and build commands. Add these values separately to Preview and Production:
+In the existing Vercel project, verify the repository connection and normal install/build commands. Verify the following values separately for Preview and Production:
 
 | Variable | Value |
 | --- | --- |
 | `NEXT_PUBLIC_SUPABASE_URL` | Hosted project URL from Supabase |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Publishable key, or legacy anon key; never a secret/service-role key |
-| `ROOMSCOUTER_SITE_URL` | Exact public Vercel origin, such as `https://roomscouter.example` |
+| `ROOMSCOUTER_SITE_URL` | Exact public Vercel origin; production is `https://room-scouter.vercel.app` |
 | `ROOMSCOUTER_UNIVERSITY_NAME` | `Nueva Vizcaya State University Bayombong Campus` |
 | `ROOMSCOUTER_UNIVERSITY_LATITUDE` | `16.479791986946516` |
 | `ROOMSCOUTER_UNIVERSITY_LONGITUDE` | `121.1432206694793` |
@@ -32,15 +32,14 @@ Run `npm.cmd run deployment:check` in a local shell configured with the same val
 
 In the hosted Supabase dashboard:
 
-1. Set the production Site URL to the exact `ROOMSCOUTER_SITE_URL` value.
+1. Confirm the production Site URL matches the exact `ROOMSCOUTER_SITE_URL` value.
 2. Add `<ROOMSCOUTER_SITE_URL>/auth/callback` to the permitted redirect URLs.
 3. Add a preview callback only when that preview will be used for authentication testing.
-4. Keep email confirmation enabled for the release rehearsal.
-5. Configure a custom SMTP service under **Authentication > Emails > SMTP Settings**. Supabase's built-in sender is for development, only sends to project team members, and is limited to two emails per hour. A custom SMTP connection works with providers such as Resend, Amazon SES, Postmark, SendGrid, and Brevo. New custom SMTP setups start at 30 auth emails per hour; adjust **Authentication > Rate Limits** to a value supported by both Supabase and the provider.
-6. Verify the sender domain with the provider and publish its SPF, DKIM, and DMARC DNS records. Use a dedicated authentication sender address and keep auth email separate from marketing email.
-7. In **Authentication > Emails > Email Templates**, configure the confirmation and password recovery templates using the content in `supabase/templates/confirmation.html` and `supabase/templates/recovery.html`. Keep the Supabase `{{ .ConfirmationURL }}` link: registration and recovery already route through RoomScouter's allow-listed PKCE callback. This pilot uses links; an OTP code-entry screen would require a separate app flow.
+4. Keep email confirmation enabled. Registration requires a six digit code entered at `/verify-email`; its template must include Supabase's `{{ .Token }}` value from `supabase/templates/confirmation.html`.
+5. Verify the existing SMTP sender configuration and provider rate limits. If setting up a new sender, use **Authentication > Emails > SMTP Settings**, verify the sender domain, and publish the provider's SPF, DKIM, and DMARC records. Keep authentication email separate from marketing email.
+6. In **Authentication > Emails > Email Templates**, keep the confirmation template aligned with `supabase/templates/confirmation.html` and the password recovery template aligned with `supabase/templates/recovery.html`. Registration uses a code; password recovery still uses the `{{ .ConfirmationURL }}` PKCE link through `/auth/callback`.
 
-For local development, `supabase/config.toml` enables confirmations and defines matching templates. Supabase's local email inbox captures those messages; open the **Inbucket URL** reported by `npx.cmd supabase status` (normally `http://127.0.0.1:54324`) to inspect and click the links. Local demo accounts are created as already confirmed so the guarded Playwright journeys remain deterministic.
+For local development, `supabase/config.toml` enables confirmations, six digit OTPs, and matching templates. Supabase's local email inbox captures those messages; open the **Inbucket URL** reported by `npx.cmd supabase status` (normally `http://127.0.0.1:54324`) to inspect the code or recovery link. Local demo accounts are already confirmed so guarded Playwright journeys remain deterministic.
 
 Do not place a database password, secret key, or service-role key in Vercel browser-visible variables.
 
@@ -49,7 +48,9 @@ Do not place a database password, secret key, or service-role key in Vercel brow
 After Vercel reports a successful deployment, check the deployed origin in a private browser window:
 
 - the home page loads over HTTPS and shows approved listings only;
-- search and filters work, including distance from the configured university;
+- search and filters work, including approximate distance from the configured university;
+- street/satellite map layers, the NVSU marker, barangay labels, listing markers, and map full-screen control work;
+- listing details show approximate walking, bicycle, and tricycle times with their disclaimer;
 - a confirmed student can log in, save a listing, and log out;
 - an owner can reach the owner dashboard but not administrator pages;
 - an administrator can reach moderation pages;

@@ -13,10 +13,14 @@ The `/map` route was an explicitly labeled wireframe. The product now needs a wo
 - Display up to 50 matching listings per map page, the database function's existing upper bound. Paginate any additional matches; do not load the full listing table into the browser.
 - Provide a price marker, keyboard-accessible matching result, and a listing-details link. Selecting either a marker or result identifies the same listing. Do not add visitor geolocation, routing, reservation, or messaging behavior.
 - Load map tiles from a configurable provider. OpenStreetMap is the default and must keep its attribution visible and send only normal requests for tiles in the current view. Do not prefetch or offer offline downloads.
+- Provide street and satellite basemaps. Use dashed boundary lines on the street map and a compatible low-opacity polygon fill on satellite imagery; retain readable barangay labels in both views.
+- Identify NVSU and barangay boundaries by label, and provide a map full-screen control so the map remains usable on phones.
 - Show only public listing fields on the map and result cards. Owner contact details remain on an individual approved listing page.
+- Selecting the map background must not create a persistent selection rectangle or remove the barangay labels.
 
 ## Consequences
 
 - Tile requests go directly from the browser to the configured provider; the Privacy Notice describes the default provider and data shared with it.
 - The OpenStreetMap standard tile service is best-effort. Reassess the provider if usage grows or a service-level guarantee becomes necessary.
+- Travel-time estimates shown on listing details are a separate approximation and do not add route planning to the map.
 - Barangay search and filtering are implemented with the shared discovery query. See [ADR 0014](0014-barangay-discovery.md).

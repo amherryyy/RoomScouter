@@ -6,17 +6,18 @@ This document connects the team's initial RoomScouter wireframe to the working p
 
 | Wireframe screen | Current route | State |
 | --- | --- | --- |
-| Landing and student browse | `/`, `/browse` | Landing page features approved listings; browse page provides database-backed search, filters, and paginated public results. |
+| Landing and student browse | `/`, `/browse` | Landing page features approved listings and a sign-up call to action for visitors; browse page provides database-backed search, filters, and paginated public results. Entire listing cards link to their detail page. |
 | Login and account recovery | `/login`, `/forgot-password`, `/update-password` | Working with a shared responsive authentication layout. |
-| Registration | `/register` | Working for student and owner roles with the shared authentication layout. |
+| Registration and email verification | `/register`, `/verify-email` | Working for student and owner roles. New accounts confirm email with a six digit code. |
 | Property details | `/listings/[id]` | Working for approved, available listings. |
-| Map view | `/map` | Interactive map and matching public listing results; search filters stay synchronized with Browse. |
+| Map view | `/map` | Interactive map and matching public listing results; search filters stay synchronized with Browse. Includes NVSU label, barangay names/boundaries, street and satellite styles, visible attribution, and mobile full-screen control. |
 | Favorites | `/favorites` | Working for signed-in students. |
 | Signed-in account profile | `/account` | Working; users can update their display name, review read-only email and role details, access password recovery, and open role-specific destinations. |
 | Owner dashboard | `/owner` | Working with truthful listing lifecycle totals; views and inquiries remain a labeled future concept. |
 | Add and edit property | `/owner/listings/new`, `/owner/listings/[id]/edit` | Working. |
 | Administrator dashboard | `/admin` | Working, with truthful account, property, pending-listing, and open-report totals plus separate moderation queues. |
-| About | `/about` | Working informational page. |
+| About, help, contact, and license | `/about` | Working informational cards for project contact, future help/FAQ content, and MIT license. The developer contact action opens this page. |
+| Report a website problem | Footer/menu form | Collects a message on RoomScouter and prepares a GitHub issue from it; this is separate from private reports about listings and reviews. |
 
 ## Product boundaries
 
@@ -28,6 +29,7 @@ The final interface may style working behavior freely, but it must preserve thes
 - Reviews do not expose student profile details publicly.
 - Administrator access cannot be selected during public registration.
 - RoomScouter supports discovery and direct owner contact; it does not process reservations, leases, or payments.
+- Approximate travel times use an estimated road-detour factor and average speeds. They are not route directions or promises of actual travel time.
 
 ## Future concepts shown in the wireframe
 
@@ -41,6 +43,8 @@ The following concepts require separate product and architecture decisions befor
 - social sharing.
 
 Until approved, these concepts must be omitted or presented as clearly non-interactive previews. Disabled controls must not be used as a substitute for honest status text.
+
+The project operator/PIC and accountable privacy contact also remain to be confirmed. Do not present the privacy notice as complete until those details and the actions in the [privacy baseline](privacy-and-security-baseline.md) are resolved.
 
 ## Implementation guidance
 

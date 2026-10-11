@@ -20,6 +20,8 @@ All local demo accounts use `RoomScouterDemo!2026`. The complete account list is
 - Explain that only approved listings with available rooms appear.
 - Search for `Campus Gate Residences`.
 - Show rent, availability, room type, facilities, utilities, house rules, approximate university distance, map link, and owner contact details.
+- Point out that the complete listing card opens its detail page. On details, show the approximate walk, bicycle, and tricycle times and explain the short disclaimer.
+- Open `/map` and show NVSU, barangay labels, the street/satellite switcher, and the full-screen control. Explain that this is a location view, not route guidance.
 
 ### 2. Student experience
 
@@ -28,6 +30,7 @@ All local demo accounts use `RoomScouterDemo!2026`. The complete account list is
 - Publish or update a simple review.
 - Submit a report and show that it appears only in that student's private report history.
 - Explain that another student cannot see these saved items or private cases.
+- If demonstrating a new account, enter the six digit email code from the local Supabase email inbox. Use pre-confirmed local demo accounts for the scripted journey.
 
 ### 3. Owner workflow
 
@@ -50,6 +53,8 @@ Close by explaining three protections in plain language:
 - the database—not just hidden buttons—enforces who may read or change each record;
 - listings are private until an administrator approves them;
 - RoomScouter does not process payments, reservations, private messages, or identity documents.
+
+The team reports that email verification and password recovery were tested on the current production deployment. For a repeatable presentation, use the local, pre-confirmed demo accounts rather than sending live email.
 
 ## Expected ending
 
