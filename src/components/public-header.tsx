@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { User } from "@supabase/supabase-js";
 import { BrandLogo } from "./brand-logo";
 import { SubmitButton } from "./submit-button";
 import { logout } from "../features/auth/actions";
@@ -9,6 +10,7 @@ import { ThemeToggle } from "./theme-toggle";
 
 type PublicHeaderProps = {
   current?: "home" | "browse" | "map" | "about";
+  knownUser?: User | null;
 };
 
 const roleLabels = {
@@ -23,9 +25,9 @@ const dashboardPaths = {
   admin: "/admin",
 } as const;
 
-export async function PublicHeader({ current }: PublicHeaderProps) {
+export async function PublicHeader({ current, knownUser }: PublicHeaderProps) {
   const supabase = await createServerSupabaseClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = knownUser === undefined ? (await supabase.auth.getUser()).data.user : knownUser;
   const { data: profile } = user
     ? await supabase.from("profiles").select("display_name, role").eq("id", user.id).maybeSingle()
     : { data: null };
