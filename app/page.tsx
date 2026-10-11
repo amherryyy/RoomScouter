@@ -105,7 +105,7 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
           {results.length ? <div className="featured-grid">
             {results.slice(0, 3).map((listing) => (
               <Link className="featured-card" href={`/listings/${listing.id}`} aria-label={`View property details for ${listing.title}`} key={listing.id}>
-                {listing.cover ? <img className="featured-cover" src={listing.cover.signedUrl} alt={listing.cover.altText} /> : <span className="featured-cover featured-cover-empty"><img src="/roomscouter-icon.png" width="1141" height="1379" alt="" /><span>Photos coming soon</span></span>}
+                {listing.cover ? <img className="featured-cover" src={listing.cover.signedUrl} alt={listing.cover.altText} /> : <span className="featured-cover featured-cover-empty"><img src="/roomscouter-icon.png" width="1254" height="1254" alt="" /><span>Photos coming soon</span></span>}
                 <div className="featured-card-body">
                   <p className="featured-location">{listing.barangay ? `${listing.barangay} · ` : ""}{listing.address_line}</p>
                   <h3>{listing.title}</h3>
@@ -157,7 +157,7 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
             <Link className="discovery-card" href={`/listings/${listing.id}`} aria-label={`View property details for ${listing.title}`} key={listing.id}>
               {listing.cover ? (
                 <img className="listing-cover" src={listing.cover.signedUrl} alt={listing.cover.altText} />
-              ) : <div className="listing-cover cover-placeholder"><img src="/roomscouter-icon.png" width="1141" height="1379" alt="" /><span>Photo coming soon</span></div>}
+              ) : <div className="listing-cover cover-placeholder"><img src="/roomscouter-icon.png" width="1254" height="1254" alt="" /><span>Photo coming soon</span></div>}
               <div className="discovery-card-body">
                 <div className="listing-card-heading">
                   <h3>{listing.title}</h3>

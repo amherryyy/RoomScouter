@@ -47,7 +47,7 @@ export default async function FavoritesPage({ searchParams }: FavoritesPageProps
             return (
               <article className="listing-card" key={listing.id}>
                 <div className="workspace-listing-media" aria-hidden="true">
-                  <img src="/roomscouter-icon.png" width="1141" height="1379" alt="" />
+                  <img src="/roomscouter-icon.png" width="1254" height="1254" alt="" />
                 </div>
                 <h2><Link href={`/listings/${listing.id}`}>{listing.title}</Link></h2>
                 <p>{listing.barangay ? `${listing.barangay} · ` : ""}{listing.address_line}</p>

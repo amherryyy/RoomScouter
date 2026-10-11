@@ -61,6 +61,7 @@ export function ResponsiveNavigation({
             ? "Open profile and navigation menu for " + displayName
             : "Open navigation menu"}
         className="responsive-navigation-toggle profile-menu-trigger"
+        data-authenticated={displayName ? "true" : undefined}
         onClick={() => setOpen((value) => !value)}
         ref={toggleRef}
         type="button"
