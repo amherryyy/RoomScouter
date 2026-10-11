@@ -94,15 +94,20 @@ export function ResponsiveNavigation({
         ) : null}
         {children}
         <div className="mobile-navigation-account">{mobileAccount}</div>
-        <section className="mobile-navigation-project" aria-label="Help and project links">
-          <h2>Help &amp; project</h2>
-          <Link href="/about#help"><UiIcon className="ui-icon" name="help" /><span>Help</span></Link>
-          <Link href="/about#contact"><UiIcon className="ui-icon" name="mail" /><span>Contact us</span></Link>
-          <Link href="/report-problem"><UiIcon className="ui-icon" name="reports" /><span>Report a problem</span></Link>
-          <a href="https://github.com/amherryyy/RoomScouter"><UiIcon className="ui-icon" name="github" /><span>View on GitHub</span></a>
-          <Link href="/about#license"><UiIcon className="ui-icon" name="license" /><span>MIT License</span></Link>
-          <p>Problem reports become public when submitted on GitHub. Leave out personal, account, or rental details.</p>
-        </section>
+        <details className="mobile-navigation-project" aria-label="Help and project links">
+          <summary>
+            <span>Help &amp; project</span>
+            <UiIcon className="ui-icon mobile-navigation-project-chevron" name="chevron-down" />
+          </summary>
+          <div className="mobile-navigation-project-links">
+            <Link href="/about#help"><UiIcon className="ui-icon" name="help" /><span>Help</span></Link>
+            <Link href="/about#contact"><UiIcon className="ui-icon" name="mail" /><span>Contact us</span></Link>
+            <Link href="/report-problem"><UiIcon className="ui-icon" name="reports" /><span>Report a problem</span></Link>
+            <a href="https://github.com/amherryyy/RoomScouter"><UiIcon className="ui-icon" name="github" /><span>View on GitHub</span></a>
+            <Link href="/about#license"><UiIcon className="ui-icon" name="license" /><span>MIT License</span></Link>
+            <p>Problem reports become public when submitted on GitHub. Leave out personal, account, or rental details.</p>
+          </div>
+        </details>
       </div>
     </div>
   );
