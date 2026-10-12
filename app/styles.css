@@ -4000,7 +4000,7 @@ html[data-theme="dark"] .theme-toggle:hover { border-color: #6f9c82; background:
 .search-history-suggestion span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .search-history-suggestion:hover, .search-history-suggestion:focus-visible { outline: none; color: var(--rs-ink); background: var(--rs-surface-2, #f1f5f2); }
 .search-history-suggestion:hover .ui-icon, .search-history-suggestion:focus-visible .ui-icon { color: var(--rs-green); }
-.recent-search-history { margin-top: 0 !important; border-top: 1px solid var(--rs-border) !important; padding: 0 !important; }
+.recent-search-history { margin-top: 0 !important; border-top: 1px solid var(--rs-border) !important; padding: 1.5rem 1.7rem 1.8rem !important; }
 .recent-searches-dropdown > summary { display: flex; min-height: 4.3rem; align-items: center; justify-content: space-between; gap: 1rem; cursor: pointer; list-style: none; }
 .recent-searches-dropdown > summary::-webkit-details-marker { display: none; }
 .recent-searches-dropdown > summary::marker { content: ""; }
