@@ -23,6 +23,14 @@ export default async function OwnerDashboardPage() {
     .select("id, title, barangay, status, monthly_rent, available_rooms, updated_at")
     .order("updated_at", { ascending: false });
   const ownerListings = listings ?? [];
+  const ownerListingIds = ownerListings.map((listing) => listing.id);
+  const { data: reviewEvents } = ownerListingIds.length
+    ? await supabase.from("moderation_events")
+      .select("id, boarding_house_id, action, reason, created_at")
+      .in("boarding_house_id", ownerListingIds)
+      .order("created_at", { ascending: false })
+      .limit(10)
+    : { data: [] };
   const summary = {
     total: ownerListings.length,
     draft: ownerListings.filter((listing) => listing.status === "draft").length,
@@ -30,6 +38,8 @@ export default async function OwnerDashboardPage() {
     approved: ownerListings.filter((listing) => listing.status === "approved").length,
     rejected: ownerListings.filter((listing) => listing.status === "rejected").length,
   };
+
+  const listingTitles = new Map(ownerListings.map((listing) => [listing.id, listing.title]));
 
   return (
     <main className="workspace-shell owner-workspace" id="main-content" tabIndex={-1}>
@@ -104,6 +114,37 @@ export default async function OwnerDashboardPage() {
         </section>
       )}
 
+      <section className="account-section" aria-labelledby="owner-review-history-title">
+        <div className="section-heading">
+          <p className="eyebrow">Your properties</p>
+          <h2 id="owner-review-history-title">Listing review history</h2>
+          <p>Recent decisions from the RoomScouter review team.</p>
+        </div>
+        {reviewEvents?.length ? (
+          <div className="report-history">
+            {reviewEvents.map((event) => {
+              const actionLabel = event.action === "approved" ? "Listing approved" : event.action === "rejected" ? "Changes requested" : "Listing archived";
+              const listingTitle = listingTitles.get(event.boarding_house_id) ?? "Your listing";
+              return (
+                <article className="report-card" key={event.id}>
+                  <div className="listing-card-heading">
+                    <h3>{actionLabel}</h3>
+                    <span className={"status status-" + event.action}>{event.action}</span>
+                  </div>
+                  <p>{listingTitle}</p>
+                  {event.reason ? <p><strong>Reviewer note:</strong> {event.reason}</p> : null}
+                  <p className="field-help"><time dateTime={event.created_at}>{new Intl.DateTimeFormat("en-PH", { dateStyle: "medium", timeStyle: "short" }).format(new Date(event.created_at))}</time></p>
+                </article>
+              );
+            })}
+          </div>
+        ) : (
+          <section className="empty-state">
+            <h3>No review history yet</h3>
+            <p>Decisions about your listings will appear here.</p>
+          </section>
+        )}
+      </section>
       <section className="owner-future-note" aria-labelledby="owner-insights-heading">
         <div>
           <p className="preview-badge">Under construction</p>

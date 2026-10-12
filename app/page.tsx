@@ -6,6 +6,7 @@ import { PublicHeader } from "../src/components/public-header";
 import { createServerSupabaseClient } from "../src/lib/supabase/server";
 import { UiIcon } from "../src/components/ui-icon";
 import { DiscoveryFiltersForm } from "../src/components/discovery-filters";
+import { RecentSearches } from "../src/components/recent-searches";
 import { SubmitButton } from "../src/components/submit-button";
 import { loadDiscovery } from "../src/features/discovery/queries";
 import {
@@ -92,6 +93,8 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
         </div>
       </section>
       )}
+
+      <RecentSearches />
 
       {!browseMode ? (
         <section className="featured-listings" aria-labelledby="featured-title">
