@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { DiscoveryFiltersForm } from "../../src/components/discovery-filters";
+import { RecentSearches } from "../../src/components/recent-searches";
 import { InteractiveListingMap, type MapListing } from "../../src/components/interactive-listing-map";
 import { PublicHeader } from "../../src/components/public-header";
 import { discoveryQuery, parseDiscoveryFilters } from "../../src/features/discovery/model";
@@ -74,6 +75,7 @@ export default async function MapPage({ searchParams }: MapPageProps) {
           university={university}
           utilities={utilities}
         />
+        <RecentSearches />
       </section>
 
       <section className="map-results-section" aria-labelledby="map-listings-heading">
