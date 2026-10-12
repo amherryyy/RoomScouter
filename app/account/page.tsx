@@ -5,6 +5,7 @@ import { PublicHeader } from "../../src/components/public-header";
 import { SubmitButton } from "../../src/components/submit-button";
 import { logout } from "../../src/features/auth/actions";
 import { ProfileForm } from "../../src/features/profiles/profile-form";
+import { RecentSearches } from "../../src/components/recent-searches";
 import { createServerSupabaseClient } from "../../src/lib/supabase/server";
 
 type AccountPageProps = {
@@ -83,6 +84,8 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
           </div>
         </div>
       </section>
+
+      <RecentSearches />
 
       <section className="account-section" aria-labelledby="account-actions-heading">
         <div className="section-heading">

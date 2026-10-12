@@ -6,7 +6,7 @@ import { PublicHeader } from "../src/components/public-header";
 import { createServerSupabaseClient } from "../src/lib/supabase/server";
 import { UiIcon } from "../src/components/ui-icon";
 import { DiscoveryFiltersForm } from "../src/components/discovery-filters";
-import { RecentSearches } from "../src/components/recent-searches";
+import { SearchHistoryInput } from "../src/components/recent-searches";
 import { SubmitButton } from "../src/components/submit-button";
 import { loadDiscovery } from "../src/features/discovery/queries";
 import {
@@ -48,7 +48,7 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
           <p>Search verified boarding houses and compare real availability, rent, and amenities.</p>
           <Form className="hero-search" action={searchPath}>
             <label className="visually-hidden" htmlFor="hero-query">Search listings</label>
-            <input id="hero-query" name="q" defaultValue={filters.query} maxLength={120} placeholder="Search location, area, or property name" />
+            <SearchHistoryInput id="hero-query" name="q" defaultValue={filters.query} maxLength={120} placeholder="Search location, area, or property name" />
             <SubmitButton pendingLabel="Searching…">Search</SubmitButton>
           </Form>
         </section>
@@ -61,13 +61,7 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
           {!user ? <Link className="button home-get-started" href="/register"><span>Get started</span><UiIcon className="ui-icon" name="arrow-right" /></Link> : null}
           <Form className="hero-search" action={searchPath}>
             <label className="visually-hidden" htmlFor="hero-query">Search listings near the university</label>
-            <input
-              id="hero-query"
-              name="q"
-              defaultValue={filters.query}
-              maxLength={120}
-              placeholder="Search a property, street, or area"
-            />
+            <SearchHistoryInput id="hero-query" name="q" defaultValue={filters.query} maxLength={120} placeholder="Search a property, street, or area" />
             <SubmitButton pendingLabel="Searching…">Find a room</SubmitButton>
           </Form>
           <div className="quick-searches" aria-label="Quick searches">
@@ -94,7 +88,7 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
       </section>
       )}
 
-      <RecentSearches />
+
 
       {!browseMode ? (
         <section className="featured-listings" aria-labelledby="featured-title">
