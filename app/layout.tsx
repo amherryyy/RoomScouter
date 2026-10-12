@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { UiIcon } from "../src/components/ui-icon";
 import { ThemeInitializer } from "../src/components/theme-initializer";
+import { SearchHistoryTracker } from "../src/components/recent-searches";
 import "leaflet/dist/leaflet.css";
 import "./styles.css";
 
@@ -16,6 +17,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
     <html lang="en">
       <body>
         <ThemeInitializer />
+        <SearchHistoryTracker />
         <a className="skip-link" href="#main-content">Skip to main content</a>
         {children}
         <footer className="site-footer">

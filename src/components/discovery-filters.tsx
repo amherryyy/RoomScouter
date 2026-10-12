@@ -2,6 +2,7 @@ import Form from "next/form";
 import Link from "next/link";
 import { SubmitButton } from "./submit-button";
 import { UiIcon } from "./ui-icon";
+import { SearchHistoryInput } from "./recent-searches";
 import { ROOM_TYPE_LABELS, ROOM_TYPES, type DiscoveryFilters } from "../features/discovery/model";
 import type { UniversityConfig } from "../features/discovery/university";
 
@@ -40,7 +41,7 @@ export function DiscoveryFiltersForm({
     <Form className={`discovery-filters ${className}`.trim()} action={action} aria-label="Filter boarding houses">
       <div className="search-field">
         <label htmlFor={`${action.slice(1)}-q`}>Search by name, address, barangay, or description</label>
-        <input id={`${action.slice(1)}-q`} name="q" defaultValue={filters.query} maxLength={120} placeholder="Try a street or barangay" />
+        <SearchHistoryInput id={`${action.slice(1)}-q`} name="q" defaultValue={filters.query} maxLength={120} placeholder="Try a street or barangay" />
       </div>
       <details className="discovery-advanced-filters">
         <summary>More filters{activeFilterCount ? ` (${activeFilterCount} active)` : ""}</summary>
