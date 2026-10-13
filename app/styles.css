@@ -1081,6 +1081,9 @@ fieldset {
 }
 
 .listing-form legend {
+  position: relative;
+  top: 1rem;
+  margin-bottom: 1rem;
   padding: 0 0.4rem;
   font-weight: 800;
 }
