@@ -55,6 +55,7 @@ export function InteractiveListingMap({
 
   useEffect(() => {
     let cancelled = false;
+    let cleanupBarangayLabels: (() => void) | null = null;
     if (centerLatitude === null || centerLongitude === null || !containerRef.current) return;
 
     void import("leaflet").then(({ default: L }) => {
@@ -105,6 +106,44 @@ export function InteractiveListingMap({
       };
       let activeBasemapName = "Street map";
       let barangayLayer: LeafletGeoJSON | null = null;
+      let barangayLabelFrame = 0;
+      const barangayLabelPriority = new Map<string, number>();
+      const updateBarangayLabelVisibility = () => {
+        window.cancelAnimationFrame(barangayLabelFrame);
+        barangayLabelFrame = window.requestAnimationFrame(() => {
+          const labels = Array.from(map.getContainer().querySelectorAll<HTMLElement>(
+            ".leaflet-tooltip.barangay-map-label",
+          ));
+          labels.forEach((label) => { label.style.visibility = ""; });
+          if (map.getSize().x > 900) return;
+
+          const universityLabel = map.getContainer().querySelector<HTMLElement>(".university-map-label");
+          const occupied = universityLabel ? [universityLabel.getBoundingClientRect()] : [];
+          const rankedLabels = labels
+            .map((element) => ({ element, bounds: element.getBoundingClientRect() }))
+            .sort((left, right) =>
+              (barangayLabelPriority.get(left.element.textContent?.trim() ?? "") ?? Number.MAX_VALUE)
+              - (barangayLabelPriority.get(right.element.textContent?.trim() ?? "") ?? Number.MAX_VALUE));
+
+          for (const { element, bounds } of rankedLabels) {
+            const collides = occupied.some((existing) =>
+              bounds.left < existing.right + 4
+              && bounds.right + 4 > existing.left
+              && bounds.top < existing.bottom + 4
+              && bounds.bottom + 4 > existing.top);
+            if (collides) {
+              element.style.visibility = "hidden";
+            } else {
+              occupied.push(bounds);
+            }
+          }
+        });
+      };
+      map.on("moveend zoomend resize", updateBarangayLabelVisibility);
+      cleanupBarangayLabels = () => {
+        window.cancelAnimationFrame(barangayLabelFrame);
+        map.off("moveend zoomend resize", updateBarangayLabelVisibility);
+      };
       map.on("baselayerchange", (event: LayersControlEvent) => {
         activeBasemapName = event.name;
         map.getContainer().classList.toggle("is-satellite-view", event.name === "Satellite");
@@ -129,6 +168,13 @@ export function InteractiveListingMap({
             onEachFeature: (feature, layer) => {
               const barangayName = feature.properties?.brgy_name;
               if (typeof barangayName === "string" && barangayName.trim()) {
+                const center = layer instanceof L.Polyline ? layer.getBounds().getCenter() : null;
+                barangayLabelPriority.set(
+                  barangayName,
+                  university && center
+                    ? map.distance(center, L.latLng(university.latitude, university.longitude))
+                    : 0,
+                );
                 layer.bindTooltip(barangayName, {
                   direction: "center",
                   permanent: true,
@@ -143,6 +189,7 @@ export function InteractiveListingMap({
             barangayLayer.setStyle(boundaryStyles.satellite);
           }
           barangayLayer.addTo(map);
+          updateBarangayLabelVisibility();
         })
         .catch((error: unknown) => {
           if (!cancelled) console.error("Failed to load Bayombong barangay boundaries.", error);
@@ -156,6 +203,7 @@ export function InteractiveListingMap({
         const campusLabel = document.createElement("span");
         campusLabel.className = "university-map-label";
         campusLabel.textContent = university.name;
+        campusLabel.dataset.compactLabel = "NVSU";
         campusMarker.append(campusDot, campusLabel);
         L.marker([university.latitude, university.longitude], {
           alt: `${university.name} campus`,
@@ -177,6 +225,7 @@ export function InteractiveListingMap({
 
     return () => {
       cancelled = true;
+      cleanupBarangayLabels?.();
       markersRef.current.clear();
       mapRef.current?.remove();
       mapRef.current = null;

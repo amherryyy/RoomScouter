@@ -174,8 +174,8 @@ export default async function Home({ searchParams, browseMode = false }: HomePag
         </div>
       ) : (
         <section className="empty-state">
-          <h2>No listings match those filters</h2>
-          <p>Try a broader search, a higher rent limit, or fewer required rooms.</p>
+          <h2>{filters.query ? `No available listings match “${filters.query}”` : "No available listings match those filters"}</h2>
+          <p>Search includes approved listings with at least one room available. Try another area, broaden your filters, or clear them.</p>
         </section>
       )}
 
